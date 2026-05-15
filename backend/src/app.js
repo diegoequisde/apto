@@ -10,4 +10,12 @@ app.get('/', (req, res) => {
   res.send('API funcionando');
 });
 
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'OK',
+    message: 'API funcionando correctamente'
+  });
+});
+
 module.exports = app;
+
