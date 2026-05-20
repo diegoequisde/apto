@@ -13,11 +13,11 @@ const {
 router.get('/', getTemas);
 
 router.get('/:id', getTemaById);
-/*
+
 router.post('/', createTema);
 
 router.put('/:id', updateTema);
-
+ 
 router.delete('/:id', deleteTema);
-*/
+
 module.exports = router;
