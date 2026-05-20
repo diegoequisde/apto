@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const pool = require('./config/db');
 const temaRoutes = require('./routes/temaRoutes');
+const preguntaRoutes = require('./routes/preguntaRoutes');
 
 const app = express();
 
@@ -39,5 +40,6 @@ app.get('/db-test', async (req, res) => {
 });
 
 app.use('/api/temas', temaRoutes);
+app.use('/api/preguntas', preguntaRoutes);
 
 module.exports = app;
