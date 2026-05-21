@@ -1,35 +1,25 @@
-const pool = require('../config/db');
+const {
+    findAllTemas
+} = require('../services/temaService');
 
-const getTemas = async (req, res) => {
+const getTemas = async (req, res, next) => {
 
     try {
 
-        const [rows] = await pool.query(`
-            SELECT 
-                id_tema,
-                nome_tema,
-                descripcion_tema,
-                estado_tema
-            FROM tema
-            WHERE estado_tema = 'activo'
-        `);
+        const temas = await findAllTemas();
 
-        res.json(rows);
+        res.json(temas);
+
 
     } catch (error) {
 
-        console.error(error);
+    next(error);
 
-        res.status(500).json({
-            ok: false,
-            mensaje: 'Erro ao obter temas'
-        });
-
-    }
+}
 
 };
 
-const getTemaById = async (req, res) => {
+const getTemaById = async (req, res, next) => {
 
     try {
 
@@ -59,18 +49,13 @@ const getTemaById = async (req, res) => {
 
     } catch (error) {
 
-        console.error(error);
+    next(error);
 
-        res.status(500).json({
-            ok: false,
-            mensaje: 'Erro ao obter o tema'
-        });
-
-    }
+}
 
 };
 
-const createTema = async (req, res) => {
+const createTema = async (req, res, next) => {
 
     try {
 
@@ -98,18 +83,13 @@ const createTema = async (req, res) => {
 
     } catch (error) {
 
-        console.error(error);
+    next(error);
 
-        res.status(500).json({
-            ok: false,
-            mensaje: 'Erro ao crear o tema'
-        });
-
-    }
+}
 
 };
 
-const updateTema = async (req, res) => {
+const updateTema = async (req, res, next) => {
 
     try {
 
@@ -149,18 +129,13 @@ const updateTema = async (req, res) => {
 
     } catch (error) {
 
-        console.error(error);
+    next(error);
 
-        res.status(500).json({
-            ok: false,
-            mensaje: 'Erro ao actualizar o tema'
-        });
-
-    }
+}
 
 };
 
-const deleteTema = async (req, res) => {
+const deleteTema = async (req, res, next) => {
 
     try {
 
@@ -189,14 +164,9 @@ const deleteTema = async (req, res) => {
 
     } catch (error) {
 
-        console.error(error);
+    next(error);
 
-        res.status(500).json({
-            ok: false,
-            mensaje: 'Erro ao eliminar o tema'
-        });
-
-    }
+}
 
 };
 

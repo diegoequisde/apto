@@ -3,6 +3,7 @@ const cors = require('cors');
 const pool = require('./config/db');
 const temaRoutes = require('./routes/temaRoutes');
 const preguntaRoutes = require('./routes/preguntaRoutes');
+const errorHandler = require('./middlewares/errorHandler');
 
 const app = express();
 
@@ -41,5 +42,6 @@ app.get('/db-test', async (req, res) => {
 
 app.use('/api/temas', temaRoutes);
 app.use('/api/preguntas', preguntaRoutes);
+app.use(errorHandler);
 
 module.exports = app;

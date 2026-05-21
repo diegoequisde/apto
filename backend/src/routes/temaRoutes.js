@@ -1,4 +1,6 @@
 const express = require('express');
+const validateId = require('../middlewares/validateId');
+const validateTema = require('../middlewares/validateTema');
 
 const router = express.Router();
 
@@ -12,12 +14,12 @@ const {
 
 router.get('/', getTemas);
 
-router.get('/:id', getTemaById);
+router.get('/:id', validateId, getTemaById);
 
-router.post('/', createTema);
+router.post('/', validateTema, createTema);
 
-router.put('/:id', updateTema);
+router.put('/:id', validateId, validateTema, updateTema);
  
-router.delete('/:id', deleteTema);
+router.delete('/:id', validateId, deleteTema);
 
 module.exports = router;

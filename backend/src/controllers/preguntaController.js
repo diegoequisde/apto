@@ -1,6 +1,6 @@
 const pool = require('../config/db');
 
-const getPreguntas = async (req, res) => {
+const getPreguntas = async (req, res, next) => {
 
     try {
 
@@ -26,18 +26,13 @@ o ser creada por admin y LEFT JOIN da más flexibilidad */
 
     } catch (error) {
 
-        console.error(error);
+    next(error);
 
-        res.status(500).json({
-            ok: false,
-            mensaje: 'Erro ao obter preguntas'
-        });
-
-    }
+}
 
 };
 
-const getPreguntaById = async (req, res) => {
+const getPreguntaById = async (req, res, next) => {
 
     try {
 
@@ -74,18 +69,13 @@ const getPreguntaById = async (req, res) => {
 
     } catch (error) {
 
-        console.error(error);
+    next(error);
 
-        res.status(500).json({
-            ok: false,
-            mensaje: 'Erro ao obter a pregunta'
-        });
-
-    }
+}
 
 };
 
-const createPregunta = async (req, res) => {
+const createPregunta = async (req, res, next) => {
 
     try {
 
@@ -116,18 +106,13 @@ const createPregunta = async (req, res) => {
 
     } catch (error) {
 
-        console.error(error);
+    next(error);
 
-        res.status(500).json({
-            ok: false,
-            mensaje: 'Erro ao crear a pregunta'
-        });
-
-    }
+}
 
 };
 
-const updatePregunta = async (req, res) => {
+const updatePregunta = async (req, res, next) => {
 
     try {
 
@@ -167,18 +152,13 @@ const updatePregunta = async (req, res) => {
 
     } catch (error) {
 
-        console.error(error);
+    next(error);
 
-        res.status(500).json({
-            ok: false,
-            mensaje: 'Erro ao actualizar a pregunta'
-        });
-
-    }
+}
 
 };
 
-const deletePregunta = async (req, res) => {
+const deletePregunta = async (req, res, next) => {
 
     try {
 
@@ -207,14 +187,9 @@ const deletePregunta = async (req, res) => {
 
     } catch (error) {
 
-        console.error(error);
+    next(error);
 
-        res.status(500).json({
-            ok: false,
-            mensaje: 'Erro ao eliminar a pregunta'
-        });
-
-    }
+}
 
 };
 
