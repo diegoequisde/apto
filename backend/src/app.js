@@ -4,6 +4,9 @@ const pool = require('./config/db');
 const temaRoutes = require('./routes/temaRoutes');
 const preguntaRoutes = require('./routes/preguntaRoutes');
 const testRoutes = require('./routes/testRoutes');
+const usuarioRoutes = require('./routes/usuarioRoutes');
+const oposicionRoutes = require('./routes/oposicionRoutes');
+
 const errorHandler = require('./middlewares/errorHandler');
 
 const app = express();
@@ -44,6 +47,8 @@ app.get('/db-test', async (req, res) => {
 app.use('/api/temas', temaRoutes);
 app.use('/api/preguntas', preguntaRoutes);
 app.use('/api/tests', testRoutes);
+app.use('/api/usuarios', usuarioRoutes);
+app.use('/api/oposiciones', oposicionRoutes);
 
 app.use(errorHandler);
 
