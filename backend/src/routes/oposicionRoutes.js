@@ -4,8 +4,6 @@ const router = express.Router();
 const oposicionTemaRoutes = require('./oposicionTemaRoutes');
 const validateId = require('../middlewares/validateId');
 
-
-
 const {
     getOposiciones,
     getOposicionById,
