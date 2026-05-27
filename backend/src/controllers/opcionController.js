@@ -1,4 +1,9 @@
-const pool = require('../config/db');
+const {
+    findOpcionesByPregunta,
+    insertOpcion,
+    updateOpcionById,
+    deleteOpcionById
+} = require('../services/opcionService');
 
 const getOpcionesByPregunta = async (req, res, next) => {
 
@@ -6,16 +11,9 @@ const getOpcionesByPregunta = async (req, res, next) => {
 
         const { id } = req.params;
 
-        const [rows] = await pool.query(`
-            SELECT
-                letra_opcion,
-                texto,
-                e_correcta
-            FROM opcion
-            WHERE id_pregunta = ?
-        `, [id]);
+        const opciones = await findOpcionesByPregunta(id);
 
-        res.json(rows);
+        res.json(opciones);
 
     } catch (error) {
 
@@ -37,20 +35,12 @@ const createOpcion = async (req, res, next) => {
             e_correcta
         } = req.body;
 
-        await pool.query(`
-            INSERT INTO opcion (
-                id_pregunta,
-                letra_opcion,
-                texto,
-                e_correcta
-            )
-            VALUES (?, ?, ?, ?)
-        `, [
+        await insertOpcion(
             id,
             letra_opcion,
             texto,
             e_correcta
-        ]);
+        );
 
         res.status(201).json({
             ok: true,
@@ -76,19 +66,12 @@ const updateOpcion = async (req, res, next) => {
             e_correcta
         } = req.body;
 
-        const [result] = await pool.query(`
-            UPDATE opcion
-            SET
-                texto = ?,
-                e_correcta = ?
-            WHERE id_pregunta = ?
-            AND letra_opcion = ?
-        `, [
-            texto,
-            e_correcta,
+        const result = await updateOpcionById(
             id,
-            letra
-        ]);
+            letra,
+            texto,
+            e_correcta
+        );
 
         if (result.affectedRows === 0) {
 
@@ -118,14 +101,10 @@ const deleteOpcion = async (req, res, next) => {
 
         const { id, letra } = req.params;
 
-        const [result] = await pool.query(`
-            DELETE FROM opcion
-            WHERE id_pregunta = ?
-            AND letra_opcion = ?
-        `, [
+        const result = await deleteOpcionById(
             id,
             letra
-        ]);
+        );
 
         if (result.affectedRows === 0) {
 

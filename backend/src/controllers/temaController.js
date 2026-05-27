@@ -1,15 +1,18 @@
 const {
-    findAllTemas
+    findAllTemas,
+    findTemaById,
+    insertTema,
+    updateTemaById,
+    deleteTemaById
 } = require('../services/temaService');
 
 const getTemas = async (req, res, next) => {
 
     try {
-
+        
         const temas = await findAllTemas();
 
         res.json(temas);
-
 
     } catch (error) {
 
@@ -25,27 +28,18 @@ const getTemaById = async (req, res, next) => {
 
         const { id } = req.params;
 
-        const [rows] = await pool.query(`
-            SELECT
-                id_tema,
-                nome_tema,
-                descripcion_tema,
-                estado_tema
-            FROM tema
-            WHERE id_tema = ?
-            AND estado_tema = 'activo'
-        `, [id]);
+        const tema = await findTemaById(id);
 
-        if (rows.length === 0) {
+    if (!tema) {
 
-            return res.status(404).json({
-                ok: false,
-                mensaje: 'Tema non encontrado'
-            });
+        return res.status(404).json({
+            ok: false,
+            mensaje: 'Tema non encontrado'
+        });
 
-        }
+    }
 
-        res.json(rows[0]);
+    res.json(tema);
 
     } catch (error) {
 
@@ -64,21 +58,15 @@ const createTema = async (req, res, next) => {
             descripcion_tema
         } = req.body;
 
-        const [result] = await pool.query(`
-            INSERT INTO tema (
-                nome_tema,
-                descripcion_tema
-            )
-            VALUES (?, ?)
-        `, [
+        const id_tema = await insertTema(
             nome_tema,
             descripcion_tema
-        ]);
+        );
 
         res.status(201).json({
             ok: true,
             mensaje: 'Tema creado correctamente',
-            id_tema: result.insertId
+            id_tema
         });
 
     } catch (error) {
@@ -100,18 +88,11 @@ const updateTema = async (req, res, next) => {
             descripcion_tema
         } = req.body;
 
-        const [result] = await pool.query(`
-            UPDATE tema
-            SET
-                nome_tema = ?,
-                descripcion_tema = ?
-            WHERE id_tema = ?
-            AND estado_tema = 'activo'
-        `, [
+        const result = await updateTemaById(
+            id,
             nome_tema,
-            descripcion_tema,
-            id
-        ]);
+            descripcion_tema
+        );
 
         if (result.affectedRows === 0) {
 
@@ -141,12 +122,7 @@ const deleteTema = async (req, res, next) => {
 
         const { id } = req.params;
 
-        const [result] = await pool.query(`
-            UPDATE tema
-            SET estado_tema = 'inactivo'
-            WHERE id_tema = ?
-            AND estado_tema = 'activo'
-        `, [id]);
+        const result = await deleteTemaById(id);
 
         if (result.affectedRows === 0) {
 

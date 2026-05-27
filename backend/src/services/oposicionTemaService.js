@@ -1,4 +1,4 @@
-    const pool = require('../config/db');
+const pool = require('../config/db');
 
 const findTemasByOposicion = async (id_oposicion) => {
 
@@ -11,6 +11,7 @@ const findTemasByOposicion = async (id_oposicion) => {
         INNER JOIN tema t
             ON ot.id_tema = t.id_tema
         WHERE ot.id_oposicion = ?
+        AND t.estado_tema = 'activo'
         ORDER BY t.nome_tema
     `, [id_oposicion]);
 
@@ -30,7 +31,7 @@ const insertTemaToOposicion = async (
         )
         VALUES (?, ?)
     `, [
-        id_oposicion,
+        id,
         id_tema
     ]);
 
@@ -48,8 +49,8 @@ const deleteTemaFromOposicionById = async (
         WHERE id_oposicion = ?
         AND id_tema = ?
     `, [
-        id_oposicion,
-        id_tema
+        id,
+        idTema
     ]);
 
     return result;

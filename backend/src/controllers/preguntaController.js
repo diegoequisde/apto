@@ -1,28 +1,19 @@
-const pool = require('../config/db');
+const {
+    findAllPreguntas,
+    findPreguntaById,
+    insertPregunta,
+    updatePreguntaById,
+    deletePreguntaById
+} = require('../services/preguntaService');
 
 const getPreguntas = async (req, res, next) => {
 
     try {
 
-        const [rows] = await pool.query(`
-            SELECT
-                p.id_pregunta,
-                p.enunciado,
-                p.estado_pregunta,
-                t.nome_tema,
-                u.nome AS autor
-            FROM pregunta p
-            INNER JOIN tema t
-                ON p.id_tema = t.id_tema
-            LEFT JOIN usuario u
-                ON p.id_usuario = u.id_usuario
-            WHERE p.estado_pregunta = 'activa'
-        `);
-/*INNER JOIN tema Para obtener: nome_tema
-LEFT JOIN usuario Porque: una pregunta oficial puede no tener usuario
-o ser creada por admin y LEFT JOIN da más flexibilidad */
+        const preguntas = await findAllPreguntas();
 
-        res.json(rows);
+        res.json(preguntas);
+ 
 
     } catch (error) {
 
@@ -38,25 +29,9 @@ const getPreguntaById = async (req, res, next) => {
 
         const { id } = req.params;
 
-        const [rows] = await pool.query(`
-            SELECT
-                p.id_pregunta,
-                p.enunciado,
-                p.estado_pregunta,
-                p.id_tema,
-                t.nome_tema,
-                p.id_usuario,
-                u.nome AS autor
-            FROM pregunta p
-            INNER JOIN tema t
-                ON p.id_tema = t.id_tema
-            LEFT JOIN usuario u
-                ON p.id_usuario = u.id_usuario
-            WHERE p.id_pregunta = ?
-            AND p.estado_pregunta = 'activa'
-        `, [id]);
+        const pregunta = await findPreguntaById(id);
 
-        if (rows.length === 0) {
+        if (!pregunta) {
 
             return res.status(404).json({
                 ok: false,
@@ -65,7 +40,7 @@ const getPreguntaById = async (req, res, next) => {
 
         }
 
-        res.json(rows[0]);
+        res.json(pregunta);
 
     } catch (error) {
 
@@ -85,23 +60,16 @@ const createPregunta = async (req, res, next) => {
             id_usuario
         } = req.body;
 
-        const [result] = await pool.query(`
-            INSERT INTO pregunta (
-                enunciado,
-                id_tema,
-                id_usuario
-            )
-            VALUES (?, ?, ?)
-        `, [
+       const id_pregunta = await insertPregunta(
             enunciado,
             id_tema,
             id_usuario
-        ]);
+        );
 
         res.status(201).json({
             ok: true,
             mensaje: 'Pregunta creada correctamente',
-            id_pregunta: result.insertId
+            id_pregunta
         });
 
     } catch (error) {
@@ -123,18 +91,11 @@ const updatePregunta = async (req, res, next) => {
             id_tema
         } = req.body;
 
-        const [result] = await pool.query(`
-            UPDATE pregunta
-            SET
-                enunciado = ?,
-                id_tema = ?
-            WHERE id_pregunta = ?
-            AND estado_pregunta = 'activa'
-        `, [
+        const result = await updatePreguntaById(
+            id,
             enunciado,
-            id_tema,
-            id
-        ]);
+            id_tema
+        );
 
         if (result.affectedRows === 0) {
 
@@ -164,12 +125,7 @@ const deletePregunta = async (req, res, next) => {
 
         const { id } = req.params;
 
-        const [result] = await pool.query(`
-            UPDATE pregunta
-            SET estado_pregunta = 'eliminada'
-            WHERE id_pregunta = ?
-            AND estado_pregunta = 'activa'
-        `, [id]);
+        const result = await deletePreguntaById(id);
 
         if (result.affectedRows === 0) {
 
