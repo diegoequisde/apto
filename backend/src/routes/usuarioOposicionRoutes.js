@@ -1,6 +1,9 @@
 const express = require('express');
 
+const validateRequiredFields = require('../middlewares/validateRequiredFields');
+
 const router = express.Router({ mergeParams: true });
+
 
 const {
     getOposicionesByUsuario,
@@ -10,7 +13,13 @@ const {
 
 router.get('/', getOposicionesByUsuario);
 
-router.post('/', addOposicionToUsuario);
+router.post(
+    '/',
+    validateRequiredFields([
+        'id_oposicion'
+    ]),
+    addOposicionToUsuario
+);
 
 router.delete('/:idOposicion', deleteOposicionFromUsuario);
 

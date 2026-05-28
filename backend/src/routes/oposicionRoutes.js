@@ -1,8 +1,11 @@
 const express = require('express');
 
-const router = express.Router();
-const oposicionTemaRoutes = require('./oposicionTemaRoutes');
 const validateId = require('../middlewares/validateId');
+const validateRequiredFields = require('../middlewares/validateRequiredFields');
+
+const oposicionTemaRoutes = require('./oposicionTemaRoutes');
+
+const router = express.Router();
 
 const {
     getOposiciones,
@@ -16,9 +19,22 @@ router.get('/', getOposiciones);
 
 router.get('/:id', validateId, getOposicionById);
 
-router.post('/', createOposicion);
+router.post(
+    '/',
+    validateRequiredFields([
+        'nome_oposicion'
+    ]),
+    createOposicion
+);
 
-router.put('/:id', validateId, updateOposicion);
+router.put(
+    '/:id',
+    validateId,
+    validateRequiredFields([
+        'nome_oposicion'
+    ]),
+    updateOposicion
+);
 
 router.delete('/:id', validateId, deleteOposicion);
 

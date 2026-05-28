@@ -1,5 +1,9 @@
 const express = require('express');
 
+const validateRequiredFields = require('../middlewares/validateRequiredFields');
+
+const validateOpcion = require('../middlewares/validateOpcion');
+
 const router = express.Router({ mergeParams: true });
 
 const {
@@ -11,9 +15,21 @@ const {
 
 router.get('/', getOpcionesByPregunta);
 
-router.post('/', createOpcion);
+router.post(
+    '/',
+    validateRequiredFields([
+        'letra_opcion',
+        'texto'
+    ]),
+    validateOpcion,
+    createOpcion
+);
 
-router.put('/:letra', updateOpcion);
+router.put(
+    '/:letra',
+    validateOpcion,
+    updateOpcion
+);
 
 router.delete('/:letra', deleteOpcion);
 

@@ -1,5 +1,7 @@
 const express = require('express');
 
+const validateRequiredFields = require('../middlewares/validateRequiredFields');
+
 const router = express.Router({ mergeParams: true });
 
 const {
@@ -11,9 +13,22 @@ const {
 
 router.get('/', getPreguntasByTest);
 
-router.post('/', addPreguntaToTest);
+router.post(
+    '/',
+    validateRequiredFields([
+        'id_pregunta',
+        'orde'
+    ]),
+    addPreguntaToTest
+);
 
-router.put('/:idPregunta', answerPreguntaTest);
+router.put(
+    '/:idPregunta/resposta',
+    validateRequiredFields([
+        'resposta_usuario'
+    ]),
+    answerPreguntaTest
+);
 
 router.delete('/:idPregunta', deletePreguntaFromTest);
 

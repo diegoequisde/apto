@@ -1,11 +1,13 @@
 const express = require('express');
-const usuarioOposicionRoutes = require('./usuarioOposicionRoutes');
-
-const router = express.Router();
 
 const validateId = require('../middlewares/validateId');
 const validateRequiredFields = require('../middlewares/validateRequiredFields');
 const validateEmail = require('../middlewares/validateEmail');
+const validateUsuario = require('../middlewares/validateUsuario');
+
+const usuarioOposicionRoutes = require('./usuarioOposicionRoutes');
+
+const router = express.Router();
 
 
 const {
@@ -25,15 +27,24 @@ router.post(
     validateRequiredFields([
         'nome',
         'email',
-        'password'
+        'contrasinal_hash'
     ]),
     validateEmail,
+    validateUsuario,
     createUsuario
 );
 
-router.put('/:id', validateId, updateUsuario);
-
-router.delete('/:id', validateId, deleteUsuario);
+router.put(
+    '/:id',
+    validateId,
+    validateRequiredFields([
+        'nome',
+        'email'
+    ]),
+    validateEmail,
+    validateUsuario,
+    updateUsuario
+);
 
 router.use('/:id/oposiciones', usuarioOposicionRoutes);
 

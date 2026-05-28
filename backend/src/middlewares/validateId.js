@@ -2,7 +2,10 @@ const validateId = (req, res, next) => {
 
     const { id } = req.params;
 
-    if (isNaN(id)) {
+    if (
+        !Number.isInteger(Number(id)) ||
+        Number(id) <= 0
+    ) {
 
         return res.status(400).json({
             ok: false,

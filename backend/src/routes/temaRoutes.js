@@ -1,5 +1,7 @@
 const express = require('express');
+
 const validateId = require('../middlewares/validateId');
+const validateRequiredFields = require('../middlewares/validateRequiredFields');
 const validateTema = require('../middlewares/validateTema');
 
 const router = express.Router();
@@ -16,9 +18,24 @@ router.get('/', getTemas);
 
 router.get('/:id', validateId, getTemaById);
 
-router.post('/', validateTema, createTema);
+router.post(
+    '/',
+    validateRequiredFields([
+        'nome_tema'
+    ]),
+    validateTema,
+    createTema
+);
 
-router.put('/:id', validateId, validateTema, updateTema);
+router.put(
+    '/:id',
+    validateId,
+    validateRequiredFields([
+        'nome_tema'
+    ]),
+    validateTema,
+    updateTema
+);
  
 router.delete('/:id', validateId, deleteTema);
 

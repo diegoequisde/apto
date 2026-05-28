@@ -1,5 +1,7 @@
 const express = require('express');
 
+const validateRequiredFields = require('../middlewares/validateRequiredFields');
+
 const router = express.Router({ mergeParams: true });
 
 const {
@@ -10,7 +12,13 @@ const {
 
 router.get('/', getTemasByOposicion);
 
-router.post('/', addTemaToOposicion);
+router.post(
+    '/',
+    validateRequiredFields([
+        'id_tema'
+    ]),
+    addTemaToOposicion
+);
 
 router.delete('/:idTema', deleteTemaFromOposicion);
 
