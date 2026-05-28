@@ -31,7 +31,7 @@ const insertTemaToOposicion = async (
         )
         VALUES (?, ?)
     `, [
-        id,
+        id_oposicion,
         id_tema
     ]);
 
@@ -49,8 +49,8 @@ const deleteTemaFromOposicionById = async (
         WHERE id_oposicion = ?
         AND id_tema = ?
     `, [
-        id,
-        idTema
+        id_oposicion,
+        id_tema
     ]);
 
     return result;
