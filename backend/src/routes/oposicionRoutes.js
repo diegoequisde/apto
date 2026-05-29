@@ -2,7 +2,7 @@ const express = require('express');
 
 const validateId = require('../middlewares/validateId');
 const validateRequiredFields = require('../middlewares/validateRequiredFields');
-
+const validateOposicion = require('../middlewares/validateOposicion');
 const oposicionTemaRoutes = require('./oposicionTemaRoutes');
 
 const router = express.Router();
@@ -24,6 +24,7 @@ router.post(
     validateRequiredFields([
         'nome_oposicion'
     ]),
+    validateOposicion,
     createOposicion
 );
 
@@ -33,6 +34,7 @@ router.put(
     validateRequiredFields([
         'nome_oposicion'
     ]),
+    validateOposicion,
     updateOposicion
 );
 

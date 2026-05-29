@@ -1,7 +1,10 @@
 require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
+
 const pool = require('./config/db');
+
 const temaRoutes = require('./routes/temaRoutes');
 const preguntaRoutes = require('./routes/preguntaRoutes');
 const testRoutes = require('./routes/testRoutes');
@@ -16,7 +19,9 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send('API funcionando');
+
+    res.send('API funcionando');
+
 });
 
 app.get('/db-test', async (req, res) => {
@@ -51,6 +56,19 @@ app.use('/api/tests', testRoutes);
 app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/oposiciones', oposicionRoutes);
 
+
+// 404 - Ruta no encontrada
+app.use((req, res) => {
+
+    res.status(404).json({
+        ok: false,
+        mensaje: 'Ruta non encontrada'
+    });
+
+});
+
+
+// Error handler global
 app.use(errorHandler);
 
 module.exports = app;
