@@ -1,3 +1,5 @@
+const asyncHandler = require('../middlewares/asyncHandler');
+
 const {
     findPreguntasByTest,
     insertPreguntaToTest,
@@ -5,9 +7,7 @@ const {
     deletePreguntaTest
 } = require('../services/preguntaTestService');
 
-const getPreguntasByTest = async (req, res, next) => {
-
-    try {
+const getPreguntasByTest = asyncHandler (async (req, res) => {
 
         const { id } = req.params;
 
@@ -15,17 +15,9 @@ const getPreguntasByTest = async (req, res, next) => {
 
         res.json(preguntas);
 
-    } catch (error) {
+});
 
-        next(error);
-
-    }
-
-};
-
-const addPreguntaToTest = async (req, res, next) => {
-
-    try {
+const addPreguntaToTest = asyncHandler(async (req, res) => {
 
         const { id } = req.params;
 
@@ -45,17 +37,9 @@ const addPreguntaToTest = async (req, res, next) => {
             mensaje: 'Pregunta añadida ao test'
         });
 
-    } catch (error) {
+});
 
-        next(error);
-
-    }
-
-};
-
-const answerPreguntaTest = async (req, res, next) => {
-
-    try {
+const answerPreguntaTest = asyncHandler (async (req, res) => {
 
         const { id, idPregunta } = req.params;
 
@@ -81,17 +65,9 @@ const answerPreguntaTest = async (req, res, next) => {
             mensaje: 'Resposta gardada correctamente'
         });
 
-    } catch (error) {
+});
 
-        next(error);
-
-    }
-
-};
-
-const deletePreguntaFromTest = async (req, res, next) => {
-
-    try {
+const deletePreguntaFromTest = asyncHandler(async (req, res) => {
 
         const { id, idPregunta } = req.params;
 
@@ -114,13 +90,7 @@ const deletePreguntaFromTest = async (req, res, next) => {
             mensaje: 'Pregunta eliminada do test'
         });
 
-    } catch (error) {
-
-        next(error);
-
-    }
-
-};
+});
 
 module.exports = {
     getPreguntasByTest,

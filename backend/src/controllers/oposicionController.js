@@ -1,3 +1,5 @@
+    const asyncHandler = require('../middlewares/asyncHandler');
+    
     const {
     findAllOposiciones,
     findOposicionById,
@@ -6,25 +8,15 @@
     deleteOposicionById
 } = require('../services/oposicionService');
 
-const getOposiciones = async (req, res, next) => {
-
-    try {
+const getOposiciones = asyncHandler(async (req, res) => {
 
         const oposiciones = await findAllOposiciones();
 
         res.json(oposiciones);
 
-    } catch (error) {
+});
 
-        next(error);
-
-    }
-
-};
-
-const getOposicionById = async (req, res, next) => {
-
-    try {
+const getOposicionById = asyncHandler(async (req, res) => {
 
         const { id } = req.params;
 
@@ -41,17 +33,9 @@ const getOposicionById = async (req, res, next) => {
 
         res.json(oposicion);
 
-    } catch (error) {
+});
 
-        next(error);
-
-    }
-
-};
-
-const createOposicion = async (req, res, next) => {
-
-    try {
+const createOposicion = asyncHandler(async (req, res) => {
 
         const {
             nome_oposicion,
@@ -69,17 +53,9 @@ const createOposicion = async (req, res, next) => {
             id_oposicion
         });
 
-    } catch (error) {
+});
 
-        next(error);
-
-    }
-
-};
-
-const updateOposicion = async (req, res, next) => {
-
-    try {
+const updateOposicion = asyncHandler(async (req, res) => {
 
         const { id } = req.params;
 
@@ -108,17 +84,9 @@ const updateOposicion = async (req, res, next) => {
             mensaje: 'Oposición actualizada correctamente'
         });
 
-    } catch (error) {
+});
 
-        next(error);
-
-    }
-
-};
-
-const deleteOposicion = async (req, res, next) => {
-
-    try {
+const deleteOposicion = asyncHandler(async (req, res) => {
 
         const { id } = req.params;
 
@@ -138,13 +106,7 @@ const deleteOposicion = async (req, res, next) => {
             mensaje: 'Oposición eliminada correctamente'
         });
 
-    } catch (error) {
-
-        next(error);
-
-    }
-
-};
+});
 
 module.exports = {
     getOposiciones,

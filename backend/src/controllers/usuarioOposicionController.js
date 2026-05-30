@@ -1,12 +1,12 @@
+const asyncHandler = require('../middlewares/asyncHandler');
+
 const {
     findOposicionesByUsuario,
     insertOposicionToUsuario,
     deleteOposicionFromUsuarioById
 } = require('../services/usuarioOposicionService');
 
-const getOposicionesByUsuario = async (req, res, next) => {
-
-    try {
+const getOposicionesByUsuario = asyncHandler(async (req, res) => {
 
         const { id } = req.params;
 
@@ -14,17 +14,9 @@ const getOposicionesByUsuario = async (req, res, next) => {
 
         res.json(oposiciones);
 
-    } catch (error) {
+});
 
-        next(error);
-
-    }
-
-};
-
-const addOposicionToUsuario = async (req, res, next) => {
-
-    try {
+const addOposicionToUsuario = asyncHandler(async (req, res) => {
 
         const { id } = req.params;
 
@@ -40,17 +32,9 @@ const addOposicionToUsuario = async (req, res, next) => {
             mensaje: 'Oposición añadida ao usuario'
         });
 
-    } catch (error) {
+});
 
-        next(error);
-
-    }
-
-};
-
-const deleteOposicionFromUsuario = async (req, res, next) => {
-
-    try {
+const deleteOposicionFromUsuario = asyncHandler(async (req, res) => {
 
         const { id, idOposicion } = req.params;
 
@@ -73,13 +57,7 @@ const deleteOposicionFromUsuario = async (req, res, next) => {
             mensaje: 'Oposición eliminada do usuario'
         });
 
-    } catch (error) {
-
-        next(error);
-
-    }
-
-};
+});
 
 module.exports = {
     getOposicionesByUsuario,

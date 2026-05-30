@@ -1,3 +1,4 @@
+const asyncHandler = require('../middlewares/asyncHandler');
 const bcrypt = require('bcryptjs');
 
 const {
@@ -8,25 +9,15 @@ const {
     deleteUsuarioById
 } = require('../services/usuarioService');
 
-const getUsuarios = async (req, res, next) => {
-
-    try {
+const getUsuarios = asyncHandler(async (req, res) => {
 
         const usuarios = await findAllUsuarios();
 
         res.json(usuarios);
 
-    } catch (error) {
+    });
 
-        next(error);
-
-    }
-
-};
-
-const getUsuarioById = async (req, res, next) => {
-
-    try {
+const getUsuarioById = asyncHandler(async (req, res) => {
 
         const { id } = req.params;
 
@@ -43,17 +34,9 @@ const getUsuarioById = async (req, res, next) => {
 
         res.json(usuario);
 
-    } catch (error) {
+});
 
-        next(error);
-
-    }
-
-};
-
-const createUsuario = async (req, res, next) => {
-
-    try {
+const createUsuario = asyncHandler(async (req, res) => {
 
         const {
             nome,
@@ -75,18 +58,10 @@ const createUsuario = async (req, res, next) => {
             id_usuario
         });
 
-    } catch (error) {
+});
 
-        next(error);
-
-    }
-
-};
-
-const updateUsuario = async (req, res, next) => {
-
-    try {
-
+const updateUsuario = asyncHandler(async (req, res) => {
+    
         const { id } = req.params;
 
         const {
@@ -114,17 +89,9 @@ const updateUsuario = async (req, res, next) => {
             mensaje: 'Usuario actualizado correctamente'
         });
 
-    } catch (error) {
+});
 
-        next(error);
-
-    }
-
-};
-
-const deleteUsuario = async (req, res, next) => {
-
-    try {
+const deleteUsuario = asyncHandler(async (req, res) => {
 
         const { id } = req.params;
 
@@ -144,13 +111,7 @@ const deleteUsuario = async (req, res, next) => {
             mensaje: 'Usuario eliminado correctamente'
         });
 
-    } catch (error) {
-
-        next(error);
-
-    }
-
-};
+});
 
 module.exports = {
     getUsuarios,

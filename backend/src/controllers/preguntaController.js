@@ -1,3 +1,5 @@
+const asyncHandler = require('../middlewares/asyncHandler');
+
 const {
     findAllPreguntas,
     findPreguntaById,
@@ -6,26 +8,16 @@ const {
     deletePreguntaById
 } = require('../services/preguntaService');
 
-const getPreguntas = async (req, res, next) => {
-
-    try {
+const getPreguntas = asyncHandler(async (req, res) => {
 
         const preguntas = await findAllPreguntas();
 
         res.json(preguntas);
  
 
-    } catch (error) {
+});
 
-    next(error);
-
-}
-
-};
-
-const getPreguntaById = async (req, res, next) => {
-
-    try {
+const getPreguntaById = asyncHandler(async (req, res) => {
 
         const { id } = req.params;
 
@@ -42,17 +34,9 @@ const getPreguntaById = async (req, res, next) => {
 
         res.json(pregunta);
 
-    } catch (error) {
+});
 
-    next(error);
-
-}
-
-};
-
-const createPregunta = async (req, res, next) => {
-
-    try {
+const createPregunta = asyncHandler (async (req, res) => {
 
         const {
             enunciado,
@@ -72,19 +56,10 @@ const createPregunta = async (req, res, next) => {
             id_pregunta
         });
 
-    } catch (error) {
+});
 
-    next(error);
-
-}
-
-};
-
-const updatePregunta = async (req, res, next) => {
-
-    try {
-
-        const { id } = req.params;
+const updatePregunta = asyncHandler(async (req, res) => {
+const { id } = req.params;
 
         const {
             enunciado,
@@ -111,17 +86,9 @@ const updatePregunta = async (req, res, next) => {
             mensaje: 'Pregunta actualizada correctamente'
         });
 
-    } catch (error) {
+});
 
-    next(error);
-
-}
-
-};
-
-const deletePregunta = async (req, res, next) => {
-
-    try {
+const deletePregunta = asyncHandler(async (req, res) => {
 
         const { id } = req.params;
 
@@ -141,13 +108,7 @@ const deletePregunta = async (req, res, next) => {
             mensaje: 'Pregunta eliminada correctamente'
         });
 
-    } catch (error) {
-
-    next(error);
-
-}
-
-};
+});
 
 module.exports = {
     getPreguntas,

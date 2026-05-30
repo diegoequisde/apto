@@ -1,3 +1,5 @@
+const asyncHandler = require('../middlewares/asyncHandler');
+
 const {
     findAllTests,
     findTestById,
@@ -6,25 +8,15 @@ const {
     deleteTestById
 } = require('../services/testService');
 
-const getTests = async (req, res, next) => {
-
-    try {
+const getTests = asyncHandler(async (req, res) => {
 
         const tests = await findAllTests();
 
         res.json(tests);
 
-    } catch (error) {
+});
 
-        next(error);
-
-    }
-
-};
-
-const getTestById = async (req, res, next) => {
-
-    try {
+const getTestById = asyncHandler(async (req, res) => {
 
         const { id } = req.params;
 
@@ -41,18 +33,11 @@ const getTestById = async (req, res, next) => {
 
         res.json(test);
 
-    } catch (error) {
+});
 
-        next(error);
+const createTest = asyncHandler(async (req, res) => {
 
-    }
-
-};
-
-const createTest = async (req, res, next) => {
-
-    try {
-
+    
         const {
             id_usuario,
             duracion
@@ -69,18 +54,11 @@ const createTest = async (req, res, next) => {
             id_test
         });
 
-    } catch (error) {
+});
 
-        next(error);
+const updateTest = asyncHandler(async (req, res) => {
 
-    }
-
-};
-
-const updateTest = async (req, res, next) => {
-
-    try {
-
+    
         const { id } = req.params;
 
         const {
@@ -110,18 +88,11 @@ const updateTest = async (req, res, next) => {
             mensaje: 'Test actualizado correctamente'
         });
 
-    } catch (error) {
+});
 
-        next(error);
+const deleteTest = asyncHandler(async (req, res) => {
 
-    }
-
-};
-
-const deleteTest = async (req, res, next) => {
-
-    try {
-
+    
         const { id } = req.params;
 
         const result = await deleteTestById(id);
@@ -140,13 +111,7 @@ const deleteTest = async (req, res, next) => {
             mensaje: 'Test eliminado correctamente'
         });
 
-    } catch (error) {
-
-        next(error);
-
-    }
-
-};
+});
 
 module.exports = {
     getTests,

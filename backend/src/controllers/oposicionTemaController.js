@@ -1,12 +1,12 @@
+const asyncHandler = require('../middlewares/asyncHandler');
+
 const {
     findTemasByOposicion,
     insertTemaToOposicion,
     deleteTemaFromOposicionById
 } = require('../services/oposicionTemaService');
 
-const getTemasByOposicion = async (req, res, next) => {
-
-    try {
+const getTemasByOposicion = asyncHandler (async (req, res) => {
 
         const { id } = req.params;
 
@@ -14,17 +14,9 @@ const getTemasByOposicion = async (req, res, next) => {
 
         res.json(temas);
 
-    } catch (error) {
+});
 
-        next(error);
-
-    }
-
-};
-
-const addTemaToOposicion = async (req, res, next) => {
-
-    try {
+const addTemaToOposicion = asyncHandler (async (req, res) => {
 
         const { id } = req.params;
 
@@ -40,17 +32,9 @@ const addTemaToOposicion = async (req, res, next) => {
             mensaje: 'Tema añadido á oposición'
         });
 
-    } catch (error) {
+});
 
-        next(error);
-
-    }
-
-};
-
-const deleteTemaFromOposicion = async (req, res, next) => {
-
-    try {
+const deleteTemaFromOposicion = asyncHandler (async (req, res) => {
 
         const { id, idTema } = req.params;
 
@@ -73,13 +57,7 @@ const deleteTemaFromOposicion = async (req, res, next) => {
             mensaje: 'Tema eliminado da oposición'
         });
 
-    } catch (error) {
-
-        next(error);
-
-    }
-
-};
+});
 
 module.exports = {
     getTemasByOposicion,

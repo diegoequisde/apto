@@ -1,3 +1,5 @@
+const asyncHandler = require('../middlewares/asyncHandler');
+
 const {
     findAllTemas,
     findTemaById,
@@ -6,29 +8,19 @@ const {
     deleteTemaById
 } = require('../services/temaService');
 
-const getTemas = async (req, res, next) => {
+const getTemas = asyncHandler(async (req, res) => {
 
-    try {
-        
-        const temas = await findAllTemas();
+    const temas = await findAllTemas();
 
-        res.json(temas);
+    res.json(temas);
 
-    } catch (error) {
+});
 
-    next(error);
+const getTemaById = asyncHandler(async (req, res) => {
 
-}
+    const { id } = req.params;
 
-};
-
-const getTemaById = async (req, res, next) => {
-
-    try {
-
-        const { id } = req.params;
-
-        const tema = await findTemaById(id);
+    const tema = await findTemaById(id);
 
     if (!tema) {
 
@@ -41,17 +33,9 @@ const getTemaById = async (req, res, next) => {
 
     res.json(tema);
 
-    } catch (error) {
+});
 
-    next(error);
-
-}
-
-};
-
-const createTema = async (req, res, next) => {
-
-    try {
+const createTema = asyncHandler (async (req, res) => {
 
         const {
             nome_tema,
@@ -69,17 +53,9 @@ const createTema = async (req, res, next) => {
             id_tema
         });
 
-    } catch (error) {
+});
 
-    next(error);
-
-}
-
-};
-
-const updateTema = async (req, res, next) => {
-
-    try {
+const updateTema = asyncHandler (async(req, res) => {
 
         const { id } = req.params;
 
@@ -108,43 +84,29 @@ const updateTema = async (req, res, next) => {
             mensaje: 'Tema actualizado correctamente'
         });
 
-    } catch (error) {
+});
 
-    next(error);
+const deleteTema = asyncHandler(async (req, res) => {
 
-}
+    const { id } = req.params;
 
-};
+    const result = await deleteTemaById(id);
 
-const deleteTema = async (req, res, next) => {
+    if (result.affectedRows === 0) {
 
-    try {
-
-        const { id } = req.params;
-
-        const result = await deleteTemaById(id);
-
-        if (result.affectedRows === 0) {
-
-            return res.status(404).json({
-                ok: false,
-                mensaje: 'Tema non encontrado'
-            });
-
-        }
-
-        res.json({
-            ok: true,
-            mensaje: 'Tema eliminado correctamente'
+        return res.status(404).json({
+            ok: false,
+            mensaje: 'Tema non encontrado'
         });
 
-    } catch (error) {
+    }
 
-    next(error);
+    res.json({
+        ok: true,
+        mensaje: 'Tema eliminado correctamente'
+    });
 
-}
-
-};
+});
 
 module.exports = {
     getTemas,

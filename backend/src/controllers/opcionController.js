@@ -1,3 +1,5 @@
+const asyncHandler = require('../middlewares/asyncHandler');
+
 const {
     findOpcionesByPregunta,
     insertOpcion,
@@ -5,9 +7,7 @@ const {
     deleteOpcionById
 } = require('../services/opcionService');
 
-const getOpcionesByPregunta = async (req, res, next) => {
-
-    try {
+const getOpcionesByPregunta = asyncHandler(async (req, res) => {
 
         const { id } = req.params;
 
@@ -15,18 +15,11 @@ const getOpcionesByPregunta = async (req, res, next) => {
 
         res.json(opciones);
 
-    } catch (error) {
+});
 
-        next(error);
+const createOpcion = asyncHandler(async (req, res) => {
 
-    }
-
-};
-
-const createOpcion = async (req, res, next) => {
-
-    try {
-
+    
         const { id } = req.params;
 
         const {
@@ -47,17 +40,9 @@ const createOpcion = async (req, res, next) => {
             mensaje: 'Opción creada correctamente'
         });
 
-    } catch (error) {
+});
 
-        next(error);
-
-    }
-
-};
-
-const updateOpcion = async (req, res, next) => {
-
-    try {
+const updateOpcion = asyncHandler(async (req, res) => {
 
         const { id, letra } = req.params;
 
@@ -87,17 +72,9 @@ const updateOpcion = async (req, res, next) => {
             mensaje: 'Opción actualizada correctamente'
         });
 
-    } catch (error) {
+});
 
-        next(error);
-
-    }
-
-};
-
-const deleteOpcion = async (req, res, next) => {
-
-    try {
+const deleteOpcion = asyncHandler(async (req, res) => {
 
         const { id, letra } = req.params;
 
@@ -120,13 +97,7 @@ const deleteOpcion = async (req, res, next) => {
             mensaje: 'Opción eliminada correctamente'
         });
 
-    } catch (error) {
-
-        next(error);
-
-    }
-
-};
+});
 
 module.exports = {
     getOpcionesByPregunta,
