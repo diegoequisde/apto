@@ -80,7 +80,7 @@ const deleteTemaById = async (id) => {
 
     const [result] = await pool.query(`
         UPDATE tema
-        SET estado_tema = 'inactivo'
+        SET estado_tema = 'eliminado'
         WHERE id_tema = ?
         AND estado_tema = 'activo'
     `, [id]);

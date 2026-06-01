@@ -86,7 +86,7 @@ const deleteUsuarioById = async (id) => {
 
     const [result] = await pool.query(`
         UPDATE usuario
-        SET estado_usuario = 'inactivo'
+        SET estado_usuario = 'eliminado'
         WHERE id_usuario = ?
     `, [id]);
 

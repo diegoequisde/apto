@@ -1,0 +1,154 @@
+[
+    {
+        "id": 1,
+        "nombre": "Tema 1 - CE"
+    },
+    {
+        "id": 2,
+        "nombre": "Ley 39/2015"
+    },
+    {
+        "id": 3,
+        "nombre": "Ley 40/2015"
+    },
+    {
+        "id": 4,
+        "nombre": "Ley 2/2015"
+    },
+    {
+        "id": 5,
+        "nombre": "RDL 1/2013"
+    },
+    {
+        "id": 6,
+        "nombre": "Ley 1/2016"
+    },
+    {
+        "id": 7,
+        "nombre": "DL 2/2015"
+    },
+    {
+        "id": 8,
+        "nombre": "C2_Adquisicion_2025_A"
+    },
+    {
+        "id": 9,
+        "nombre": "C2_Adquisicion_2021_B"
+    },
+    {
+        "id": 10,
+        "nombre": "C2_Ingreso_2024_B"
+    },
+    {
+        "id": 11,
+        "nombre": "C2_Adquisicion_2022_B"
+    },
+    {
+        "id": 12,
+        "nombre": "C2_Adquisicion_2024_A"
+    },
+    {
+        "id": 13,
+        "nombre": "C1_Adquisicion_2024_A"
+    },
+    {
+        "id": 14,
+        "nombre": "C1_Adquisicion_2022_B"
+    },
+    {
+        "id": 15,
+        "nombre": "C1_Adquisicion_2021_B"
+    },
+    {
+        "id": 16,
+        "nombre": "Plantilla C2"
+    },
+    {
+        "id": 17,
+        "nombre": "Plantilla C1"
+    },
+    {
+        "id": 18,
+        "nombre": "AP_Adquisicion_2024_A"
+    },
+    {
+        "id": 19,
+        "nombre": "AP_Adquisicion_2022_B"
+    },
+    {
+        "id": 20,
+        "nombre": "C1_Ingreso_2023_A"
+    },
+    {
+        "id": 21,
+        "nombre": "Estatuto Autonomía"
+    },
+    {
+        "id": 22,
+        "nombre": "UE - Fuentes del derecho"
+    },
+    {
+        "id": 23,
+        "nombre": "Ley 31/1995"
+    },
+    {
+        "id": 24,
+        "nombre": "Ley 16/2010"
+    },
+    {
+        "id": 25,
+        "nombre": "Ley 9/2017"
+    },
+    {
+        "id": 26,
+        "nombre": "Ley 9/2007"
+    },
+    {
+        "id": 27,
+        "nombre": "DL 1/1999"
+    },
+    {
+        "id": 28,
+        "nombre": "RDL 2/2015 (ET)"
+    },
+    {
+        "id": 29,
+        "nombre": "RDL 8/2015"
+    },
+    {
+        "id": 30,
+        "nombre": "C1_Ingreso_2021"
+    },
+    {
+        "id": 31,
+        "nombre": "C2_Ingreso_2023_A"
+    },
+    {
+        "id": 32,
+        "nombre": "C1_Estabilizacion_2024"
+    },
+    {
+        "id": 33,
+        "nombre": "C2_Ingreso_2021_B"
+    },
+    {
+        "id": 34,
+        "nombre": "C1 Ingreso 2021 covid"
+    },
+    {
+        "id": 35,
+        "nombre": "C2_Ingreso_2016"
+    },
+    {
+        "id": 36,
+        "nombre": "C2 Estabilizacion 2024"
+    },
+    {
+        "id": 37,
+        "nombre": "C2_Ingreso_2021_A"
+    },
+    {
+        "id": 38,
+        "nombre": "C2_Ingreso_2021_covid"
+    }
+]
