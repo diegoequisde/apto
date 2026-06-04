@@ -1,0 +1,98 @@
+const API =
+    'http://localhost:3000/api';
+
+const container =
+    document.getElementById(
+        'preguntasContainer'
+    );
+
+async function cargarPreguntas() {
+
+    const response =
+        await fetch(
+            `${API}/preguntas`
+        );
+
+    const preguntas =
+        await response.json();
+
+    container.innerHTML = '';
+
+    preguntas.forEach((pregunta) => {
+
+        container.innerHTML += `
+            <div>
+                <p>
+                    ${pregunta.enunciado}
+                </p>
+
+                <button
+                    onclick="eliminarPregunta(
+                        ${pregunta.id_pregunta}
+                    )"
+                >
+                    Eliminar
+                </button>
+
+                <hr>
+            </div>
+        `;
+
+    });
+
+}
+
+async function crearPregunta() {
+
+    const enunciado =
+        document.getElementById(
+            'enunciado'
+        ).value;
+
+    const idTema =
+        document.getElementById(
+            'idTema'
+        ).value;
+
+    await fetch(
+        `${API}/preguntas`,
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type':
+                    'application/json'
+            },
+            body: JSON.stringify({
+                enunciado,
+                id_tema: idTema
+            })
+        }
+    );
+
+    cargarPreguntas();
+
+}
+
+async function eliminarPregunta(id) {
+
+    await fetch(
+        `${API}/preguntas/${id}`,
+        {
+            method: 'DELETE'
+        }
+    );
+
+    cargarPreguntas();
+
+}
+
+document
+    .getElementById(
+        'crearPreguntaBtn'
+    )
+    .addEventListener(
+        'click',
+        crearPregunta
+    );
+
+cargarPreguntas();
