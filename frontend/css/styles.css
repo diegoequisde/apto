@@ -1,0 +1,21 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+nav {
+    padding: 1rem;
+    border-bottom: 1px solid #ccc;
+
+    display: flex;
+    gap: 1rem;
+}
+
+nav a {
+    text-decoration: none;
+}
