@@ -27,6 +27,14 @@ async function cargarPreguntas() {
                 </p>
 
                 <button
+                    onclick="editarPregunta(
+                        ${pregunta.id_pregunta}
+                    )"
+                >
+                    Editar
+                </button>
+                
+                <button
                     onclick="eliminarPregunta(
                         ${pregunta.id_pregunta}
                     )"
@@ -70,6 +78,13 @@ async function crearPregunta() {
     );
 
     cargarPreguntas();
+
+}
+
+function editarPregunta(id) {
+
+    window.location.href =
+        `editar-pregunta.html?id=${id}`;
 
 }
 
