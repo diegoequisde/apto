@@ -11,37 +11,97 @@ const idPregunta =
 
 let opcionesActuales = [];
 
+
+async function inicializar() {
+
+    await cargarTemas();
+
+    const pregunta =
+        await cargarPregunta();
+
+    document.getElementById(
+        'enunciado'
+    ).value =
+        pregunta.enunciado;
+
+    document.getElementById(
+        'idTema'
+    ).value =
+        pregunta.id_tema;
+
+    await cargarOpciones();
+
+}
+
+
 async function cargarPregunta() {
 
-    const preguntaResponse =
+    const response =
         await fetch(
             `${API}/preguntas/${idPregunta}`
         );
 
-    const pregunta =
-        await preguntaResponse.json();
+    return await response.json();
 
-    document
-        .getElementById('enunciado')
-        .value =
-        pregunta.enunciado;
+}
 
-    document
-        .getElementById('idTema')
-        .value =
-        pregunta.id_tema;
+async function cargarTemas() {
 
-    const opcionesResponse =
+    const response =
+        await fetch(
+            `${API}/temas`
+        );
+
+    const temas =
+        await response.json();
+
+    const select =
+        document.getElementById(
+            'idTema'
+        );
+
+    select.innerHTML = '';
+
+/*
+    // Si quisiera ordenar alfbéticamente
+
+    temas.sort((a, b) =>
+                a.nome_tema.localeCompare(
+                b.nome_tema
+            )
+        );
+*/
+    
+        temas.forEach((tema) => {
+
+        
+
+        select.innerHTML += `
+            <option
+                value="${tema.id_tema}"
+            >
+                ${tema.nome_tema}
+            </option>
+        `;
+
+    });
+
+}
+
+async function cargarOpciones() {
+
+    const response =
         await fetch(
             `${API}/preguntas/${idPregunta}/opciones`
         );
 
     opcionesActuales =
-        await opcionesResponse.json();
+        await response.json();
 
     pintarOpciones();
 
 }
+
 
 function pintarOpciones() {
 
@@ -103,7 +163,7 @@ async function guardarCambios() {
             'idTema'
         ).value;
 
-            await fetch(
+    await fetch(
         `${API}/preguntas/${idPregunta}`,
         {
             method: 'PUT',
@@ -118,25 +178,24 @@ async function guardarCambios() {
         }
     );
 
+    const correcta =
+        document.querySelector(
+            'input[name="correcta"]:checked'
+        ).value;
 
-const correctaSeleccionada =
-document.querySelector(
-    'input[name="correcta"]:checked'
-).value;
+    for (const opcion of opcionesActuales) {
 
+    const letra =
+        opcion.letra_opcion;
 
-    for (
-const opcion
-of opcionesActuales
-    ) {
+    const texto =
+        document.getElementById(
+            `texto-${letra}`
+        ).value;
 
-        const texto =
-            document.getElementById(
-                `texto-${opcion.letra_opcion}`
-            ).value;
 
         await fetch(
-            `${API}/preguntas/${idPregunta}/opciones/${opcion.letra_opcion}`,
+            `${API}/preguntas/${idPregunta}/opciones/${letra}`,
             {
                 method: 'PUT',
                 headers: {
@@ -146,15 +205,14 @@ of opcionesActuales
                 body: JSON.stringify({
                     texto,
                     e_correcta:
-                        opcion.letra_opcion ===
-                        correctaSeleccionada
+                        letra === correcta
                 })
             }
         );
 
     }
 
-        alert(
+    alert(
         'Pregunta actualizada'
     );
 
@@ -169,4 +227,4 @@ document
         guardarCambios
     );
 
-cargarPregunta();
+inicializar();

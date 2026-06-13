@@ -50,34 +50,10 @@ async function cargarPreguntas() {
 
 }
 
-async function crearPregunta() {
+function irCrearPregunta() {
 
-    const enunciado =
-        document.getElementById(
-            'enunciado'
-        ).value;
-
-    const idTema =
-        document.getElementById(
-            'idTema'
-        ).value;
-
-    await fetch(
-        `${API}/preguntas`,
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type':
-                    'application/json'
-            },
-            body: JSON.stringify({
-                enunciado,
-                id_tema: idTema
-            })
-        }
-    );
-
-    cargarPreguntas();
+    window.location.href =
+        './crear-pregunta.html';
 
 }
 
@@ -100,14 +76,5 @@ async function eliminarPregunta(id) {
     cargarPreguntas();
 
 }
-
-document
-    .getElementById(
-        'crearPreguntaBtn'
-    )
-    .addEventListener(
-        'click',
-        crearPregunta
-    );
 
 cargarPreguntas();

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>APTO</title>
+</head>
+<body>
+    
+<h1>Nueva pregunta</h1>
+
+<select id="idTema"></select>
+
+<br><br>
+
+<textarea
+    id="enunciado"
+    rows="4"
+></textarea>
+
+<hr>
+
+<h3>Opción A</h3>
+<input type="text" id="texto-A">
+
+<h3>Opción B</h3>
+<input type="text" id="texto-B">
+
+<h3>Opción C</h3>
+<input type="text" id="texto-C">
+
+<h3>Opción D</h3>
+<input type="text" id="texto-D">
+
+<hr>
+
+<h3>Respuesta correcta</h3>
+
+<label>
+    <input
+        type="radio"
+        name="correcta"
+        value="A"
+    >
+    A
+</label>
+
+<label>
+    <input
+        type="radio"
+        name="correcta"
+        value="B"
+    >
+    B
+</label>
+
+<label>
+    <input
+        type="radio"
+        name="correcta"
+        value="C"
+    >
+    C
+</label>
+
+<label>
+    <input
+        type="radio"
+        name="correcta"
+        value="D"
+    >
+    D
+</label>
+
+<br><br>
+
+<button id="guardarBtn">
+    Guardar
+</button>
+
+<script src="./js/crear-pregunta.js"></script>
+
+</body>
+</html>
