@@ -53,14 +53,14 @@ async function cargarPreguntas() {
 function irCrearPregunta() {
 
     window.location.href =
-        './crear-pregunta.html';
+        './crear.html';
 
 }
 
 function editarPregunta(id) {
 
     window.location.href =
-        `editar-pregunta.html?id=${id}`;
+        `editar.html?id=${id}`;
 
 }
 
