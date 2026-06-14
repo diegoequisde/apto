@@ -38,10 +38,25 @@ async function cargarTemas() {
             Eliminar
         </button>
 
+        <button
+            onclick="gestionarPreguntas(
+                ${tema.id_tema}
+            )"
+        >
+            Preguntas
+        </button>
+
     </li>
     `;
 
     });
+
+}
+
+function gestionarPreguntas(idTema) {
+
+    window.location.href =
+        `/preguntas/index.html?idTema=${idTema}`;
 
 }
 
@@ -61,7 +76,7 @@ async function eliminarTema(id) {
 function irCrearTema() {
 
     window.location.href =
-        './crear-tema.html';
+        './crear.html';
 
 }
 
