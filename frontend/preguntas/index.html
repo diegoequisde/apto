@@ -7,7 +7,11 @@
 <body>
 <div id="navbar"></div>
     
-<h1>Preguntas</h1>
+<h1 id="tituloTema">
+    Preguntas
+</h1>
+
+<p id="contadorPreguntas"></p>
  
 <button onclick="irCrearPregunta()">
     Nueva pregunta
@@ -16,6 +20,18 @@
 <hr>
 
 <div id="preguntasContainer"></div>
+<p id="infoPaginacion"></p>
+<div>
+
+    <button id="anteriorBtn">
+        Anterior
+    </button>
+
+    <button id="siguienteBtn">
+        Siguiente
+    </button>
+
+</div>
 
 <script src="/js/navbar.js"></script>
 <script src="./js/preguntas.js"></script>

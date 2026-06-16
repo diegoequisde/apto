@@ -60,7 +60,23 @@ function gestionarPreguntas(idTema) {
 
 }
 
+function editarTema(idTema) {
+
+    window.location.href =
+        `./editar.html?id=${idTema}`;
+
+}
+
 async function eliminarTema(id) {
+
+    const confirmar =
+        confirm(
+            '¿Eliminar tema?'
+        );
+
+    if (!confirmar) {
+        return;
+    }
 
     await fetch(
         `${API}/temas/${id}`,

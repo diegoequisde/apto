@@ -6,15 +6,114 @@ const container =
         'preguntasContainer'
     );
 
-async function cargarPreguntas() {
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const idTema =
+    params.get('idTema');
+
+let paginaActual = 1;
+
+const limite = 20;
+
+async function cargarTema() {
+
+    if (!idTema) {
+        return;
+    }
 
     const response =
         await fetch(
-            `${API}/preguntas`
+            `${API}/temas/${idTema}`
         );
 
-    const preguntas =
+    const tema =
         await response.json();
+
+    document.getElementById(
+        'tituloTema'
+    ).textContent =
+        `Preguntas · ${tema.nome_tema}`;
+
+}
+
+async function cargarPreguntas() {
+
+    const response =
+        await fetch(`${API}/preguntas?idTema=${idTema}&page=${paginaActual}&limit=${limite}`
+    );
+        
+    const data =
+    await response.json();
+
+    // botones de paginación:
+    document
+    .getElementById(
+        'anteriorBtn'
+    )
+    .addEventListener(
+        'click',
+        () => {
+
+            if (
+                paginaActual > 1
+            ) {
+
+                paginaActual--;
+
+                cargarPreguntas();
+
+            }
+
+        }
+    );
+
+document
+    .getElementById(
+        'siguienteBtn'
+    )
+    .addEventListener(
+        'click',
+        () => {
+
+            paginaActual++;
+
+            cargarPreguntas();
+
+        }
+    );
+
+document
+    .getElementById(
+        'siguienteBtn'
+    )
+    .disabled =
+        paginaActual >=
+        data.totalPages;
+
+document
+    .getElementById(
+        'anteriorBtn'
+    )
+    .disabled =
+        paginaActual === 1;
+
+    const preguntas =
+        data.items;
+
+    document.getElementById(
+    'infoPaginacion'
+    ).textContent =
+        `
+        ${data.total}
+        preguntas encontradas
+        · Página
+        ${data.page}
+        de
+        ${data.totalPages}
+        `;
 
     container.innerHTML = '';
 
@@ -46,6 +145,10 @@ async function cargarPreguntas() {
             </div>
         `;
 
+    document.getElementById(
+        'contadorPreguntas'
+    )   .textContent =
+        `${preguntas.length} preguntas`;
     });
 
 }
@@ -77,4 +180,12 @@ async function eliminarPregunta(id) {
 
 }
 
-cargarPreguntas();
+async function inicializar() {
+
+    await cargarTema();
+
+    await cargarPreguntas();
+
+}
+
+inicializar();

@@ -1,12 +1,48 @@
 const pool = require('../config/db');
 
-const findAllPreguntas = async () => {
+const findAllPreguntas = async (
+    page = 1,
+    limit = 20,
+    idTema = null
+) => {
 
-    const [rows] = await pool.query(`
+    const offset =
+        (page - 1) * limit;
+
+    let where =
+        `WHERE p.estado_pregunta = 'activa'`;
+
+    const params = [];
+
+    if (idTema) {
+
+        where += `
+            AND p.id_tema = ?
+        `;
+
+        params.push(idTema);
+
+    }
+
+    const [[{ total }]] =
+        await pool.query(
+            `
+            SELECT
+                COUNT(*) AS total
+            FROM pregunta p
+            ${where}
+            `,
+            params
+        );
+
+    const [items] =
+        await pool.query(
+            `
             SELECT
                 p.id_pregunta,
                 p.enunciado,
                 p.estado_pregunta,
+                t.id_tema,
                 t.nome_tema,
                 u.nome AS autor
             FROM pregunta p
@@ -14,10 +50,26 @@ const findAllPreguntas = async () => {
                 ON p.id_tema = t.id_tema
             LEFT JOIN usuario u
                 ON p.id_usuario = u.id_usuario
-            WHERE p.estado_pregunta = 'activa'
-        `);
+            ${where}
+            LIMIT ?
+            OFFSET ?
+            `,
+            [
+                ...params,
+                Number(limit),
+                offset
+            ]
+        );
 
-return rows;
+    return {
+        items,
+        total,
+        page: Number(page),
+        limit: Number(limit),
+        totalPages: Math.ceil(
+            total / limit
+        )
+    };
 
 };
 

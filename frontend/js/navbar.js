@@ -2,7 +2,7 @@ async function cargarNavbar() {
 
     const response =
         await fetch(
-            '/components/navbar.html'
+            '/componentes/navbar.html'
         );
 
     const html =

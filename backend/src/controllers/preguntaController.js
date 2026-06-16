@@ -10,10 +10,23 @@ const {
 
 const getPreguntas = asyncHandler(async (req, res) => {
 
-        const preguntas = await findAllPreguntas();
+    const page =
+        Number(req.query.page) || 1;
 
-        res.json(preguntas);
- 
+    const limit =
+        Number(req.query.limit) || 20;
+
+    const idTema =
+        req.query.idTema || null;
+
+    const preguntas =
+        await findAllPreguntas(
+            page,
+            limit,
+            idTema
+        );
+
+    res.json(preguntas);
 
 });
 

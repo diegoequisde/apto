@@ -30,12 +30,12 @@ async function cargarOposicion() {
         await response.json();
 
     document.getElementById(
-        'nombre'
+        'nombreOposicion'
     ).value =
         oposicion.nome_oposicion;
 
     document.getElementById(
-        'descripcion'
+        'descripcionOposicion'
     ).value =
         oposicion.descripcion_oposicion || '';
 
@@ -119,12 +119,12 @@ async function guardarCambios() {
 
     const nombre =
         document.getElementById(
-            'nombre'
+            'nombreOposicion'
         ).value;
 
     const descripcion =
         document.getElementById(
-            'descripcion'
+            'descripcionOposicion'
         ).value;
 
     await fetch(
@@ -168,19 +168,6 @@ async function anadirTema() {
             body: JSON.stringify({
                 id_tema: idTema
             })
-        }
-    );
-
-    cargarTemasOposicion();
-
-}
-
-async function eliminarTema(idTema) {
-
-    await fetch(
-        `${API}/oposiciones/${idOposicion}/temas/${idTema}`,
-        {
-            method: 'DELETE'
         }
     );
 
