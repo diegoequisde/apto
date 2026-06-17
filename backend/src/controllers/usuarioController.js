@@ -66,7 +66,8 @@ const updateUsuario = asyncHandler(async (req, res) => {
 
         const {
             nome,
-            email
+            email,
+            tipo
         } = req.body;
 
         const result = await updateUsuarioById(

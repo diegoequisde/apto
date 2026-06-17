@@ -27,7 +27,7 @@ router.post(
     validateRequiredFields([
         'nome',
         'email',
-        'contrasinal_hash'
+        'password'
     ]),
     validateEmail,
     validateUsuario,
@@ -44,6 +44,12 @@ router.put(
     validateEmail,
     validateUsuario,
     updateUsuario
+);
+
+router.delete(
+    '/:id',
+    validateId,
+    deleteUsuario
 );
 
 router.use('/:id/oposiciones', usuarioOposicionRoutes);

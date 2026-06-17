@@ -169,6 +169,14 @@ function editarPregunta(id) {
 
 async function eliminarPregunta(id) {
 
+    if (
+        !confirm(
+            '¿Eliminar pregunta?'
+        )
+    ) {
+        return;
+    }
+    
     await fetch(
         `${API}/preguntas/${id}`,
         {

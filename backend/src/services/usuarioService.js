@@ -38,7 +38,7 @@ const findUsuarioById = async (id) => {
 const insertUsuario = async (
     nome,
     email,
-    contrasinal_hash
+    password
 ) => {
 
     const [result] = await pool.query(`
@@ -52,7 +52,7 @@ const insertUsuario = async (
     `, [
         nome,
         email,
-        contrasinal_hash
+        password
     ]);
 
     return result.insertId;
@@ -62,14 +62,16 @@ const insertUsuario = async (
 const updateUsuarioById = async (
     id,
     nome,
-    email
+    email,
+    tipo
 ) => {
 
     const [result] = await pool.query(`
         UPDATE usuario
         SET
             nome = ?,
-            email = ?
+            email = ?,
+            tipo = ?
         WHERE id_usuario = ?
         AND estado_usuario = 'activo'
     `, [

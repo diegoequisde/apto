@@ -69,12 +69,11 @@ function editarTema(idTema) {
 
 async function eliminarTema(id) {
 
-    const confirmar =
-        confirm(
+    if (
+        !confirm(
             '¿Eliminar tema?'
-        );
-
-    if (!confirmar) {
+        )
+    ) {
         return;
     }
 
