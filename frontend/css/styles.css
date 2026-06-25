@@ -4,18 +4,57 @@
     padding: 0;
 }
 
+/* APTO - estilos globales */
+
+:root {
+    --apto-primary: #2563eb;
+}
+
+
 body {
     font-family: Arial, sans-serif;
+    padding-bottom: 3rem;
 }
 
-nav {
-    padding: 1rem;
-    border-bottom: 1px solid #ccc;
+/* NAVBAR */
 
-    display: flex;
-    gap: 1rem;
+.navbar {
+
+    margin-bottom:
+        2rem;
+
 }
 
-nav a {
-    text-decoration: none;
+
+.navbar strong {
+
+    font-size:
+        1.3rem;
+
+}
+
+/* GENERAL */
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+}
+
+
+.hero {
+    text-align: center;
+    padding: 4rem 1rem;
+}
+
+.section {
+    margin-top: 4rem;
+}
+
+.card {
+    padding: 1.5rem;
+}
+
+.premium {
+    margin-top: 4rem;
+    text-align: center;
 }
