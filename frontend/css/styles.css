@@ -7,9 +7,10 @@
 /* APTO - estilos globales */
 
 :root {
-    --apto-primary: #2563eb;
+    --apto-primary: #114dd0;
+        /* color actual cumple con AAA (contraste 7.01)
+        el anterior cumple AA y se queda cerca de AAA: #2563eb;*/
 }
-
 
 body {
     font-family: Arial, sans-serif;
@@ -19,18 +20,12 @@ body {
 /* NAVBAR */
 
 .navbar {
-
-    margin-bottom:
-        2rem;
-
+    margin-bottom: 2rem;
 }
 
 
 .navbar strong {
-
-    font-size:
-        1.3rem;
-
+    font-size: 1.3rem;
 }
 
 /* GENERAL */
@@ -51,10 +46,19 @@ body {
 }
 
 .card {
+    border-radius: 1rem;
     padding: 1.5rem;
 }
 
 .premium {
     margin-top: 4rem;
     text-align: center;
+}
+
+.page-header {
+    margin-bottom: 2rem;
+}
+
+.btn-primary {
+    background: var(--apto-primary);
 }
