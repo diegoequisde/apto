@@ -1,19 +1,178 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+
 <title>APTO | Seguimiento</title>
+
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
 <link rel="stylesheet" href="/css/styles.css">
 
 </head>
+
 <body>
 
 <div id="navbar"></div>
 
+<main class="container">
+
+<section class="page-header">
+
 <h1>Seguimiento</h1>
+
+<p>Consulta tu evolución y rendimiento.</p>
+
+</section>
+
+
+<!-- RESUMEN -->
+
+<section>
+
+<h2>Resumen</h2>
+
+<div class="grid">
+<article class="card">
+
+<h3>Tests realizados</h3>
+
+<p class="dashboard-number">25</p>
+
+</article>
+
+<article class="card">
+
+
+<h3>Preguntas contestadas</h3>
+
+<p class="dashboard-number">540</p>
+
+</article>
+
+<article class="card">
+
+<h3>Acierto medio</h3>
+
+<p class="dashboard-number">78%</p>
+
+</article>
+
+</div>
+
+</section>
+
+<!-- EVOLUCION -->
+<section class="section">
+
+<h2>Evolución</h2>
+
+<div class="filters">
+
+<button>Hoy</button>
+
+<button class="secondary">Últimos 7 días</button>
+<button class="secondary">Último mes</button>
+<button class="secondary">Siempre</button>
+</div>
+
+<div class="chart-placeholder">
+
+<p>Aquí irá la gráfica de evolución</p>
+
+</div>
+
+</section>
+
+<!-- TEMAS -->
+<section class="section">
+
+<h2>Rendimiento por temas</h2>
+<div class="card">
+<table>
+
+<thead>
+
+<tr>
+<th>Tema</th>
+<th>Preguntas</th>
+<th>Acierto</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Constitución</td>
+<td>120</td>
+<td>82%</td>
+</tr>
+
+<tr>
+
+<td>Administrativo</td>
+
+<td>90</td>
+<td>65%</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</section>
+
+<!-- HISTORIAL -->
+
+
+<section class="section">
+
+
+<h2>Últimos tests</h2>
+
+<div class="card">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Fecha</th>
+<th>Tema</th>
+<th>Resultado</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+
+<td>10/06/2026</td>
+<td>Constitución</td>
+<td>80%</td>
+
+</tr>
+
+<tr>
+<td>08/06/2026</td>
+<td>Administrativo</td>
+<td>70%</td>
+</tr>
+
+</tbody>
+
+</table>
+</div>
+
+</section>
+
+</main>
 
 <script src="/js/navbar.js"></script>
 

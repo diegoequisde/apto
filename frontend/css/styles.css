@@ -62,3 +62,31 @@ body {
 .btn-primary {
     background: var(--apto-primary);
 }
+
+/* Resultado*/
+.resultado-numero {
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Seguimiento */
+.dashboard-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.chart-placeholder {
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed #aaa;
+    margin-top: 1rem;
+}
+
+.filters {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
