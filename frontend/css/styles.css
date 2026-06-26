@@ -90,3 +90,28 @@ body {
     gap: 1rem;
     flex-wrap: wrap;
 }
+
+.summary-grid {
+    display:grid;
+    grid-template-columns:
+    repeat(
+        auto-fit,
+        minmax(150px,1fr)
+        );
+    gap:1rem;
+
+}
+
+
+.summary-card {
+    padding:1rem;
+    text-align:center;
+
+}
+
+
+.summary-card span {
+    display:block;
+    font-size:1.5rem;
+    font-weight:bold;
+}
