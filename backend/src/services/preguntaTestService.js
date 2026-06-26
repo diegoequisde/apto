@@ -2,22 +2,45 @@ const pool = require('../config/db');
 
 const findPreguntasByTest = async (id_test) => {
 
-    const [rows] = await pool.query(`
+
+    const [preguntas] = await pool.query(`
+
         SELECT
-            pt.id_test,
             pt.id_pregunta,
             pt.orde,
             pt.resposta_usuario,
-            pt.e_correcta,
             p.enunciado
         FROM pregunta_test pt
         INNER JOIN pregunta p
             ON pt.id_pregunta = p.id_pregunta
         WHERE pt.id_test = ?
         ORDER BY pt.orde
+
     `, [id_test]);
 
-    return rows;
+
+
+    for (const pregunta of preguntas) {
+
+        const [opciones] =
+            await pool.query(`
+
+            SELECT
+                letra_opcion,
+                texto
+            FROM opcion
+            WHERE id_pregunta = ?
+
+        `, [pregunta.id_pregunta]);
+
+
+        pregunta.opciones =
+            opciones;
+
+    }
+
+    return preguntas;
+
 
 };
 

@@ -99,6 +99,37 @@ const findPreguntaById = async (id) => {
 
 };
 
+
+const findPreguntasAleatorias = async (
+    id_tema,
+    cantidad
+) => {
+
+    const [rows] = await pool.query(`
+
+        SELECT
+            id_pregunta
+
+        FROM pregunta
+
+        WHERE estado_pregunta = 'activa'
+
+        AND id_tema = ?
+
+        ORDER BY RAND()
+
+        LIMIT ?
+
+    `, [
+        id_tema,
+        Number(cantidad)
+    ]);
+
+
+    return rows;
+
+};
+
 const insertPregunta = async (
     enunciado,
     id_tema,
@@ -161,6 +192,7 @@ const deletePreguntaById = async (id) => {
 module.exports = {
     findAllPreguntas,
     findPreguntaById,
+    findPreguntasAleatorias,
     insertPregunta,
     updatePreguntaById,
     deletePreguntaById

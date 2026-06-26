@@ -1,64 +1,64 @@
 const API =
-'http://localhost:3000/api';
+    'http://localhost:3000/api';
 
 const params =
-new URLSearchParams(
-window.location.search
-);
+    new URLSearchParams(
+        window.location.search
+    );
 
 const idTest =
-params.get('idTest');
+    params.get('idTest');
 
-let preguntas=[];
-let preguntaActual=0;
+let preguntas = [];
+let preguntaActual = 0;
 
-async function cargarTest(){
+async function cargarTest() {
 
-const response =
-await fetch(
-`${API}/tests/${idTest}/preguntas`
-);
+    const response =
+        await fetch(
+            `${API}/tests/${idTest}/preguntas`
+        );
 
-preguntas =
-await response.json();
-mostrarPregunta();
+    preguntas =
+        await response.json();
+    mostrarPregunta();
 
 }
 
-function mostrarPregunta(){
+function mostrarPregunta() {
 
-const pregunta =
-preguntas[preguntaActual];
+    const pregunta =
+        preguntas[preguntaActual];
 
-document
-.getElementById(
-'contadorPregunta'
-)
-.textContent =
-`
+    document
+        .getElementById(
+            'contadorPregunta'
+        )
+        .textContent =
+        `
 Pregunta
-${preguntaActual+1}
+${preguntaActual + 1}
 de
 ${preguntas.length}
 `;
 
-document
-.getElementById(
-'question-container'
-)
-.innerHTML = `
+    document
+        .getElementById(
+            'question-container'
+        )
+        .innerHTML = `
 
 <h2>${pregunta.enunciado}</h2>
 
 ${pregunta.opciones
-.map(opcion=>`
+            .map(opcion => `
 
 <label>
 
 <input
 type="radio"
 name="respuesta"
-value="${opcion.id_opcion}"
+value="${opcion.letra_opcion}"
 >
 
 ${opcion.texto}
@@ -66,62 +66,55 @@ ${opcion.texto}
 </label>
 
 `)
-.join('')
-}
+            .join('')
+        }
 `;
 
-}
-
-document
-.getElementById(
-'siguienteBtn'
-)
-.onclick=()=>{
-
-if(
-preguntaActual <
-preguntas.length - 1
-){
-
-    preguntaActual++;
-
-    mostrarPregunta();
-
-}
-else{
-
-    finalizarTest();
-
-}{
-preguntaActual++;
-mostrarPregunta();
-}
-
 };
 
 document
-.getElementById(
-'anteriorBtn'
-)
-.onclick=()=>{
+    .getElementById(
+        'siguienteBtn'
+    )
+    .onclick = () => {
 
 
-if(
-preguntaActual>0
-){
-preguntaActual--;
-mostrarPregunta();
+        if (preguntaActual < preguntas.length - 1) {
+            preguntaActual++;
+            mostrarPregunta();
+        }
+        else {
+            finalizarTest();
+        }
+
+    };
+
+document
+    .getElementById(
+        'anteriorBtn'
+    )
+    .onclick = () => {
+
+
+        if (
+            preguntaActual > 0
+        ) {
+            preguntaActual--;
+            mostrarPregunta();
+        }
+
+    };
+
+function finalizarTest() {
+
+    alert(
+        'Test finalizado'
+    );
+
+    window.location.href =
+        `resultado.html?idTest=${idTest}`;
+
 }
 
-};
-
-function finalizarTest(){
-
-alert(
-'Test finalizado'
-);
-
-window.location.href =
-`resultado.html?idTest=${idTest}`;
 
 cargarTest();

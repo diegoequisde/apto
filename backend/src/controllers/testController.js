@@ -8,6 +8,16 @@ const {
     deleteTestById
 } = require('../services/testService');
 
+
+const {
+    findPreguntasAleatorias
+} = require('../services/preguntaService');
+
+
+const {
+    insertPreguntaToTest
+} = require('../services/preguntaTestService');
+
 const getTests = asyncHandler(async (req, res) => {
 
         const tests = await findAllTests();
@@ -37,22 +47,51 @@ const getTestById = asyncHandler(async (req, res) => {
 
 const createTest = asyncHandler(async (req, res) => {
 
-    
-        const {
-            id_usuario,
-            duracion
-        } = req.body;
 
-        const id_test = await insertTest(
-            id_usuario,
-            duracion
+    const {
+        id_usuario,
+        id_tema,
+        cantidad
+    } = req.body;
+
+
+    const id_test =
+    await insertTest(
+        id_usuario,
+        null
+    );
+
+
+    const preguntas =
+    await findPreguntasAleatorias(
+        id_tema,
+        cantidad
+    );
+
+
+    for(
+        let i = 0;
+        i < preguntas.length;
+        i++
+    ){
+
+        await insertPreguntaToTest(
+            id_test,
+            preguntas[i].id_pregunta,
+            i + 1
         );
+    }
 
-        res.status(201).json({
-            ok: true,
-            mensaje: 'Test creado correctamente',
-            id_test
-        });
+    res.status(201).json({
+
+        ok:true,
+
+        mensaje:
+        'Test creado correctamente',
+
+        id_test
+        
+    });
 
 });
 
