@@ -6,9 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-
 <title>APTO | Seguimiento</title>
-
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
 <link rel="stylesheet" href="/css/styles.css">
@@ -29,7 +27,6 @@
 
 </section>
 
-
 <!-- RESUMEN -->
 
 <section>
@@ -46,7 +43,6 @@
 </article>
 
 <article class="card">
-
 
 <h3>Preguntas contestadas</h3>
 
@@ -80,31 +76,38 @@
 <button class="secondary">Siempre</button>
 </div>
 
-<div class="chart-placeholder">
-
-<p>Aquí irá la gráfica de evolución</p>
-
-</div>
+<canvas id="evolucionChart"></canvas>
 
 </section>
 
 <!-- TEMAS -->
+
 <section class="section">
 
 <h2>Rendimiento por temas</h2>
+
 <div class="card">
+
+<canvas id="temasChart"></canvas>
+
+</div>
+
+<div class="card">
+
 <table>
-
 <thead>
-
 <tr>
 <th>Tema</th>
-<th>Preguntas</th>
-<th>Acierto</th>
-</tr>
-</thead>
 
+<th>Preguntas</th>
+
+<th>Acierto</th>
+
+</tr>
+
+</thead>
 <tbody>
+
 <tr>
 <td>Constitución</td>
 <td>120</td>
@@ -112,12 +115,9 @@
 </tr>
 
 <tr>
-
 <td>Administrativo</td>
-
 <td>90</td>
 <td>65%</td>
-
 </tr>
 
 </tbody>
@@ -130,9 +130,7 @@
 
 <!-- HISTORIAL -->
 
-
 <section class="section">
-
 
 <h2>Últimos tests</h2>
 
@@ -174,7 +172,9 @@
 
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="/js/navbar.js"></script>
+<script src="./js/seguimiento.js"></script>
 
 </body>
 </html>
