@@ -30,6 +30,7 @@ function mostrarPregunta() {
     const pregunta =
         preguntas[preguntaActual];
 
+
     document
         .getElementById(
             'contadorPregunta'
@@ -42,6 +43,7 @@ de
 ${preguntas.length}
 `;
 
+
     document
         .getElementById(
             'question-container'
@@ -51,7 +53,7 @@ ${preguntas.length}
 <h2>${pregunta.enunciado}</h2>
 
 ${pregunta.opciones
-            .map(opcion => `
+    .map(opcion => `
 
 <label>
 
@@ -59,6 +61,7 @@ ${pregunta.opciones
 type="radio"
 name="respuesta"
 value="${opcion.letra_opcion}"
+${pregunta.resposta_usuario === opcion.letra_opcion ? 'checked' : ''}
 >
 
 ${opcion.texto}
@@ -66,11 +69,66 @@ ${opcion.texto}
 </label>
 
 `)
-            .join('')
-        }
+.join('')}
+
 `;
 
-};
+
+
+document
+.querySelectorAll(
+    'input[name="respuesta"]'
+)
+.forEach(input=>{
+
+
+    input.addEventListener(
+    'change',
+    ()=>{
+
+
+        guardarRespuesta(
+            pregunta.id_pregunta,
+            input.value
+        );
+
+        pregunta.resposta_usuario =
+        input.value;
+    });
+
+});
+
+
+}
+
+
+async function guardarRespuesta(
+    idPregunta,
+    respuesta
+){
+
+    const response =
+    await fetch(
+        `${API}/tests/${idTest}/preguntas/${idPregunta}/resposta`,
+        {
+
+        method:'PUT',
+
+        headers:{
+            'Content-Type':'application/json'
+        },
+
+        body:JSON.stringify({
+
+            resposta_usuario:respuesta
+
+        })
+
+        }
+    );
+
+}
+
 
 document
     .getElementById(

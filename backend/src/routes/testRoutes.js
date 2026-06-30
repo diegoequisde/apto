@@ -13,10 +13,17 @@ const {
     getTestById,
     createTest,
     updateTest,
-    deleteTest
+    deleteTest,
+    getRevisionTest
 } = require('../controllers/testController');
 
 router.get('/', getTests);
+
+router.get(
+    '/:id/revision',
+    validateId,
+    getRevisionTest
+);
 
 router.get('/:id', validateId, getTestById);
 

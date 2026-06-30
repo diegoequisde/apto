@@ -15,8 +15,10 @@ const {
 
 
 const {
-    insertPreguntaToTest
+    insertPreguntaToTest,
+    findRevisionByTest
 } = require('../services/preguntaTestService');
+
 
 const getTests = asyncHandler(async (req, res) => {
 
@@ -152,10 +154,27 @@ const deleteTest = asyncHandler(async (req, res) => {
 
 });
 
+const getRevisionTest = asyncHandler(async (req,res)=>{
+
+
+    const { id } =
+    req.params;
+
+
+    const revision =
+    await findRevisionByTest(id);
+
+
+    res.json(revision);
+
+
+});
+
 module.exports = {
     getTests,
     getTestById,
     createTest,
     updateTest,
-    deleteTest
+    deleteTest,
+    getRevisionTest
 };

@@ -52,3 +52,21 @@ document
 )
 .textContent =
 resultado.tiempo;
+
+const params =
+new URLSearchParams(
+window.location.search
+);
+
+
+const idTest =
+params.get('idTest');
+
+
+
+document
+.getElementById(
+'revisionBtn'
+)
+.href =
+`revision.html?idTest=${idTest}`;

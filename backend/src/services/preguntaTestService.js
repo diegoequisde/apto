@@ -44,6 +44,54 @@ const findPreguntasByTest = async (id_test) => {
 
 };
 
+
+const findRevisionByTest = async (id_test) => {
+
+    const [preguntas] = await pool.query(`
+
+        SELECT
+            pt.id_pregunta,
+            pt.orde,
+            pt.resposta_usuario,
+            pt.e_correcta,
+            p.enunciado
+        FROM pregunta_test pt
+
+        INNER JOIN pregunta p
+            ON pt.id_pregunta = p.id_pregunta
+        WHERE pt.id_test = ?
+        ORDER BY pt.orde
+
+    `,[id_test]);
+
+
+    for(const pregunta of preguntas){
+
+        const [opciones] =
+        await pool.query(`
+
+            SELECT
+                letra_opcion,
+                texto,
+                e_correcta
+            FROM opcion
+            WHERE id_pregunta = ?
+
+        `,[pregunta.id_pregunta]);
+
+
+        pregunta.opciones =
+        opciones;
+
+
+    }
+
+
+    return preguntas;
+
+
+};
+
 const insertPreguntaToTest = async (
     id_test,
     id_pregunta,
@@ -128,6 +176,7 @@ const deletePreguntaTest = async (
 
 module.exports = {
     findPreguntasByTest,
+    findRevisionByTest,
     insertPreguntaToTest,
     answerPregunta,
     deletePreguntaTest
