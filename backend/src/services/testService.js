@@ -17,6 +17,31 @@ const findAllTests = async () => {
 
 };
 
+
+// historial de tests del usuario
+const findTestsByUsuario = async (
+    id_usuario
+) => {
+
+    const [rows] = await pool.query(`
+        SELECT
+            id_test,
+            data_realizacion,
+            duracion,
+            resultado,
+            finalizado
+        FROM test
+        WHERE id_usuario = ?
+        AND finalizado = 1
+        ORDER BY data_realizacion DESC
+
+    `,[id_usuario]);
+
+
+    return rows;
+
+};
+
 const findTestById = async (id) => {
 
     const [rows] = await pool.query(`
@@ -34,6 +59,7 @@ const findTestById = async (id) => {
     return rows[0] || null;
 
 };
+
 
 const insertTest = async (
     id_usuario,
@@ -93,6 +119,7 @@ const deleteTestById = async (id) => {
 
 module.exports = {
     findAllTests,
+    findTestsByUsuario,
     findTestById,
     insertTest,
     updateTestById,

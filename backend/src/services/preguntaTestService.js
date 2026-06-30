@@ -92,6 +92,40 @@ const findRevisionByTest = async (id_test) => {
 
 };
 
+// calcula resultado en %
+const calcularResultadoTest = async (
+    id_test
+) => {
+
+    const [rows] = await pool.query(`
+        SELECT
+            COUNT(*) AS total,
+            SUM(e_correcta) AS aciertos
+        FROM pregunta_test
+        WHERE id_test = ?
+
+    `,[id_test]);
+
+
+    const total =
+    rows[0].total;
+
+    const aciertos =
+    rows[0].aciertos || 0;
+
+
+    const resultado =
+    Math.round(
+        (aciertos / total) * 100
+    );
+
+
+
+    return resultado;
+
+};
+
+
 const insertPreguntaToTest = async (
     id_test,
     id_pregunta,
@@ -177,6 +211,7 @@ const deletePreguntaTest = async (
 module.exports = {
     findPreguntasByTest,
     findRevisionByTest,
+    calcularResultadoTest,
     insertPreguntaToTest,
     answerPregunta,
     deletePreguntaTest

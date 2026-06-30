@@ -10,6 +10,7 @@ const router = express.Router();
 
 const {
     getTests,
+    getHistorial,
     getTestById,
     createTest,
     updateTest,
@@ -19,29 +20,15 @@ const {
 
 router.get('/', getTests);
 
-router.get(
-    '/:id/revision',
-    validateId,
-    getRevisionTest
-);
+router.get('/historial', getHistorial);
+
+router.get('/:id/revision', validateId, getRevisionTest);
 
 router.get('/:id', validateId, getTestById);
 
-router.post(
-    '/',
-    validateRequiredFields([
-        'id_usuario'
-    ]),
-    validateTest,
-    createTest
-);
+router.post('/', validateRequiredFields(['id_usuario']), validateTest, createTest);
 
-router.put(
-    '/:id',
-    validateId,
-    validateTest,
-    updateTest
-);
+router.put('/:id', validateId, validateTest, updateTest);
 
 router.delete('/:id', validateId, deleteTest);
 

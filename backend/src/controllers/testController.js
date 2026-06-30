@@ -2,6 +2,7 @@ const asyncHandler = require('../middlewares/asyncHandler');
 
 const {
     findAllTests,
+    findTestsByUsuario,
     findTestById,
     insertTest,
     updateTestById,
@@ -16,7 +17,8 @@ const {
 
 const {
     insertPreguntaToTest,
-    findRevisionByTest
+    findRevisionByTest,
+    calcularResultadoTest
 } = require('../services/preguntaTestService');
 
 
@@ -27,6 +29,21 @@ const getTests = asyncHandler(async (req, res) => {
         res.json(tests);
 
 });
+
+
+const getHistorial = asyncHandler(async(req,res)=>{
+
+    const id_usuario = 1;
+
+    const tests =
+    await findTestsByUsuario(
+        id_usuario
+    );
+
+    res.json(tests);
+
+});
+
 
 const getTestById = asyncHandler(async (req, res) => {
 
@@ -99,36 +116,56 @@ const createTest = asyncHandler(async (req, res) => {
 
 const updateTest = asyncHandler(async (req, res) => {
 
-    
-        const { id } = req.params;
+    const { id } =
+    req.params;
 
-        const {
-            duracion,
-            resultado,
-            finalizado
-        } = req.body;
+    const {
+        duracion,
+        resultado,
+        finalizado
+    } = req.body;
 
-        const result = await updateTestById(
-            id,
-            duracion,
-            resultado,
-            finalizado
+
+    let resultadoFinal =
+    resultado;
+
+    if(finalizado == 1){
+
+
+        resultadoFinal =
+        await calcularResultadoTest(
+            id
         );
+    }
 
-        if (result.affectedRows === 0) {
+    const result =
+    await updateTestById(
+        id,
+        duracion,
+        resultadoFinal,
+        finalizado
+    );
 
-            return res.status(404).json({
-                ok: false,
-                mensaje: 'Test non encontrado'
-            });
 
-        }
 
-        res.json({
-            ok: true,
-            mensaje: 'Test actualizado correctamente'
+    if(result.affectedRows === 0){
+
+        return res.status(404).json({
+            ok:false,
+            mensaje: 'Test non encontrado'
+
         });
 
+    }
+
+
+
+    res.json({
+        ok:true,
+        mensaje: 'Test actualizado correctamente',
+        resultado:
+        resultadoFinal
+    });
 });
 
 const deleteTest = asyncHandler(async (req, res) => {
@@ -172,6 +209,7 @@ const getRevisionTest = asyncHandler(async (req,res)=>{
 
 module.exports = {
     getTests,
+    getHistorial,
     getTestById,
     createTest,
     updateTest,

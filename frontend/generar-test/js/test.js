@@ -163,14 +163,37 @@ document
 
     };
 
-function finalizarTest() {
-
-    alert(
-        'Test finalizado'
-    );
+async function finalizarTest(){
+    const response =
+    await actualizarTestFinalizado();
 
     window.location.href =
-        `resultado.html?idTest=${idTest}`;
+    `resultado.html?idTest=${idTest}`;
+
+}
+
+async function actualizarTestFinalizado(){
+    const response =
+    await fetch(
+        `${API}/tests/${idTest}`,
+        {
+
+        method:'PUT',
+
+        headers:{
+            'Content-Type':'application/json'
+        },
+
+        body:JSON.stringify({
+
+            duracion:null,
+            resultado:null,
+            finalizado:1
+
+        })
+
+        }
+    );
 
 }
 
