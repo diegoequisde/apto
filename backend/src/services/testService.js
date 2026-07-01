@@ -42,6 +42,55 @@ const findTestsByUsuario = async (
 
 };
 
+const findResultadoTest = async (
+    id_test
+) => {
+
+
+    const [rows] = await pool.query(`
+
+        SELECT
+
+            COUNT(*) AS total,
+
+            SUM(e_correcta) AS aciertos
+
+        FROM pregunta_test
+
+        WHERE id_test = ?
+
+    `,[id_test]);
+
+
+
+    const total =
+    rows[0].total;
+
+
+    const aciertos =
+    rows[0].aciertos || 0;
+
+
+    return {
+
+        total,
+
+        aciertos,
+
+        errores:
+        total - aciertos,
+
+        nota:
+        Math.round(
+            (aciertos / total) * 100
+        )
+
+    };
+
+
+};
+
+
 const findTestById = async (id) => {
 
     const [rows] = await pool.query(`
@@ -120,6 +169,7 @@ const deleteTestById = async (id) => {
 module.exports = {
     findAllTests,
     findTestsByUsuario,
+    findResultadoTest,
     findTestById,
     insertTest,
     updateTestById,

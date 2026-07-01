@@ -1,12 +1,24 @@
-const resultado = {
-    total:20,
-    aciertos:16,
-    errores:4,
-    tiempo:'12 minutos'
-};
-/* al conectar con BD se cambia a: 
-fetch(`/api/tests/${idTest}/resultado`)
-*/
+const API =
+'http://localhost:3000/api';
+
+const params =
+new URLSearchParams(
+window.location.search
+);
+
+const idTest =
+params.get('idTest');
+
+
+async function cargarResultado(){
+
+const response =
+await fetch(
+`${API}/tests/${idTest}/resultado`
+);
+
+const resultado =
+await response.json();
 
 document
 .getElementById(
@@ -14,7 +26,6 @@ document
 )
 .textContent =
 resultado.aciertos;
-
 
 document
 .getElementById(
@@ -29,44 +40,29 @@ document
 'nota'
 )
 .textContent =
-`${
+`${resultado.nota}%`;
 
-Math.round(
-(resultado.aciertos /
-resultado.total) * 100
-)
-
-}%`;
 
 
 document
 .getElementById(
 'totalPreguntas'
 )
-.textContent =resultado.total;
-
+.textContent =
+resultado.total;
 
 document
 .getElementById(
 'tiempo'
 )
 .textContent =
-resultado.tiempo;
-
-const params =
-new URLSearchParams(
-window.location.search
-);
-
-
-const idTest =
-params.get('idTest');
-
-
+resultado.duracion ?? 'Pendiente';
+}
 
 document
 .getElementById(
 'revisionBtn'
 )
-.href =
-`revision.html?idTest=${idTest}`;
+.href =`revision.html?idTest=${idTest}`;
+
+cargarResultado();

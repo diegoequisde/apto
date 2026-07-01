@@ -1,76 +1,91 @@
-const datosEstadisticas = {
-
-    evolucion: {
-
-        dias:[
-            'L',
-            'M',
-            'X',
-            'J',
-            'V',
-            'S',
-            'D'
-        ],
-
-        preguntas:[
-            20,
-            35,
-            15,
-            50,
-            40,
-            30,
-            60
-        ],
-
-        acierto:[
-            70,
-            75,
-            72,
-            80,
-            78,
-            82,
-            85
-        ]
-
-    },
+const API =
+'http://localhost:3000/api';
 
 
-    temas:{
+let datosEstadisticas;
+let evolucionChart;
+let temasDistribucionChart;
+let temasAciertoChart;
 
-        nombres:[
-            'Constitución',
-            'Administrativo',
-            'Procedimiento'
-        ],
+async function cargarEstadisticas(
+    periodo='total'
+){
 
-        preguntas:[
-            120,
-            90,
-            60
-        ],
+    const response =
+    await fetch(
+        `${API}/tests/estadisticas?periodo=${periodo}`
+    );
 
-        acierto:[
-            82,
-            65,
-            90
-        ]
+    datosEstadisticas =
+        await response.json();
 
-    }
+    cargarResumen();
+    crearGraficos();
+}
 
-};
+function crearGraficos(){
+    crearGraficoEvolucion();
+    crearGraficoDistribucion();
+    crearGraficoAcierto();
+}
+
+function cargarResumen(){
 
 
+const resumen =
+datosEstadisticas.resumen;
 
+document
+.getElementById(
+    'tiempo'
+)
+.textContent =
+formatearTiempo(
+    resumen.tiempo
+);
+
+document
+.getElementById(
+'racha'
+)
+.textContent =
+`${resumen.racha} días`;
+
+
+document
+.getElementById(
+    'tests'
+)
+.textContent =
+resumen.tests;
+
+document
+.getElementById(
+    'preguntas'
+)
+.textContent =
+resumen.preguntas;
+
+document
+.getElementById(
+    'acierto'
+)
+.textContent =
+`${Math.round(resumen.acierto)}%`;
+
+}
 
 function crearGraficoEvolucion(){
 
+    if(evolucionChart){
+        evolucionChart.destroy();
+    }
 
+    evolucionChart =
     new Chart(
-
         document.getElementById(
             'evolucionChart'
         ),
-
         {
 
         type:'line',
@@ -78,119 +93,101 @@ function crearGraficoEvolucion(){
         data:{
 
             labels:
-            datosEstadisticas.evolucion.dias,
+            datosEstadisticas.evolucion.map(
+                dato=>dato.dia
+            ),
 
 
             datasets:[
 
                 {
-                    label:'Preguntas realizadas',
+                label:'Preguntas realizadas',
 
-                    data:
-                    datosEstadisticas.evolucion.preguntas
+                data:
+                datosEstadisticas.evolucion.map(
+                    dato=>dato.preguntas
+                )
+
                 },
 
-
                 {
-                    label:'Acierto %',
+                label:'Acierto %',
 
-                    data:
-                    datosEstadisticas.evolucion.acierto
+                data:
+                datosEstadisticas.evolucion.map(
+                    dato=>dato.acierto
+                )
                 }
-
             ]
-
         },
 
-
         options:{
-
             responsive:true
-
         }
-
         }
-
     );
-
-
 }
-
-
-
-
 
 function crearGraficoDistribucion(){
 
+    if(temasDistribucionChart){
+        temasDistribucionChart.destroy();
+    }
 
+    temasDistribucionChart =
     new Chart(
-
         document.getElementById(
             'temasDistribucionChart'
         ),
-
         {
 
         type:'doughnut',
 
-
         data:{
 
             labels:
-            datosEstadisticas.temas.nombres,
-
+            datosEstadisticas.temas.map(
+                tema=>tema.nome_tema
+            ),
 
             datasets:[
-
                 {
-
                 data:
-                datosEstadisticas.temas.preguntas
-
+                datosEstadisticas.temas.map(
+                    tema=>tema.preguntas
+                )
                 }
-
             ]
-
         },
 
-
         options:{
-
             responsive:true
-
         }
-
         }
-
     );
-
-
 }
-
-
-
-
-
 
 function crearGraficoAcierto(){
 
+    if(temasAciertoChart){
+        temasAciertoChart.destroy();
+    }
 
+    temasAciertoChart =
     new Chart(
-
         document.getElementById(
             'temasAciertoChart'
         ),
-
         {
 
         type:'polarArea',
 
-
         data:{
 
             labels:
-            datosEstadisticas.temas.nombres,
-
+            datosEstadisticas.temas.map(
+                tema=>tema.nome_tema
+            ),
 
             datasets:[
 
@@ -199,106 +196,70 @@ function crearGraficoAcierto(){
                 label:'Acierto %',
 
                 data:
-                datosEstadisticas.temas.acierto
-
+                datosEstadisticas.temas.map(
+                    tema=>tema.acierto
+                )
                 }
-
             ]
-
         },
 
-
         options:{
-
             responsive:true
-
         }
-
         }
+    );
+}
 
+function formatearTiempo(
+segundos
+){
+
+    if(!segundos){
+        return '0 min';
+    }
+
+
+    const minutos =
+    Math.floor(
+        segundos / 60
     );
 
 
+    return `${minutos} min`;
+
 }
 
-
-
-
-
-
-let periodoActual = '7';
-
-
+let periodoActual = 'total';
 
 function gestionarFiltros(){
 
-
-    document
-    .querySelectorAll(
-        '.filters button'
-    )
-    .forEach(
-    button => {
-
-
-        button.addEventListener(
-            'click',
-            () => {
+document
+.querySelectorAll(
+    '.filters button'
+)
+.forEach(
+button=>{
 
 
-                periodoActual =
-                button.dataset.periodo;
+button.addEventListener(
+'click',
+()=>{
 
 
-                cargarPeriodo(
-                    periodoActual
-                );
+periodoActual =
+button.dataset.periodo;
 
 
-            }
+cargarEstadisticas(
+    periodoActual
+);
 
-        );
+});
 
-
-    });
-
+});
 
 }
 
 
-
-
-
-function cargarPeriodo(periodo){
-
-
-    console.log(
-        'Periodo seleccionado:',
-        periodo
-    );
-
-
-    /*
-    Futuro:
-
-    fetch(
-        `/api/estadisticas?periodo=${periodo}`
-    )
-
-    */
-
-
-}
-
-
-
-
-
-
-crearGraficoEvolucion();
-
-crearGraficoDistribucion();
-
-crearGraficoAcierto();
-
+cargarEstadisticas();
 gestionarFiltros();

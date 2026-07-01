@@ -12,15 +12,101 @@ const idTest =
 let preguntas = [];
 let preguntaActual = 0;
 
-async function cargarTest() {
+function mostrarNavegacion(){
+
+
+const nav =
+document.getElementById(
+    'preguntas-nav'
+);
+
+
+nav.innerHTML = '';
+
+
+
+preguntas.forEach(
+(pregunta,index)=>{
+
+
+let estado = '';
+
+
+
+if(
+pregunta.resposta_usuario
+){
+
+    estado =
+    'contestada';
+
+}
+
+
+
+if(
+index === preguntaActual
+){
+
+    estado =
+    'activa';
+
+}
+
+
+
+nav.innerHTML += `
+
+<button
+class="pregunta-numero ${estado}"
+data-pregunta="${index}">
+
+${index + 1}
+
+</button>
+
+`;
+
+});
+
+
+document
+.querySelectorAll(
+'.pregunta-numero'
+)
+.forEach(button=>{
+
+
+button.addEventListener(
+'click',
+()=>{
+
+
+preguntaActual =
+Number(
+button.dataset.pregunta
+);
+
+
+mostrarPregunta();
+
+});
+
+});
+
+
+}
+async function cargarTest(){
 
     const response =
-        await fetch(
-            `${API}/tests/${idTest}/preguntas`
-        );
+    await fetch(
+        `${API}/tests/${idTest}/preguntas`
+    );
 
     preguntas =
-        await response.json();
+    await response.json();
+
+    mostrarNavegacion();
     mostrarPregunta();
 
 }
@@ -74,7 +160,6 @@ ${opcion.texto}
 `;
 
 
-
 document
 .querySelectorAll(
     'input[name="respuesta"]'
@@ -85,7 +170,6 @@ document
     input.addEventListener(
     'change',
     ()=>{
-
 
         guardarRespuesta(
             pregunta.id_pregunta,
@@ -98,9 +182,7 @@ document
 
 });
 
-
 }
-
 
 async function guardarRespuesta(
     idPregunta,
@@ -136,7 +218,6 @@ document
     )
     .onclick = () => {
 
-
         if (preguntaActual < preguntas.length - 1) {
             preguntaActual++;
             mostrarPregunta();
@@ -153,22 +234,54 @@ document
     )
     .onclick = () => {
 
-
-        if (
-            preguntaActual > 0
-        ) {
+        if (preguntaActual > 0) {
             preguntaActual--;
             mostrarPregunta();
         }
-
     };
 
-async function finalizarTest(){
-    const response =
-    await actualizarTestFinalizado();
+document
+.getElementById(
+'finalizarBtn'
+)
+.onclick =
+finalizarTest;
 
-    window.location.href =
-    `resultado.html?idTest=${idTest}`;
+
+function preguntasSinResponder(){
+
+    return preguntas.filter(
+    pregunta =>
+    !pregunta.resposta_usuario
+    ).length;
+
+}
+
+async function finalizarTest(){
+
+
+const pendientes =
+preguntasSinResponder();
+
+
+
+if(pendientes > 0){
+
+const confirmar =
+confirm(
+`Tienes ${pendientes} preguntas sin responder. ¿Quieres finalizar igualmente?`
+);
+
+
+if(!confirmar){
+    return;
+}
+
+}
+
+await actualizarTestFinalizado();
+
+window.location.href = `resultado.html?idTest=${idTest}`;
 
 }
 

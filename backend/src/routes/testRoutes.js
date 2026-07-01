@@ -10,17 +10,23 @@ const router = express.Router();
 
 const {
     getTests,
+    getEstadisticas,
     getHistorial,
+    getResultadoTest,
+    getRevisionTest,
     getTestById,
     createTest,
     updateTest,
-    deleteTest,
-    getRevisionTest
+    deleteTest
 } = require('../controllers/testController');
 
 router.get('/', getTests);
 
+router.get('/estadisticas', getEstadisticas);
+
 router.get('/historial', getHistorial);
+
+router.get('/:id/resultado', getResultadoTest);
 
 router.get('/:id/revision', validateId, getRevisionTest);
 

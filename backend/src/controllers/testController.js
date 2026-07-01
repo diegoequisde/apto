@@ -3,6 +3,7 @@ const asyncHandler = require('../middlewares/asyncHandler');
 const {
     findAllTests,
     findTestsByUsuario,
+    findResultadoTest,
     findTestById,
     insertTest,
     updateTestById,
@@ -21,6 +22,9 @@ const {
     calcularResultadoTest
 } = require('../services/preguntaTestService');
 
+const {
+    obtenerEstadisticas
+} = require('../services/estadisticasService');
 
 const getTests = asyncHandler(async (req, res) => {
 
@@ -30,6 +34,35 @@ const getTests = asyncHandler(async (req, res) => {
 
 });
 
+const getResultadoTest = asyncHandler(async(req,res)=>{
+
+    const {id} =
+    req.params;
+
+    const resultado =
+    await findResultadoTest(id);
+
+    res.json(resultado);
+
+});
+
+const getEstadisticas = asyncHandler(async(req,res)=>{
+
+const id_usuario = 1;
+
+const periodo =
+req.query.periodo || 'total';
+
+const datos =
+await obtenerEstadisticas(
+id_usuario,
+periodo
+);
+
+
+res.json(datos);
+
+});
 
 const getHistorial = asyncHandler(async(req,res)=>{
 
@@ -209,6 +242,8 @@ const getRevisionTest = asyncHandler(async (req,res)=>{
 
 module.exports = {
     getTests,
+    getResultadoTest,
+    getEstadisticas,
     getHistorial,
     getTestById,
     createTest,

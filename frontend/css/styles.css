@@ -124,11 +124,14 @@ body {
 }
 
 .pregunta-numero {
-
     padding:0.5rem;
-
 }
 
+.pregunta-numero.contestada {
+    background:#d7efff;
+    color:#0172ad;
+
+}
 
 .pregunta-numero.activa {
     background: --apto-primary;
