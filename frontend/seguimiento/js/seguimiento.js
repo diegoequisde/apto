@@ -31,47 +31,28 @@ function crearGraficos(){
 
 function cargarResumen(){
 
-
 const resumen =
 datosEstadisticas.resumen;
 
 document
-.getElementById(
-    'tiempo'
-)
-.textContent =
-formatearTiempo(
-    resumen.tiempo
-);
+.getElementById('tiempo')
+.textContent = formatearTiempo(resumen.tiempo);
 
 document
-.getElementById(
-'racha'
-)
-.textContent =
-`${resumen.racha} días`;
-
+.getElementById('racha')
+.textContent = `${resumen.racha} días`;
 
 document
-.getElementById(
-    'tests'
-)
-.textContent =
-resumen.tests;
+.getElementById('tests')
+.textContent = resumen.tests;
 
 document
-.getElementById(
-    'preguntas'
-)
-.textContent =
-resumen.preguntas;
+.getElementById('preguntas')
+.textContent = resumen.preguntas;
 
 document
-.getElementById(
-    'acierto'
-)
-.textContent =
-`${Math.round(resumen.acierto)}%`;
+.getElementById('acierto')
+.textContent = `${Math.round(resumen.acierto)}%`;
 
 }
 
@@ -175,9 +156,7 @@ function crearGraficoAcierto(){
 
     temasAciertoChart =
     new Chart(
-        document.getElementById(
-            'temasAciertoChart'
-        ),
+        document.getElementById('temasAciertoChart'),
         {
 
         type:'polarArea',
@@ -224,7 +203,6 @@ segundos
         segundos / 60
     );
 
-
     return `${minutos} min`;
 
 }
@@ -233,33 +211,24 @@ let periodoActual = 'total';
 
 function gestionarFiltros(){
 
-document
-.querySelectorAll(
-    '.filters button'
-)
-.forEach(
-button=>{
+    document
+    .querySelectorAll('.filters button')
+    .forEach(
+    button=>{
 
+        button.addEventListener(
+        'click',
+        ()=>{
 
-button.addEventListener(
-'click',
-()=>{
+        periodoActual =
+        button.dataset.periodo;
 
-
-periodoActual =
-button.dataset.periodo;
-
-
-cargarEstadisticas(
-    periodoActual
-);
-
-});
-
-});
-
+        cargarEstadisticas(
+            periodoActual
+        );
+        });
+    });
 }
-
 
 cargarEstadisticas();
 gestionarFiltros();
