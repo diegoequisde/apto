@@ -5,7 +5,7 @@ const validateOposicion = (req, res, next) => {
         descripcion_oposicion
     } = req.body;
 
-    if (!nome_tema || nome_tema.trim() === '') {
+    if (!nome_oposicion || nome_oposicion.trim() === '') {
 
         return res.status(400).json({
             ok: false,
@@ -14,7 +14,7 @@ const validateOposicion = (req, res, next) => {
 
     }
 
-    if (nome_tema.length > 150) {
+    if (nome_oposicion.length > 150) {
 
         return res.status(400).json({
             ok: false,

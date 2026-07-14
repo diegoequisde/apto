@@ -171,3 +171,15 @@ body {
     background:#e74c3c;
     color:white;
 }
+
+/* buscador de oposiciones*/
+
+#resultadosBusqueda article{
+    cursor:pointer;
+    padding:.5rem;
+    margin:.25rem 0;
+}
+
+#resultadosBusqueda article:hover{
+    background:var(--pico-muted-background-color);
+}

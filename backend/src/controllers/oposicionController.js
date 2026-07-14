@@ -8,11 +8,14 @@
     deleteOposicionById
 } = require('../services/oposicionService');
 
-const getOposiciones = asyncHandler(async (req, res) => {
+const getOposiciones = asyncHandler(async(req,res)=>{
 
-        const oposiciones = await findAllOposiciones();
+    const { search = '' } = req.query;
 
-        res.json(oposiciones);
+    const oposiciones =
+    await findAllOposiciones(search);
+
+    res.json(oposiciones);
 
 });
 

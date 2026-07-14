@@ -1,6 +1,6 @@
     const pool = require('../config/db');
 
-const findAllOposiciones = async () => {
+const findAllOposiciones = async (busqueda = '') => {
 
     const [rows] = await pool.query(`
         SELECT
@@ -8,11 +8,12 @@ const findAllOposiciones = async () => {
             nome_oposicion,
             descripcion_oposicion
         FROM oposicion
+        WHERE nome_oposicion LIKE ?
         ORDER BY nome_oposicion
-    `);
+        LIMIT 10
+    `, [`%${busqueda}%`]);
 
     return rows;
-
 };
 
 const findOposicionById = async (id) => {

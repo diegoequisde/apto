@@ -127,26 +127,30 @@ async function guardarCambios() {
             'descripcionOposicion'
         ).value;
 
-    await fetch(
-        `${API}/oposiciones/${idOposicion}`,
-        {
-            method: 'PUT',
-            headers: {
-                'Content-Type':
-                    'application/json'
-            },
-            body: JSON.stringify({
-                nome_oposicion: nombre,
-                descripcion_oposicion:
-                    descripcion
-            })
-        }
-    );
+    const response =
+await fetch(
+    `${API}/oposiciones/${idOposicion}`,
+    {
+        method:'PUT',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify({
+            nome_oposicion:nombre,
+            descripcion_oposicion:descripcion
+        })
+    }
+);
 
-    alert(
-        'Oposición actualizada'
-    );
+const data =
+await response.json();
 
+if(!response.ok){
+    alert(data.mensaje);
+    return;
+}
+
+window.location.href = '/admin/oposiciones/index.html';
 }
 
 // Añadir y eliminar temas

@@ -3,6 +3,17 @@ const API =
 
 const idUsuario = 1; // esto caundo hagamos la autenticación, lo sacaremos del token o de la sesión del usuario logeado
 
+const buscador =
+document.getElementById('buscarOposicion');
+
+const resultados =
+document.getElementById('resultadosBusqueda');
+
+buscador.addEventListener(
+    'input',
+    buscarOposiciones
+);
+
 async function cargarUsuario() {
 
     const response =
@@ -75,60 +86,78 @@ async function cargarOposiciones() {
 
 }
 
-async function cargarOposicionesDisponibles() {
+resultados.addEventListener(
+    'click',
+    async(e)=>{
 
-    const response =
-        await fetch(
-            `${API}/oposiciones`
+        const tarjeta =
+        e.target.closest('.resultadoBusqueda');
+
+        if(!tarjeta)return;
+
+        await anadirOposicion(
+            tarjeta.dataset.id
         );
 
-    const oposiciones =
-        await response.json();
+    }
+);
 
-    const select =
-        document.getElementById(
-            'oposicionSelect'
-        );
 
-    select.innerHTML = '';
+function pintarResultados(oposiciones){
 
-    oposiciones.forEach(
-        (oposicion) => {
+    resultados.innerHTML = '';
 
-            select.innerHTML += `
-                <option
-                    value="${oposicion.id_oposicion}"
-                >
-                    ${oposicion.nome_oposicion}
-                </option>
-            `;
+    oposiciones.forEach(oposicion=>{
 
-        }
-    );
+        resultados.innerHTML += `
+            <article
+                class="resultadoBusqueda"
+                data-id="${oposicion.id_oposicion}"
+            >
+                ${oposicion.nome_oposicion}
+            </article>
+        `;
+
+    });
 
 }
 
-async function anadirOposicion() {
+async function buscarOposiciones(){
 
-    const idOposicion =
-        document.getElementById(
-            'oposicionSelect'
-        ).value;
+    const texto = buscador.value.trim();
+
+    if(texto.length < 2){
+        resultados.innerHTML = '';
+        return;
+    }
+
+    const response = await fetch(
+        `${API}/oposiciones?search=${encodeURIComponent(texto)}`
+    );
+
+    const oposiciones = await response.json();
+
+    pintarResultados(oposiciones);
+}
+
+async function anadirOposicion(idOposicion){
 
     await fetch(
         `${API}/usuarios/${idUsuario}/oposiciones`,
         {
-            method: 'POST',
-            headers: {
-                'Content-Type':
-                    'application/json'
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
             },
-            body: JSON.stringify({
-                id_oposicion:
-                    idOposicion
+            body:JSON.stringify({
+                id_oposicion:idOposicion
             })
         }
     );
+
+    buscador.value='';
+
+    resultados.innerHTML='';
 
     cargarOposiciones();
 
@@ -149,23 +178,9 @@ async function eliminarOposicion(
 
 }
 
-document
-    .getElementById(
-        'anadirOposicionBtn'
-    )
-    .addEventListener(
-        'click',
-        anadirOposicion
-    );
-
 async function inicializar() {
-
     await cargarUsuario();
-
     await cargarOposiciones();
-
-    await cargarOposicionesDisponibles();
-
 }
 
 inicializar();
