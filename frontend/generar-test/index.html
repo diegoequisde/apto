@@ -25,18 +25,35 @@
     <select id="oposicion"></select>
 </label>
 
+<h3>Temas seleccionados</h3>
 
-<label>Tema
-    <select id="tema"></select>
+<div id="listaTemas"></div>
+
+<hr>
+
+<label>
+
+Tema
+
+<select id="tema"></select>
+
 </label>
 
-<label>Número de preguntas
-    <select id="cantidad">
-        <option>10</option>
-        <option>20</option>
-        <option>50</option>
-    </select>
-</label>
+<label>
+Número de preguntas
+<input
+    type="number"
+    id="cantidadTema"
+    min="1"
+    step="1"
+    value="10">
+<button
+    type="button"
+    id="anadirTemaBtn">
+
+Añadir tema
+
+</button>
 
 <button id="generarBtn">Generar test</button>
 

@@ -99,50 +99,67 @@ const getTestById = asyncHandler(async (req, res) => {
 
 const createTest = asyncHandler(async (req, res) => {
 
-
     const {
         id_usuario,
-        id_tema,
-        cantidad
+        temas
     } = req.body;
 
-
     const id_test =
-    await insertTest(
-        id_usuario,
-        null
+        await insertTest(
+            id_usuario,
+            null
+        );
+
+   let preguntas = [];
+
+    for (const tema of temas) {
+
+        const preguntasTema =
+            await findPreguntasAleatorias(
+                tema.id_tema,
+                tema.cantidad
+            );
+
+        // Comprobación
+        if (preguntasTema.length < tema.cantidad) {
+
+            return res.status(400).json({
+                ok:false,
+                mensaje: `O tema ${tema.nome} só dispón de ${preguntasTema.length} preguntas dispoñibles.`
+            });
+
+        }
+
+        preguntas.push(
+            ...preguntasTema
+        );
+
+    }
+
+    // Mezclar todas las preguntas
+    preguntas.sort(
+        () => Math.random() - 0.5
     );
 
-
-    const preguntas =
-    await findPreguntasAleatorias(
-        id_tema,
-        cantidad
-    );
-
-
-    for(
-        let i = 0;
-        i < preguntas.length;
-        i++
-    ){
+    for (let i = 0; i < preguntas.length; i++) {
 
         await insertPreguntaToTest(
             id_test,
             preguntas[i].id_pregunta,
             i + 1
         );
+
     }
 
     res.status(201).json({
 
-        ok:true,
+        ok: true,
 
         mensaje:
-        'Test creado correctamente',
+            'Test creado correctamente',
 
         id_test
-        
+
     });
 
 });
