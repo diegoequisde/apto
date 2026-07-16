@@ -100,6 +100,7 @@ const findPreguntaById = async (id) => {
 };
 
 
+// el testController mezcla las preguntas. Es redundante?
 const findPreguntasAleatorias = async (
     id_tema,
     cantidad
