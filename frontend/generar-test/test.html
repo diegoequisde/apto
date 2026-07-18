@@ -12,23 +12,47 @@
 <body>
 <main class="container">
 
-<h1>Simulación de Test</h1>
-<section class="card">
+    <h1>Simulación de Test</h1>
 
-<div id="preguntas-nav" class="preguntas-nav"></div>
+    <div class="test-layout">
 
-</section>
+        <section class="test-main">
 
-<p id="contadorPregunta"></p>
+            <p id="contadorPregunta"></p>
 
-<section class="card" id="question-container">
-</section>
+            <section
+                class="card"
+                id="question-container">
+            </section>
 
-<button id="anteriorBtn">Anterior</button>
-<button id="siguienteBtn">Siguiente</button>
-<button id="finalizarBtn">Finalizar test</button>
+            <div class="acciones-test">
+                <button id="anteriorBtn">Anterior</button>
+                <button id="siguienteBtn">Siguiente</button>
+                <button id="finalizarBtn">
+                    Finalizar test
+                </button>
+            </div>
 
-</main> 
+        </section>
+
+        <aside class="test-sidebar">
+
+            <section class="card">
+
+                <h4>Preguntas</h4>
+
+                <div
+                    id="preguntas-nav"
+                    class="preguntas-nav">
+                </div>
+
+            </section>
+
+        </aside>
+
+    </div>
+
+</main>
 
 <script src="./js/test.js"></script>
 

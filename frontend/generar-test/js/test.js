@@ -12,50 +12,39 @@ const idTest =
 let preguntas = [];
 let preguntaActual = 0;
 
-function mostrarNavegacion(){
+function mostrarNavegacion() {
 
 
-const nav =
-document.getElementById(
-    'preguntas-nav'
-);
+    const nav =
+        document.getElementById(
+            'preguntas-nav'
+        );
 
 
-nav.innerHTML = '';
+    nav.innerHTML = '';
 
+    preguntas.forEach(
+        (pregunta, index) => {
 
+            let estado = '';
 
-preguntas.forEach(
-(pregunta,index)=>{
-
-
-let estado = '';
-
-
-
-if(
-pregunta.resposta_usuario
-){
-
-    estado =
-    'contestada';
-
-}
+            if (
+                pregunta.resposta_usuario
+            ) {
+                estado = 'contestada';
+            }
 
 
 
-if(
-index === preguntaActual
-){
-
-    estado =
-    'activa';
-
-}
+            if (
+                index === preguntaActual
+            ) {
+                estado = 'activa';
+            }
 
 
 
-nav.innerHTML += `
+            nav.innerHTML += `
 
 <button
 class="pregunta-numero ${estado}"
@@ -67,44 +56,44 @@ ${index + 1}
 
 `;
 
-});
+        });
 
 
-document
-.querySelectorAll(
-'.pregunta-numero'
-)
-.forEach(button=>{
+    document
+        .querySelectorAll(
+            '.pregunta-numero'
+        )
+        .forEach(button => {
 
 
-button.addEventListener(
-'click',
-()=>{
+            button.addEventListener(
+                'click',
+                () => {
 
 
-preguntaActual =
-Number(
-button.dataset.pregunta
-);
+                    preguntaActual =
+                        Number(
+                            button.dataset.pregunta
+                        );
 
 
-mostrarPregunta();
+                    mostrarPregunta();
 
-});
+                });
 
-});
+        });
 
 
 }
-async function cargarTest(){
+async function cargarTest() {
 
     const response =
-    await fetch(
-        `${API}/tests/${idTest}/preguntas`
-    );
+        await fetch(
+            `${API}/tests/${idTest}/preguntas`
+        );
 
     preguntas =
-    await response.json();
+        await response.json();
 
     mostrarNavegacion();
     mostrarPregunta();
@@ -139,7 +128,7 @@ ${preguntas.length}
 <h2>${pregunta.enunciado}</h2>
 
 ${pregunta.opciones
-    .map(opcion => `
+            .map(opcion => `
 
 <label>
 
@@ -155,59 +144,59 @@ ${opcion.texto}
 </label>
 
 `)
-.join('')}
+            .join('')}
 
 `;
 
 
-document
-.querySelectorAll(
-    'input[name="respuesta"]'
-)
-.forEach(input=>{
+    document
+        .querySelectorAll(
+            'input[name="respuesta"]'
+        )
+        .forEach(input => {
 
 
-    input.addEventListener(
-    'change',
-    ()=>{
+            input.addEventListener(
+                'change',
+                () => {
 
-        guardarRespuesta(
-            pregunta.id_pregunta,
-            input.value
-        );
+                    guardarRespuesta(
+                        pregunta.id_pregunta,
+                        input.value
+                    );
 
-        pregunta.resposta_usuario =
-        input.value;
-    });
+                    pregunta.resposta_usuario =
+                        input.value;
+                });
 
-});
+        });
 
 }
 
 async function guardarRespuesta(
     idPregunta,
     respuesta
-){
+) {
 
     const response =
-    await fetch(
-        `${API}/tests/${idTest}/preguntas/${idPregunta}/resposta`,
-        {
+        await fetch(
+            `${API}/tests/${idTest}/preguntas/${idPregunta}/resposta`,
+            {
 
-        method:'PUT',
+                method: 'PUT',
 
-        headers:{
-            'Content-Type':'application/json'
-        },
+                headers: {
+                    'Content-Type': 'application/json'
+                },
 
-        body:JSON.stringify({
+                body: JSON.stringify({
 
-            resposta_usuario:respuesta
+                    resposta_usuario: respuesta
 
-        })
+                })
 
-        }
-    );
+            }
+        );
 
 }
 
@@ -241,72 +230,72 @@ document
     };
 
 document
-.getElementById(
-'finalizarBtn'
-)
-.onclick =
-finalizarTest;
+    .getElementById(
+        'finalizarBtn'
+    )
+    .onclick =
+    finalizarTest;
 
 
-function preguntasSinResponder(){
+function preguntasSinResponder() {
 
     return preguntas.filter(
-    pregunta =>
-    !pregunta.resposta_usuario
+        pregunta =>
+            !pregunta.resposta_usuario
     ).length;
 
 }
 
-async function finalizarTest(){
+async function finalizarTest() {
 
 
-const pendientes =
-preguntasSinResponder();
+    const pendientes =
+        preguntasSinResponder();
 
 
 
-if(pendientes > 0){
+    if (pendientes > 0) {
 
-const confirmar =
-confirm(
-`Tienes ${pendientes} preguntas sin responder. ¿Quieres finalizar igualmente?`
-);
+        const confirmar =
+            confirm(
+                `Tienes ${pendientes} preguntas sin responder. ¿Quieres finalizar igualmente?`
+            );
 
 
-if(!confirmar){
-    return;
-}
-
-}
-
-await actualizarTestFinalizado();
-
-window.location.href = `resultado.html?idTest=${idTest}`;
-
-}
-
-async function actualizarTestFinalizado(){
-    const response =
-    await fetch(
-        `${API}/tests/${idTest}`,
-        {
-
-        method:'PUT',
-
-        headers:{
-            'Content-Type':'application/json'
-        },
-
-        body:JSON.stringify({
-
-            duracion:null,
-            resultado:null,
-            finalizado:1
-
-        })
-
+        if (!confirmar) {
+            return;
         }
-    );
+
+    }
+
+    await actualizarTestFinalizado();
+
+    window.location.href = `resultado.html?idTest=${idTest}`;
+
+}
+
+async function actualizarTestFinalizado() {
+    const response =
+        await fetch(
+            `${API}/tests/${idTest}`,
+            {
+
+                method: 'PUT',
+
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+
+                body: JSON.stringify({
+
+                    duracion: null,
+                    resultado: null,
+                    finalizado: 1
+
+                })
+
+            }
+        );
 
 }
 
