@@ -10,6 +10,8 @@
     --apto-primary: #114dd0;
     /* color actual cumple con AAA (contraste 7.01)
         el anterior cumple AA y se queda cerca de AAA: #2563eb;*/
+    /* font-size reduce todo el tamaño ya que PicoCss basa las medidas en rem*/
+    font-size:15px;
 }
 
 body {
@@ -28,8 +30,18 @@ body {
     font-size: 1.3rem;
 }
 
-/* GENERAL */
+.logo{
+    display:flex;
+    align-items:center;
+    gap:.6rem;
+}
 
+.logo span{
+    font-weight:700;
+    font-size:.8rem;
+}
+
+/* GENERAL */
 .container {
     max-width: 1100px;
     margin: auto;
@@ -140,20 +152,27 @@ body {
     justify-content:center;
     align-items:center;
     padding:0;
-    font-size:clamp(.65rem, 1vw, .9rem);
+    font-size:clamp(.65rem,1vw,.9rem);
     font-weight:600;
+    background:#e5e7eb;
+    color:#e5e7eb;
+    border:1px solid #d1d5db;
 }
 
-.pregunta-numero.contestada {
-    background: #d7efff;
-    color: #0172ad;
+.pregunta-numero.sin-respuesta{
+    background:#e5e7eb;
+    color:#6b7280;
 }
 
-.pregunta-numero.activa {
-    background: --apto-primary;
-    color: white;
+.pregunta-numero.contestada{
+    background:#38a9e6;
+    color:#0172ad;
 }
 
+.pregunta-numero.activa{
+    background:var(--apto-primary);
+    color:white;
+}
 .pregunta-numero.correcta {
     background: #2ecc71;
     color: white;
@@ -162,10 +181,6 @@ body {
 .pregunta-numero.fallada {
     background: #e74c3c;
     color: white;
-}
-
-.pregunta-numero.sin-respuesta {
-    background: #e5e7eb;
 }
 
 .opcion {

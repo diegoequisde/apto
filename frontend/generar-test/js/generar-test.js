@@ -134,6 +134,13 @@ function anadirTema(){
         cantidad
     });
 
+    // mostrar el total de preguntas seleccionadas
+const total = temasSeleccionados.reduce(
+    (suma, tema) => suma + tema.cantidad, 0
+);
+
+document.getElementById('totalPreguntas').textContent = `Total de preguntas: ${total}`;
+
     pintarListaTemas();
 
 }

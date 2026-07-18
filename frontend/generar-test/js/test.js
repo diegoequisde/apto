@@ -26,35 +26,23 @@ function mostrarNavegacion() {
     preguntas.forEach(
         (pregunta, index) => {
 
-            let estado = '';
+            let estado = 'sin-respuesta';
 
-            if (
-                pregunta.resposta_usuario
-            ) {
+            if (pregunta.resposta_usuario) {
                 estado = 'contestada';
             }
 
-
-
-            if (
-                index === preguntaActual
-            ) {
+            if (index === preguntaActual) {
                 estado = 'activa';
             }
 
-
-
             nav.innerHTML += `
-
-<button
-class="pregunta-numero ${estado}"
-data-pregunta="${index}">
-
-${index + 1}
-
-</button>
-
-`;
+            <button
+                class="pregunta-numero ${estado}"
+                data-pregunta="${index}">
+                ${index + 1}
+            </button>
+            `;
 
         });
 
@@ -65,25 +53,14 @@ ${index + 1}
         )
         .forEach(button => {
 
-
             button.addEventListener(
                 'click',
                 () => {
-
-
-                    preguntaActual =
-                        Number(
-                            button.dataset.pregunta
-                        );
-
-
+                    preguntaActual = Number(button.dataset.pregunta);
+                    mostrarNavegacion();
                     mostrarPregunta();
-
                 });
-
         });
-
-
 }
 async function cargarTest() {
 
@@ -92,8 +69,7 @@ async function cargarTest() {
             `${API}/tests/${idTest}/preguntas`
         );
 
-    preguntas =
-        await response.json();
+    preguntas = await response.json();
 
     mostrarNavegacion();
     mostrarPregunta();
@@ -107,16 +83,14 @@ function mostrarPregunta() {
 
 
     document
-        .getElementById(
-            'contadorPregunta'
-        )
+        .getElementById('contadorPregunta')
         .textContent =
         `
-Pregunta
-${preguntaActual + 1}
-de
-${preguntas.length}
-`;
+        Pregunta
+        ${preguntaActual + 1}
+        de
+        ${preguntas.length}
+        `;
 
 
     document
@@ -128,26 +102,22 @@ ${preguntas.length}
 <h2>${pregunta.enunciado}</h2>
 
 ${pregunta.opciones
-            .map(opcion => `
+    .map(opcion => `
 
-<label>
+        <label>
 
-<input
-type="radio"
-name="respuesta"
-value="${opcion.letra_opcion}"
-${pregunta.resposta_usuario === opcion.letra_opcion ? 'checked' : ''}
->
+        <input
+        type="radio"
+        name="respuesta"
+        value="${opcion.letra_opcion}"
+        ${pregunta.resposta_usuario === opcion.letra_opcion ? 'checked' : ''}
+        >
+        ${opcion.texto}
+        </label>
+        `)
+        .join('')}
 
-${opcion.texto}
-
-</label>
-
-`)
-            .join('')}
-
-`;
-
+        `;
 
     document
         .querySelectorAll(
@@ -165,12 +135,11 @@ ${opcion.texto}
                         input.value
                     );
 
-                    pregunta.resposta_usuario =
-                        input.value;
+                    pregunta.resposta_usuario = input.value;
+
+                    mostrarNavegacion();
                 });
-
         });
-
 }
 
 async function guardarRespuesta(
@@ -202,19 +171,22 @@ async function guardarRespuesta(
 
 
 document
-    .getElementById(
-        'siguienteBtn'
-    )
-    .onclick = () => {
+    .getElementById('siguienteBtn')
+    .onclick = async () => {
 
         if (preguntaActual < preguntas.length - 1) {
             preguntaActual++;
+            mostrarNavegacion();
             mostrarPregunta();
-        }
-        else {
-            finalizarTest();
-        }
 
+        } else {
+
+            const confirmar = confirm('Has llegado a la última pregunta. ¿Deseas finalizar el test?');
+
+            if (confirmar) {
+                finalizarTest();
+            }
+        }
     };
 
 document
@@ -225,6 +197,7 @@ document
 
         if (preguntaActual > 0) {
             preguntaActual--;
+            mostrarNavegacion();
             mostrarPregunta();
         }
     };
@@ -248,11 +221,8 @@ function preguntasSinResponder() {
 
 async function finalizarTest() {
 
-
     const pendientes =
         preguntasSinResponder();
-
-
 
     if (pendientes > 0) {
 
@@ -287,17 +257,13 @@ async function actualizarTestFinalizado() {
                 },
 
                 body: JSON.stringify({
-
                     duracion: null,
                     resultado: null,
                     finalizado: 1
-
                 })
 
             }
         );
 
 }
-
-
 cargarTest();
