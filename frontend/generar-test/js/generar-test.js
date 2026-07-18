@@ -234,7 +234,49 @@ document
 );
 
 
+document
+.querySelectorAll('.btnOficial')
+.forEach(boton => {
 
+    boton.addEventListener(
+        'click',
+        () => generarTestOficial(
+            boton.dataset.oposicion
+        )
+    );
+
+});
+
+async function generarTestOficial(idOposicion){
+
+    const response =
+    await fetch(
+        `${API}/tests/oficial`,
+        {
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({
+                id_usuario:1,
+                id_oposicion:idOposicion
+            })
+        }
+    );
+
+    const data =
+    await response.json();
+
+    if(!response.ok){
+        alert(data.mensaje);
+        return;
+
+    }
+
+    window.location.href =
+    `/generar-test/test.html?idTest=${data.id_test}`;
+
+}
 
 async function inicializar(){
 
