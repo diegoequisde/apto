@@ -52,11 +52,9 @@ document
 resultado.total;
 
 document
-.getElementById(
-'tiempo'
-)
+.getElementById('tiempo')
 .textContent =
-resultado.duracion ?? 'Pendiente';
+formatearTiempo(resultado.duracion);
 }
 
 document
@@ -64,5 +62,32 @@ document
 'revisionBtn'
 )
 .href =`revision.html?idTest=${idTest}`;
+
+
+function formatearTiempo(segundos){
+
+    if(!segundos){
+        return '0 min';
+    }
+
+    const horas =
+    Math.floor(segundos / 3600);
+
+    const minutos =
+    Math.floor((segundos % 3600) / 60);
+
+    const segundosRestantes =
+    segundos % 60;
+
+    if(horas > 0){
+
+        return `${horas} h ${minutos} min ${segundosRestantes} s`;
+
+    }
+
+    return `${minutos} min ${segundosRestantes} s`;
+
+}
+
 
 cargarResultado();

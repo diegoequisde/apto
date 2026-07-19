@@ -105,15 +105,16 @@ const getTestById = asyncHandler(async (req, res) => {
 const createTest = asyncHandler(async (req, res) => {
 
     const {
-        id_usuario,
-        temas
-    } = req.body;
+            id_usuario,
+            temas,
+            duracion
+        } = req.body;
 
     const id_test =
-        await insertTest(
-            id_usuario,
-            null
-        );
+    await insertTest(
+        id_usuario,
+        null
+    );
 
    let preguntas = [];
 
@@ -172,20 +173,18 @@ const createTestOficial = asyncHandler(async (req, res) => {
             id_oposicion
         } = req.body;
 
-        console.log(req.body);
-
         const id_test =
             await insertTest(
                 id_usuario,
-                null
+                duracion
             );
 
         const preguntas =
             await crearExameOficial(
                 id_oposicion
             );
-
-        console.log(preguntas);
+ 
+        const configuracion = obterConfiguracionExame(id_oposicion);
 
         for (let i = 0; i < preguntas.length; i++) {
 
@@ -200,7 +199,8 @@ const createTestOficial = asyncHandler(async (req, res) => {
         res.status(201).json({
             ok: true,
             mensaje: 'Exame oficial creado correctamente',
-            id_test
+            id_test,
+            duracion: configuracion.duracion
         });
 
     } catch (error) {

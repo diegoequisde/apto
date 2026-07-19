@@ -207,11 +207,30 @@ async function generarTest(){
 
     }
 
-    window.location.href =
-    `/generar-test/test.html?idTest=${data.id_test}`;
+    const duracionMinutos =
+    Number(
+        document.getElementById(
+            'duracion'
+        ).value
+    );
+
+    if(duracionMinutos > 0){
+
+        localStorage.setItem(
+            `inicio_${data.id_test}`,
+            Date.now()
+        );
+
+        localStorage.setItem(
+            `limite_${data.id_test}`,
+            duracionMinutos * 60
+        );
+
+    }
+
+    window.location.href =`/generar-test/test.html?idTest=${data.id_test}`;
 
 }
-
 
 document
 .getElementById(
@@ -280,8 +299,17 @@ async function generarTestOficial(idOposicion){
 
     }
 
-    window.location.href =
-    `/generar-test/test.html?idTest=${data.id_test}`;
+    localStorage.setItem(
+        `inicio_${data.id_test}`,
+        Date.now()
+    );
+
+    localStorage.setItem(
+        `limite_${data.id_test}`,
+        data.duracion * 60
+    );
+
+    window.location.href =`/generar-test/test.html?idTest=${data.id_test}`;
 
 }
 
