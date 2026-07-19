@@ -1,69 +1,101 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>APTO | Generar Test</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-<link rel="stylesheet" href="/css/styles.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>APTO | Generar Test</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <!-- favicon-->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
 
 </head>
+
 <body>
 
-<div id="navbar"></div>
+    <div id="navbar"></div>
+    <main class="container">
+        <section class="card">
 
-<main class="container">
+            <label>
+                Oposición
+                <select id="oposicion"></select>
+            </label>
 
-<section class="page-header">
-    <h1>Generar Test</h1>
-    <p>Configura tu simulacro personalizado.</p>
-</section>
+            <label>
+                Tema
+                <select id="tema"></select>
+            </label>
 
-<section class="card">
-<label> Oposición
-    <select id="oposicion"></select>
-</label>
+            <label>
+                Número de preguntas
+                <input type="number" id="cantidadTema" min="1" step="1" value="10">
+            </label>
 
-<h3>Temas seleccionados</h3>
+            <button type="button" id="anadirTemaBtn">
+                + Añadir
+            </button>
 
-<div id="listaTemas"></div>
+            <hr>
 
-<hr>
+            <h3>Temas seleccionados</h3>
 
-<label>
+            <div id="listaTemas"></div>
 
-Tema
+            <hr>
+            
+            <p id="totalPreguntas"></p>
+            
+            <button id="generarBtn">
+                Generar test
+            </button>
 
-<select id="tema"></select>
+        </section>
 
-</label>
+        <hr>
 
-<label>
-Número de preguntas
-<input
-    type="number"
-    id="cantidadTema"
-    min="1"
-    step="1"
-    value="10">
-<button
-    type="button"
-    id="anadirTemaBtn">
+        <section class="card">
 
-Añadir tema
+            <h2>Simulacros oficiais</h2>
 
-</button>
+            <article>
 
-<button id="generarBtn">Generar test</button>
+                <h3>Administrativo Xunta</h3>
 
-</section>
+                <p>120 preguntas · 120 minutos</p>
 
-</main>
+                <button class="btnOficial" data-oposicion="2">
+                    Realizar simulacro
+                </button>
+
+            </article>
+
+            <article>
+
+                <h3>Auxiliar Administrativo Xunta C2</h3>
+
+                <p>120 preguntas · 120 minutos</p>
+
+                <button class="btnOficial" data-oposicion="3">
+                    Realizar simulacro
+                </button>
+
+            </article>
+
+        </section>
+
+    </main>
 
 
-<script src="/js/navbar.js"></script>
-<script src="./js/generar-test.js"></script>
+    <script src="/js/navbar.js"></script>
+    <script src="./js/generar-test.js"></script>
 
 </body>
+
 </html>

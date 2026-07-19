@@ -12,99 +12,64 @@ const idTest =
 let preguntas = [];
 let preguntaActual = 0;
 
-function mostrarNavegacion(){
+function mostrarNavegacion() {
 
 
-const nav =
-document.getElementById(
-    'preguntas-nav'
-);
+    const nav =
+        document.getElementById(
+            'preguntas-nav'
+        );
 
 
-nav.innerHTML = '';
+    nav.innerHTML = '';
+
+    preguntas.forEach(
+        (pregunta, index) => {
+
+            let estado = 'sin-respuesta';
+
+            if (pregunta.resposta_usuario) {
+                estado = 'contestada';
+            }
+
+            if (index === preguntaActual) {
+                estado = 'activa';
+            }
+
+            nav.innerHTML += `
+            <button
+                class="pregunta-numero ${estado}"
+                data-pregunta="${index}">
+                ${index + 1}
+            </button>
+            `;
+
+        });
 
 
+    document
+        .querySelectorAll(
+            '.pregunta-numero'
+        )
+        .forEach(button => {
 
-preguntas.forEach(
-(pregunta,index)=>{
-
-
-let estado = '';
-
-
-
-if(
-pregunta.resposta_usuario
-){
-
-    estado =
-    'contestada';
-
+            button.addEventListener(
+                'click',
+                () => {
+                    preguntaActual = Number(button.dataset.pregunta);
+                    mostrarNavegacion();
+                    mostrarPregunta();
+                });
+        });
 }
-
-
-
-if(
-index === preguntaActual
-){
-
-    estado =
-    'activa';
-
-}
-
-
-
-nav.innerHTML += `
-
-<button
-class="pregunta-numero ${estado}"
-data-pregunta="${index}">
-
-${index + 1}
-
-</button>
-
-`;
-
-});
-
-
-document
-.querySelectorAll(
-'.pregunta-numero'
-)
-.forEach(button=>{
-
-
-button.addEventListener(
-'click',
-()=>{
-
-
-preguntaActual =
-Number(
-button.dataset.pregunta
-);
-
-
-mostrarPregunta();
-
-});
-
-});
-
-
-}
-async function cargarTest(){
+async function cargarTest() {
 
     const response =
-    await fetch(
-        `${API}/tests/${idTest}/preguntas`
-    );
+        await fetch(
+            `${API}/tests/${idTest}/preguntas`
+        );
 
-    preguntas =
-    await response.json();
+    preguntas = await response.json();
 
     mostrarNavegacion();
     mostrarPregunta();
@@ -118,16 +83,14 @@ function mostrarPregunta() {
 
 
     document
-        .getElementById(
-            'contadorPregunta'
-        )
+        .getElementById('contadorPregunta')
         .textContent =
         `
-Pregunta
-${preguntaActual + 1}
-de
-${preguntas.length}
-`;
+        Pregunta
+        ${preguntaActual + 1}
+        de
+        ${preguntas.length}
+        `;
 
 
     document
@@ -141,91 +104,89 @@ ${preguntas.length}
 ${pregunta.opciones
     .map(opcion => `
 
-<label>
+        <label>
 
-<input
-type="radio"
-name="respuesta"
-value="${opcion.letra_opcion}"
-${pregunta.resposta_usuario === opcion.letra_opcion ? 'checked' : ''}
->
+        <input
+        type="radio"
+        name="respuesta"
+        value="${opcion.letra_opcion}"
+        ${pregunta.resposta_usuario === opcion.letra_opcion ? 'checked' : ''}
+        >
+        ${opcion.texto}
+        </label>
+        `)
+        .join('')}
 
-${opcion.texto}
+        `;
 
-</label>
-
-`)
-.join('')}
-
-`;
-
-
-document
-.querySelectorAll(
-    'input[name="respuesta"]'
-)
-.forEach(input=>{
+    document
+        .querySelectorAll(
+            'input[name="respuesta"]'
+        )
+        .forEach(input => {
 
 
-    input.addEventListener(
-    'change',
-    ()=>{
+            input.addEventListener(
+                'change',
+                () => {
 
-        guardarRespuesta(
-            pregunta.id_pregunta,
-            input.value
-        );
+                    guardarRespuesta(
+                        pregunta.id_pregunta,
+                        input.value
+                    );
 
-        pregunta.resposta_usuario =
-        input.value;
-    });
+                    pregunta.resposta_usuario = input.value;
 
-});
-
+                    mostrarNavegacion();
+                });
+        });
 }
 
 async function guardarRespuesta(
     idPregunta,
     respuesta
-){
+) {
 
     const response =
-    await fetch(
-        `${API}/tests/${idTest}/preguntas/${idPregunta}/resposta`,
-        {
+        await fetch(
+            `${API}/tests/${idTest}/preguntas/${idPregunta}/resposta`,
+            {
 
-        method:'PUT',
+                method: 'PUT',
 
-        headers:{
-            'Content-Type':'application/json'
-        },
+                headers: {
+                    'Content-Type': 'application/json'
+                },
 
-        body:JSON.stringify({
+                body: JSON.stringify({
 
-            resposta_usuario:respuesta
+                    resposta_usuario: respuesta
 
-        })
+                })
 
-        }
-    );
+            }
+        );
 
 }
 
 
 document
-    .getElementById(
-        'siguienteBtn'
-    )
-    .onclick = () => {
+    .getElementById('siguienteBtn')
+    .onclick = async () => {
 
         if (preguntaActual < preguntas.length - 1) {
             preguntaActual++;
+            mostrarNavegacion();
             mostrarPregunta();
-        }
-        else {
-            finalizarTest();
-        }
 
+        } else {
+
+            const confirmar = confirm('Has llegado a la última pregunta. ¿Deseas finalizar el test?');
+
+            if (confirmar) {
+                finalizarTest();
+            }
+        }
     };
 
 document
@@ -236,79 +197,73 @@ document
 
         if (preguntaActual > 0) {
             preguntaActual--;
+            mostrarNavegacion();
             mostrarPregunta();
         }
     };
 
 document
-.getElementById(
-'finalizarBtn'
-)
-.onclick =
-finalizarTest;
+    .getElementById(
+        'finalizarBtn'
+    )
+    .onclick =
+    finalizarTest;
 
 
-function preguntasSinResponder(){
+function preguntasSinResponder() {
 
     return preguntas.filter(
-    pregunta =>
-    !pregunta.resposta_usuario
+        pregunta =>
+            !pregunta.resposta_usuario
     ).length;
 
 }
 
-async function finalizarTest(){
+async function finalizarTest() {
+
+    const pendientes =
+        preguntasSinResponder();
+
+    if (pendientes > 0) {
+
+        const confirmar =
+            confirm(
+                `Tienes ${pendientes} preguntas sin responder. ¿Quieres finalizar igualmente?`
+            );
 
 
-const pendientes =
-preguntasSinResponder();
-
-
-
-if(pendientes > 0){
-
-const confirmar =
-confirm(
-`Tienes ${pendientes} preguntas sin responder. ¿Quieres finalizar igualmente?`
-);
-
-
-if(!confirmar){
-    return;
-}
-
-}
-
-await actualizarTestFinalizado();
-
-window.location.href = `resultado.html?idTest=${idTest}`;
-
-}
-
-async function actualizarTestFinalizado(){
-    const response =
-    await fetch(
-        `${API}/tests/${idTest}`,
-        {
-
-        method:'PUT',
-
-        headers:{
-            'Content-Type':'application/json'
-        },
-
-        body:JSON.stringify({
-
-            duracion:null,
-            resultado:null,
-            finalizado:1
-
-        })
-
+        if (!confirmar) {
+            return;
         }
-    );
+
+    }
+
+    await actualizarTestFinalizado();
+
+    window.location.href = `resultado.html?idTest=${idTest}`;
 
 }
 
+async function actualizarTestFinalizado() {
+    const response =
+        await fetch(
+            `${API}/tests/${idTest}`,
+            {
 
+                method: 'PUT',
+
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+
+                body: JSON.stringify({
+                    duracion: null,
+                    resultado: null,
+                    finalizado: 1
+                })
+
+            }
+        );
+
+}
 cargarTest();

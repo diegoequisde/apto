@@ -99,33 +99,40 @@ const findPreguntaById = async (id) => {
 
 };
 
-
 // el testController mezcla las preguntas. Es redundante?
 const findPreguntasAleatorias = async (
-    id_tema,
-    cantidad
+    idTema,
+    cantidad,
+    soloAdmin = false
 ) => {
 
-    const [rows] = await pool.query(`
+    let sql = `
+        SELECT p.id_pregunta
+        FROM pregunta p
+        INNER JOIN usuario u
+        ON p.id_usuario = u.id_usuario
+        WHERE p.estado_pregunta = 'activa'
+        AND p.id_tema = ?
+    `;
 
-        SELECT
-            id_pregunta
+    if (soloAdmin) {
+        sql += `
+            AND u.tipo = 'admin'
+        `;
+    }
 
-        FROM pregunta
-
-        WHERE estado_pregunta = 'activa'
-
-        AND id_tema = ?
-
+    sql += `
         ORDER BY RAND()
-
         LIMIT ?
+    `;
 
-    `, [
-        id_tema,
-        Number(cantidad)
-    ]);
-
+    const [rows] = await pool.query(
+        sql,
+        [
+            idTema,
+            Number(cantidad)
+        ]
+    );
 
     return rows;
 

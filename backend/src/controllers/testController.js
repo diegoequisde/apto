@@ -1,5 +1,9 @@
 const asyncHandler = require('../middlewares/asyncHandler');
 
+const xerarDistribucionExame = require('../utils/generadorExamenOficial');
+const { crearExameOficial } = require('../services/examenOficialService');
+const examenesOficiais = require('../config/examenesOficiais');
+
 const {
     findAllTests,
     findTestsByUsuario,
@@ -97,6 +101,7 @@ const getTestById = asyncHandler(async (req, res) => {
 
 });
 
+
 const createTest = asyncHandler(async (req, res) => {
 
     const {
@@ -152,18 +157,61 @@ const createTest = asyncHandler(async (req, res) => {
     }
 
     res.status(201).json({
-
         ok: true,
-
-        mensaje:
-            'Test creado correctamente',
-
+        mensaje: 'Test creado correctamente',
         id_test
-
     });
 
 });
+const createTestOficial = asyncHandler(async (req, res) => {
 
+    try {
+
+        const {
+            id_usuario,
+            id_oposicion
+        } = req.body;
+
+        console.log(req.body);
+
+        const id_test =
+            await insertTest(
+                id_usuario,
+                null
+            );
+
+        const preguntas =
+            await crearExameOficial(
+                id_oposicion
+            );
+
+        console.log(preguntas);
+
+        for (let i = 0; i < preguntas.length; i++) {
+
+            await insertPreguntaToTest(
+                id_test,
+                preguntas[i].id_pregunta,
+                i + 1
+            );
+
+        }
+
+        res.status(201).json({
+            ok: true,
+            mensaje: 'Exame oficial creado correctamente',
+            id_test
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        throw error;
+
+    }
+
+});
 const updateTest = asyncHandler(async (req, res) => {
 
     const { id } =
@@ -207,7 +255,6 @@ const updateTest = asyncHandler(async (req, res) => {
         });
 
     }
-
 
 
     res.json({
@@ -264,6 +311,7 @@ module.exports = {
     getHistorial,
     getTestById,
     createTest,
+    createTestOficial,
     updateTest,
     deleteTest,
     getRevisionTest

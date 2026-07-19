@@ -16,6 +16,7 @@ const {
     getRevisionTest,
     getTestById,
     createTest,
+    createTestOficial,
     updateTest,
     deleteTest
 } = require('../controllers/testController');
@@ -25,6 +26,8 @@ router.get('/', getTests);
 router.get('/estadisticas', getEstadisticas);
 
 router.get('/historial', getHistorial);
+
+router.post('/oficial', validateRequiredFields(['id_usuario', 'id_oposicion']), createTestOficial);
 
 router.get('/:id/resultado', getResultadoTest);
 

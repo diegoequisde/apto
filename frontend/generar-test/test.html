@@ -8,27 +8,58 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
 <link rel="stylesheet" href="/css/styles.css">
 
+<!-- favicon--> 
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+
 </head>
+
 <body>
 <main class="container">
 
-<h1>Simulación de Test</h1>
-<section class="card">
+    <h1>Simulación de Test</h1>
 
-<div id="preguntas-nav" class="preguntas-nav"></div>
+    <div class="test-layout">
 
-</section>
+        <section class="test-main">
 
-<p id="contadorPregunta"></p>
+            <p id="contadorPregunta"></p>
 
-<section class="card" id="question-container">
-</section>
+            <section
+                class="card"
+                id="question-container">
+            </section>
 
-<button id="anteriorBtn">Anterior</button>
-<button id="siguienteBtn">Siguiente</button>
-<button id="finalizarBtn">Finalizar test</button>
+            <div class="acciones-test">
+                <button id="anteriorBtn">Anterior</button>
+                <button id="siguienteBtn">Siguiente</button>
+                <button id="finalizarBtn">
+                    Finalizar test
+                </button>
+            </div>
 
-</main> 
+        </section>
+
+        <aside class="test-sidebar">
+
+            <section class="card">
+
+                <h4>Preguntas</h4>
+
+                <div
+                    id="preguntas-nav"
+                    class="preguntas-nav">
+                </div>
+
+            </section>
+
+        </aside>
+
+    </div>
+
+</main>
 
 <script src="./js/test.js"></script>
 

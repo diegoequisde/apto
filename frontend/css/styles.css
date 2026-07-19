@@ -8,8 +8,10 @@
 
 :root {
     --apto-primary: #114dd0;
-        /* color actual cumple con AAA (contraste 7.01)
+    /* color actual cumple con AAA (contraste 7.01)
         el anterior cumple AA y se queda cerca de AAA: #2563eb;*/
+    /* font-size reduce todo el tamaño ya que PicoCss basa las medidas en rem*/
+    font-size:15px;
 }
 
 body {
@@ -28,8 +30,18 @@ body {
     font-size: 1.3rem;
 }
 
-/* GENERAL */
+.logo{
+    display:flex;
+    align-items:center;
+    gap:.6rem;
+}
 
+.logo span{
+    font-weight:700;
+    font-size:.8rem;
+}
+
+/* GENERAL */
 .container {
     max-width: 1100px;
     margin: auto;
@@ -92,94 +104,107 @@ body {
 }
 
 .summary-grid {
-    display:grid;
+    display: grid;
     grid-template-columns:
-    repeat(
-        auto-fit,
-        minmax(150px,1fr)
-        );
-    gap:1rem;
-
+        repeat(auto-fit,
+            minmax(150px, 1fr));
+    gap: 1rem;
 }
 
 
 .summary-card {
-    padding:1rem;
-    text-align:center;
-
+    padding: 1rem;
+    text-align: center;
 }
 
 
 .summary-card span {
-    display:block;
-    font-size:1.5rem;
-    font-weight:bold;
+    display: block;
+    font-size: 1.5rem;
+    font-weight: bold;
 }
+
+/* Realización de test */
+.test-layout {
+    display: grid;
+    grid-template-columns:1fr minmax(260px, 18%);
+    gap: 2rem;
+    align-items: start;
+}
+
+.test-sidebar {
+    position: sticky;
+    top: 1rem;
+}
+
 
 /* Navegación preguntas */
 .preguntas-nav {
-    display:grid;
-    grid-template-columns:repeat(5,1fr);
-    gap:0.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(2rem, 1fr));
+    gap: .2rem;
 }
 
-.pregunta-numero {
-    padding:0.5rem;
+.pregunta-numero{
+    width:100%;
+    aspect-ratio:1/1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:0;
+    font-size:clamp(.65rem,1vw,.9rem);
+    font-weight:600;
+    background:#e5e7eb;
+    color:#e5e7eb;
+    border:1px solid #d1d5db;
 }
 
-.pregunta-numero.contestada {
-    background:#d7efff;
+.pregunta-numero.sin-respuesta{
+    background:#e5e7eb;
+    color:#6b7280;
+}
+
+.pregunta-numero.contestada{
+    background:#38a9e6;
     color:#0172ad;
-
 }
 
-.pregunta-numero.activa {
-    background: --apto-primary;
+.pregunta-numero.activa{
+    background:var(--apto-primary);
     color:white;
 }
-
-
 .pregunta-numero.correcta {
-    background:#2ecc71;
-    color:white;
+    background: #2ecc71;
+    color: white;
 }
-
 
 .pregunta-numero.fallada {
-    background:#e74c3c;
-    color:white;
-}
-
-
-.pregunta-numero.sin-respuesta {
-    background:#e5e7eb;
+    background: #e74c3c;
+    color: white;
 }
 
 .opcion {
-    padding:0.75rem;
-    border-radius:8px;
+    padding: 0.75rem;
+    border-radius: 8px;
 }
-
 
 .opcion.correcta {
-    background:#2ecc71;
-    color:white;
+    background: #2ecc71;
+    color: white;
 }
 
-
 .opcion.fallada {
-    background:#e74c3c;
-    color:white;
+    background: #e74c3c;
+    color: white;
 }
 
 /* buscador de oposiciones*/
-
-#resultadosBusqueda article{
-    cursor:pointer;
-    padding:.5rem;
-    margin:.25rem 0;
+#resultadosBusqueda article {
+    cursor: pointer;
+    padding: .5rem;
+    margin: .25rem 0;
 }
 
-#resultadosBusqueda article:hover{
-    background:var(--pico-muted-background-color);
+#resultadosBusqueda article:hover {
+    background: var(--pico-muted-background-color);
 }
