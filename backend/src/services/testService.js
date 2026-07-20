@@ -46,47 +46,28 @@ const findResultadoTest = async (
     id_test
 ) => {
 
-
-    const [rows] = await pool.query(`
-
+   const [rows] = await pool.query(`
         SELECT
-
             COUNT(*) AS total,
+            SUM(pt.e_correcta) AS aciertos,
+            t.duracion
+        FROM pregunta_test pt
+        JOIN test t
+            ON pt.id_test = t.id_test
+        WHERE pt.id_test = ?
+    `, [id_test]);
 
-            SUM(e_correcta) AS aciertos
-
-        FROM pregunta_test
-
-        WHERE id_test = ?
-
-    `,[id_test]);
-
-
-
-    const total =
-    rows[0].total;
-
-
-    const aciertos =
-    rows[0].aciertos || 0;
-
+    const total = rows[0].total;
+    const aciertos = rows[0].aciertos || 0;
+    const duracion = rows[0].duracion || 0;
 
     return {
-
         total,
-
         aciertos,
-
-        errores:
-        total - aciertos,
-
-        nota:
-        Math.round(
-            (aciertos / total) * 100
-        )
-
+        errores: total - aciertos,
+        nota: Math.round((aciertos / total) * 100),
+        duracion
     };
-
 
 };
 

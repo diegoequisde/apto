@@ -174,17 +174,12 @@ window.eliminarTema = function(index){
 async function generarTest(){
 
     if(temasSeleccionados.length===0){
-
         alert('Engade polo menos un tema.');
-
         return;
-
     }
 
     const response =
-    await fetch(
-        `${API}/tests`,
-        {
+    await fetch(`${API}/tests`,{
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -200,33 +195,26 @@ async function generarTest(){
     await response.json();
 
     if(!response.ok){
-
         alert(data.mensaje);
-
         return;
 
     }
 
-    const duracionMinutos =
-    Number(
-        document.getElementById(
-            'duracion'
-        ).value
-    );
+    const duracionSegundos = Number(document.getElementById('duracion').value);
 
-    if(duracionMinutos > 0){
+            if(duracionSegundos > 0){
 
-        localStorage.setItem(
-            `inicio_${data.id_test}`,
-            Date.now()
-        );
+                localStorage.setItem(
+                    `inicio_${data.id_test}`,
+                    Date.now()
+                );
 
-        localStorage.setItem(
-            `limite_${data.id_test}`,
-            duracionMinutos * 60
-        );
+                localStorage.setItem(
+                    `limite_${data.id_test}`,
+                    duracionSegundos
+                );
 
-    }
+            }
 
     window.location.href =`/generar-test/test.html?idTest=${data.id_test}`;
 
