@@ -63,13 +63,12 @@ app.get('/db-test', async (req, res) => {
     }
 
 });
-
+ 
 app.use('/api/temas', temaRoutes);
 app.use('/api/preguntas', preguntaRoutes);
 app.use('/api/tests', testRoutes);
 app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/oposiciones', oposicionRoutes);
-
 
 // 404 - Ruta no encontrada
 app.use((req, res) => {
@@ -80,7 +79,6 @@ app.use((req, res) => {
     });
 
 });
-
 
 // Error handler global
 app.use(errorHandler);

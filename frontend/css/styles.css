@@ -47,6 +47,19 @@ body {
     margin: auto;
 }
 
+.page-header{
+    text-align:center;
+    margin:2rem 0 3rem;
+}
+
+.page-header h1{
+    margin-bottom:.5rem;
+}
+
+.page-header p{
+    color:var(--pico-muted-color);
+    margin:0;
+}
 
 .hero {
     text-align: center;
@@ -73,6 +86,22 @@ body {
 
 .btn-primary {
     background: var(--apto-primary);
+}
+
+/* Login */
+.login-card{
+    max-width:500px;
+    margin:auto;
+}
+
+.login-card form{
+    display:flex;
+    flex-direction:column;
+    gap:1rem;
+}
+
+.login-card p{
+    text-align:center;
 }
 
 /* Resultado*/

@@ -1,0 +1,57 @@
+const API =
+    'http://localhost:3000/api';
+
+document
+    .getElementById('loginForm')
+    .addEventListener(
+        'submit',
+        async (e) => {
+
+            e.preventDefault();
+
+            const email = document.getElementById('email').value.trim();
+
+            const password = document.getElementById('password').value;
+
+            const response =
+                await fetch(
+                    `${API}/usuarios/login`,
+                    {
+
+                        method: 'POST',
+
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+
+                        body: JSON.stringify({
+                            email,
+                            password
+                        })
+
+                    }
+                );
+
+            const data =
+                await response.json();
+
+            if (!response.ok) {
+
+                alert(data.mensaje);
+                return;
+
+            }
+
+            // guardamos en localStorage solo los datos necesarios
+            localStorage.setItem(
+                'usuario',
+                JSON.stringify({
+                    id:data.usuario.id_usuario,
+                    nome:data.usuario.nome,
+                    tipo:data.usuario.tipo
+                })
+                );
+
+            window.location.href = '/index.html';
+
+        });

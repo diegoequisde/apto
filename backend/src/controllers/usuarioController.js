@@ -4,10 +4,13 @@ const bcrypt = require('bcryptjs');
 const {
     findAllUsuarios,
     findUsuarioById,
+    findUsuarioByEmail,
+    loginUsuario,
     insertUsuario,
     updateUsuarioById,
     deleteUsuarioById
 } = require('../services/usuarioService');
+
 
 const getUsuarios = asyncHandler(async (req, res) => {
 
@@ -36,6 +39,73 @@ const getUsuarioById = asyncHandler(async (req, res) => {
 
 });
 
+const getUsuarioByEmail = asyncHandler(async (req, res) => {
+
+    const { email } = req.query;
+
+    const usuario = await findUsuarioByEmail(email);
+
+    if (!usuario) {
+
+        return res.status(404).json({
+            ok: false,
+            mensaje: 'Usuario non encontrado'
+        });
+
+    }
+
+    res.json(usuario);
+
+});
+
+const login = asyncHandler(async (req,res)=>{
+
+    const {
+        email,
+        password
+    } = req.body;
+
+    const usuario =
+    await loginUsuario(
+        email,
+        password
+    );
+
+    if(usuario === null){
+
+        return res.status(401).json({
+            ok:false,
+            mensaje:'Credenciais incorrectas'
+        });
+
+    }
+
+    if(usuario === false){
+
+        return res.status(401).json({
+            ok:false,
+            mensaje:'Credenciais incorrectas'
+        });
+
+    }
+
+    if(usuario.estado_usuario !== 'activo'){
+
+        return res.status(403).json({
+            ok:false,
+            mensaje:'Usuario inactivo'
+        });
+
+    }
+
+    res.json({
+        ok:true,
+        mensaje:'Login correcto',
+        usuario
+    });
+
+});
+
 const createUsuario = asyncHandler(async (req, res) => {
 
         const {
@@ -43,6 +113,15 @@ const createUsuario = asyncHandler(async (req, res) => {
             email,
             password
         } = req.body;
+        
+        const usuarioExistente = await findUsuarioByEmail(email);
+            
+            if(usuarioExistente){
+                return res.status(409).json({
+                    ok:false,
+                    mensaje:'Xa existe un usuario con ese correo.'
+                });
+            }
 
         const contrasinal_hash = await bcrypt.hash(password, 10);
 
@@ -73,7 +152,8 @@ const updateUsuario = asyncHandler(async (req, res) => {
         const result = await updateUsuarioById(
             id,
             nome,
-            email
+            email,
+            tipo
         );
 
         if (result.affectedRows === 0) {
@@ -114,9 +194,12 @@ const deleteUsuario = asyncHandler(async (req, res) => {
 
 });
 
+
 module.exports = {
     getUsuarios,
     getUsuarioById,
+    getUsuarioByEmail,
+    login,
     createUsuario,
     updateUsuario,
     deleteUsuario

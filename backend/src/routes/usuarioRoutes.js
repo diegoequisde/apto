@@ -13,6 +13,8 @@ const router = express.Router();
 const {
     getUsuarios,
     getUsuarioById,
+    getUsuarioByEmail,
+    login,
     createUsuario,
     updateUsuario,
     deleteUsuario
@@ -20,7 +22,9 @@ const {
 
 router.get('/', getUsuarios);
 
-router.get('/:id', validateId, getUsuarioById);
+router.get('/email', getUsuarioByEmail);
+
+router.post('/login', login);
 
 router.post(
     '/',
@@ -33,6 +37,8 @@ router.post(
     validateUsuario,
     createUsuario
 );
+
+router.get('/:id', validateId, getUsuarioById);
 
 router.put(
     '/:id',
