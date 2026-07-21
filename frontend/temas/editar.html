@@ -1,59 +1,61 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APTO | Editar tema</title>
 
-<title>APTO | Editar tema</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-<link rel="stylesheet" href="/css/styles.css">
-
-<!-- favicon--> 
-<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
 </head>
 
 <body>
 
-<div id="navbar"></div>
+    <div id="navbar"></div>
 
-<h1>Editar tema</h1>
+    <main class="container">
 
-<label>
-    Nombre
-</label>
+        <section class="page-header">
 
-<br>
+            <h1>Editar tema</h1>
 
-<input
-    type="text"
-    id="nombreTema"
->
+            <label>
+                Nombre
+            </label>
 
-<br><br>
+            <br>
 
-<label>
-    Descripción
-</label>
+            <input type="text" id="nombreTema">
 
-<br>
+            <br><br>
 
-<textarea
-    id="descripcionTema"
-    rows="6"
-></textarea>
+            <label>
+                Descripción
+            </label>
 
-<br><br>
+            <br>
 
-<button id="guardarBtn">
-    Guardar cambios
-</button>
+            <textarea id="descripcionTema" rows="6"></textarea>
 
-<script src="/js/navbar.js"></script>
-<script src="./js/editar.js"></script>
+            <br><br>
+
+            <button id="guardarBtn">
+                Guardar cambios
+            </button>
+        </section>
+    </main>
+
+    <div id="footer"></div>
+
+    <script src="/js/navbar.js"></script>
+    <script src="/js/footer.js"></script>
+    <script src="./js/editar-tema.js"></script>
 
 </body>
+
 </html>

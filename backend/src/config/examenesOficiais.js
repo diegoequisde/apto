@@ -3,7 +3,7 @@ const examenes = {
 // id oposicion 2:
 2: {
     nome: 'Administrativo Xunta',
-    duracion: 120,
+    duracion: 120, 
     totalPreguntas: 120,
     temas: [
         { orden:1,  id_tema:1,  nome:'Tema 1 - CE',                min:8,  max:12 },

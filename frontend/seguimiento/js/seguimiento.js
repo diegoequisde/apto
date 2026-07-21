@@ -189,21 +189,23 @@ function crearGraficoAcierto(){
     );
 }
 
-function formatearTiempo(
-segundos
-){
+function formatearTiempo(segundos){
 
     if(!segundos){
         return '0 min';
     }
 
+    const horas =
+    Math.floor(segundos / 3600);
 
     const minutos =
-    Math.floor(
-        segundos / 60
-    );
+    Math.floor((segundos % 3600) / 60);
 
-    return `${minutos} min`;
+    if(horas === 0){
+        return `${minutos} min`;
+    }
+
+    return `${horas} h ${minutos} min`;
 
 }
 

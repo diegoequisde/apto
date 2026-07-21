@@ -11,6 +11,23 @@ const idTest =
 
 let preguntas = [];
 let preguntaActual = 0;
+let inicioTest = null;
+let intervaloTemporizador;
+
+const inicio =
+Number(
+    localStorage.getItem(
+        `inicio_${idTest}`
+    )
+);
+
+const limite =
+Number(
+    localStorage.getItem(
+        `limite_${idTest}`
+    )
+);
+
 
 function mostrarNavegacion() {
 
@@ -65,14 +82,59 @@ function mostrarNavegacion() {
 async function cargarTest() {
 
     const response =
-        await fetch(
-            `${API}/tests/${idTest}/preguntas`
-        );
+        await fetch(`${API}/tests/${idTest}/preguntas`);
 
     preguntas = await response.json();
 
     mostrarNavegacion();
     mostrarPregunta();
+
+}
+
+function iniciarTemporizador(){
+
+    if(
+        !inicio ||
+        !limite
+    ){
+        return;
+    }
+
+    intervaloTemporizador =
+    setInterval(()=>{
+
+        const transcurrido =
+        Math.floor(
+            (
+                Date.now() - inicio
+            ) / 1000
+        );
+
+        const restante =
+        limite - transcurrido;
+
+        if(restante <= 0){
+
+            clearInterval(
+                intervaloTemporizador
+            );
+
+            finalizarTest(true);
+
+            return;
+
+        }
+
+        const horas = Math.floor(restante / 3600);
+        const minutos = Math.floor((restante % 3600) / 60);
+        const segundos = restante % 60;
+
+        document
+        .getElementById('temporizador')
+        .textContent =
+        `${String(horas).padStart(2,'0')}:${String(minutos).padStart(2,'0')}:${String(segundos).padStart(2,'0')}`;
+
+    },1000);
 
 }
 
@@ -219,32 +281,44 @@ function preguntasSinResponder() {
 
 }
 
-async function finalizarTest() {
+async function finalizarTest(automatico = false) {
 
     const pendientes =
         preguntasSinResponder();
 
-    if (pendientes > 0) {
+    if(
+    pendientes > 0 &&
+    !automatico
+){
 
-        const confirmar =
-            confirm(
-                `Tienes ${pendientes} preguntas sin responder. ¿Quieres finalizar igualmente?`
-            );
+    const confirmar =
+    confirm(`Tienes ${pendientes} preguntas sin responder. ¿Quieres finalizar igualmente?`);
 
-
-        if (!confirmar) {
-            return;
-        }
-
+    if(!confirmar){
+        return;
     }
 
+}
+
+if(automatico){
+    alert('Tempo esgotado. O exame finalizouse automaticamente.');
+}
+
     await actualizarTestFinalizado();
+
+    localStorage.removeItem(`inicio_${idTest}`);
+    localStorage.removeItem(`limite_${idTest}`);
 
     window.location.href = `resultado.html?idTest=${idTest}`;
 
 }
 
 async function actualizarTestFinalizado() {
+
+    const duracion = Math.floor(
+        (Date.now() - inicio) / 1000
+    );
+
     const response =
         await fetch(
             `${API}/tests/${idTest}`,
@@ -257,7 +331,7 @@ async function actualizarTestFinalizado() {
                 },
 
                 body: JSON.stringify({
-                    duracion: null,
+                    duracion,
                     resultado: null,
                     finalizado: 1
                 })
@@ -266,4 +340,7 @@ async function actualizarTestFinalizado() {
         );
 
 }
+
 cargarTest();
+
+iniciarTemporizador();

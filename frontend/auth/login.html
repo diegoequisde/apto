@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="gl">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APTO | Iniciar sesión </title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+</head>
+
+<body>
+    <main>
+        <section class="page-header">
+            <h1>Iniciar sesión</h1>
+            <p>Accede a tu cuenta para continuar.</p>
+        </section>
+
+        <section class="card login-card">
+
+            <form id="loginForm">
+
+                <label>
+                    Correo electrónico
+                    <input type="email" id="email" required>
+                </label>
+
+                <label>
+                    Contraseña
+                    <input type="password" id="password" required>
+                </label>
+
+                <button type="submit">
+                    Iniciar sesión
+                </button>
+
+            </form>
+
+            <hr>
+
+            <p>
+                ¿No tienes cuenta?
+                <a href="/auth/registro.html">
+                    Crear cuenta
+                </a>
+            </p>
+
+        </section>
+    </main>
+
+</body>
+
+<script src="/auth/js/login.js"></script>
+
+</html>

@@ -1,4 +1,5 @@
 const pool = require('../config/db');
+const bcrypt = require('bcryptjs');
 
 const findAllUsuarios = async () => {
 
@@ -35,6 +36,66 @@ const findUsuarioById = async (id) => {
 
 };
 
+const findUsuarioByEmail = async (email) => {
+
+    const [rows] = await pool.query(`
+        SELECT
+            id_usuario,
+            nome,
+            email,
+            contrasinal_hash,
+            tipo,
+            estado_usuario
+        FROM usuario
+        WHERE email = ?
+    `, [email]);
+
+    return rows[0] || null;
+
+};
+
+
+const loginUsuario = async (
+    email,
+    password
+) => {
+
+    const [rows] =
+    await pool.query(`
+        SELECT
+            id_usuario,
+            nome,
+            email,
+            contrasinal_hash,
+            tipo,
+            estado_usuario
+        FROM usuario
+        WHERE email = ?
+    `,[email]);
+
+    if(rows.length === 0){
+        return null;
+    }
+
+    const usuario =
+    rows[0];
+
+    const passwordCorrecta =
+    await bcrypt.compare(
+        password,
+        usuario.contrasinal_hash
+    );
+
+    if(!passwordCorrecta){
+        return false;
+    }
+
+    delete usuario.contrasinal_hash;
+
+    return usuario;
+
+};
+
 const insertUsuario = async (
     nome,
     email,
@@ -46,9 +107,10 @@ const insertUsuario = async (
             nome,
             email,
             contrasinal_hash,
-            tipo
+            tipo,
+            estado_usuario
         )
-        VALUES (?, ?, ?, 'free')
+        VALUES (?, ?, ?, 'free', 'activo')
     `, [
         nome,
         email,
@@ -77,6 +139,7 @@ const updateUsuarioById = async (
     `, [
         nome,
         email,
+        tipo,
         id
     ]);
 
@@ -96,9 +159,12 @@ const deleteUsuarioById = async (id) => {
 
 };
 
+
 module.exports = {
     findAllUsuarios,
     findUsuarioById,
+    findUsuarioByEmail,
+    loginUsuario,
     insertUsuario,
     updateUsuarioById,
     deleteUsuarioById

@@ -174,17 +174,12 @@ window.eliminarTema = function(index){
 async function generarTest(){
 
     if(temasSeleccionados.length===0){
-
         alert('Engade polo menos un tema.');
-
         return;
-
     }
 
     const response =
-    await fetch(
-        `${API}/tests`,
-        {
+    await fetch(`${API}/tests`,{
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -200,18 +195,30 @@ async function generarTest(){
     await response.json();
 
     if(!response.ok){
-
         alert(data.mensaje);
-
         return;
 
     }
 
-    window.location.href =
-    `/generar-test/test.html?idTest=${data.id_test}`;
+    const duracionSegundos = Number(document.getElementById('duracion').value);
+
+            if(duracionSegundos > 0){
+
+                localStorage.setItem(
+                    `inicio_${data.id_test}`,
+                    Date.now()
+                );
+
+                localStorage.setItem(
+                    `limite_${data.id_test}`,
+                    duracionSegundos
+                );
+
+            }
+
+    window.location.href =`/generar-test/test.html?idTest=${data.id_test}`;
 
 }
-
 
 document
 .getElementById(
@@ -280,8 +287,17 @@ async function generarTestOficial(idOposicion){
 
     }
 
-    window.location.href =
-    `/generar-test/test.html?idTest=${data.id_test}`;
+    localStorage.setItem(
+        `inicio_${data.id_test}`,
+        Date.now()
+    );
+
+    localStorage.setItem(
+        `limite_${data.id_test}`,
+        data.duracion * 60
+    );
+
+    window.location.href =`/generar-test/test.html?idTest=${data.id_test}`;
 
 }
 

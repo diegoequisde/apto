@@ -3,93 +3,93 @@
 
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>APTO | Resultado del test</title>
+    <title>APTO | Resultado del test</title>
 
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-<link rel="stylesheet" href="/css/styles.css">
-<!-- favicon--> 
-<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <!-- favicon-->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
 
 </head>
 
 
 <body>
 
-<div id="navbar"></div>
+    <div id="navbar"></div>
 
-<main class="container">
+    <main class="container">
 
-<section class="page-header">
-
-
-<h1>Resultado del test</h1>
-
-<p>Resumen de tu simulacro</p>
-
-</section>
-
-<section class="grid">
-
-<article class="card">
+        <section class="page-header">
 
 
-<h2>Aciertos</h2>
+            <h1>Resultado del test</h1>
 
-<p class="resultado-numero" id="aciertos">0</p>
+            <p>Resumen de tu simulacro</p>
 
-</article>
+        </section>
 
-<article class="card">
+        <section class="grid">
 
-<h2>Errores</h2>
+            <article class="card">
 
-<p class="resultado-numero" id="errores">0</p>
 
-</article>
+                <h2>Aciertos</h2>
 
-<article class="card">
+                <p class="resultado-numero" id="aciertos">0</p>
 
-<h2>Nota</h2>
+            </article>
 
-<p class="resultado-numero" id="nota">0%</p>
+            <article class="card">
 
-</article>
+                <h2>Errores</h2>
 
-</section>
+                <p class="resultado-numero" id="errores">0</p>
 
-<section class="card">
+            </article>
 
-<h2>Resumen</h2>
+            <article class="card">
 
-<ul>
+                <h2>Nota</h2>
 
-<li>Preguntas contestadas:
-<span id="totalPreguntas"></span>
-</li>
+                <p class="resultado-numero" id="nota">0%</p>
 
-<li>Tiempo empleado:<span id="tiempo"></span>
-</li>
+            </article>
 
-</ul>
+        </section>
 
-</section>
+        <section class="card">
 
-    <a href="/generar-test/index.html" role="button">Nuevo test</a>
-    <a id="revisionBtn" role="button">Revisar respuestas</a>
-    <a href="/seguimiento/index.html" role="button" class="secondary">Ver seguimiento</a>
-    <a href="/historial/index.html" role="button" class="secondary">Ver historial</a>
+            <h2>Resumen</h2>
 
-</main>
+            <ul>
 
-<script src="/js/navbar.js"></script>
-<script src="./js/resultado.js"></script>
+                <li>Total de preguntas:
+                    <span id="totalPreguntas"></span>
+                </li>
+
+                <li>Tiempo empleado:<span id="tiempo"></span>
+                </li>
+
+            </ul>
+
+        </section>
+
+        <a href="/generar-test/index.html" role="button">Nuevo test</a>
+        <a id="revisionBtn" role="button">Revisar respuestas</a>
+        <a href="/seguimiento/index.html" role="button" class="secondary">Ver seguimiento</a>
+        <a href="/historial/index.html" role="button" class="secondary">Ver historial</a>
+
+    </main>
+
+    <script src="/js/navbar.js"></script>
+    <script src="./js/resultado.js"></script>
 
 
 </body>
