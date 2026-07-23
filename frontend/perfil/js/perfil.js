@@ -1,13 +1,11 @@
-const API =
-    'http://localhost:3000/api';
+const API = 'http://localhost:3000/api';
 
-const idUsuario = 1; // esto caundo hagamos la autenticación, lo sacaremos del token o de la sesión del usuario logeado
+requireLogin();
 
-const buscador =
-document.getElementById('buscarOposicion');
-
-const resultados =
-document.getElementById('resultadosBusqueda');
+const usuario = getUsuarioActual();
+const idUsuario = usuario.id;
+const buscador = document.getElementById('buscarOposicion');
+const resultados = document.getElementById('resultadosBusqueda');
 
 buscador.addEventListener(
     'input',

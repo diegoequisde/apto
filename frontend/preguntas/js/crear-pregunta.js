@@ -1,3 +1,5 @@
+requireLogin();
+
 const API =
     'http://localhost:3000/api';
 
@@ -82,24 +84,30 @@ async function guardarPregunta() {
             'idTema'
         ).value;
 
-    const response =
+   const response =
         await fetch(
             `${API}/preguntas`,
             {
-                method: 'POST',
-                headers: {
-                    'Content-Type':
-                        'application/json'
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
                 },
-                body: JSON.stringify({
+                body:JSON.stringify({
                     enunciado,
-                    id_tema: idTema
+                    id_tema:idTema
                 })
             }
         );
 
-    const pregunta =
+        const pregunta =
         await response.json();
+
+        if(!response.ok){
+
+            alert(pregunta.mensaje);
+            return;
+
+        }
 
     const idPregunta =
         pregunta.id_pregunta;

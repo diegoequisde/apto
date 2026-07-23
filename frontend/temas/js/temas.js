@@ -1,5 +1,7 @@
+requireLogin();
+
 const API =
-    'http://localhost:3000/api';
+'http://localhost:3000/api';
 
 const temasList =
     document.getElementById('temasList');
@@ -77,21 +79,32 @@ async function eliminarTema(id) {
         return;
     }
 
-    await fetch(
-        `${API}/temas/${id}`,
-        {
-            method: 'DELETE'
-        }
-    );
+    const response =
+        await fetch(
+            `${API}/temas/${id}`,
+            {
+                method:'DELETE'
+            }
+        );
 
-    cargarTemas();
+        if(!response.ok){
+
+            alert('Non foi posible eliminar o tema.');
+            return;
+
+        }
+
+cargarTemas();
 
 }
 
-function irCrearTema() {
+function irCrearTema(){
 
-    window.location.href =
-        './crear.html';
+    if(!puede('usuario')){
+        return;
+    }
+
+    window.location.href = './crear.html';
 
 }
 

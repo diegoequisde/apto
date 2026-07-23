@@ -43,15 +43,13 @@ document
             }
 
             // guardamos en localStorage solo los datos necesarios
-            localStorage.setItem(
-                'usuario',
-                JSON.stringify({
-                    id:data.usuario.id_usuario,
-                    nome:data.usuario.nome,
-                    tipo:data.usuario.tipo
-                })
-                );
+            guardarUsuario({
+                id: data.usuario.id_usuario,
+                nome: data.usuario.nome,
+                email: data.usuario.email,
+                tipo: data.usuario.tipo
+            });
 
-            window.location.href = '/index.html';
+            window.location.href = '/';
 
         });

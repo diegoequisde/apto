@@ -1,3 +1,5 @@
+requireLogin();
+
 const API =
     'http://localhost:3000/api';
 
@@ -48,42 +50,35 @@ async function cargarPreguntas() {
     const data =
     await response.json();
 
-    // botones de paginación:
-    document
-    .getElementById(
-        'anteriorBtn'
-    )
-    .addEventListener(
-        'click',
-        () => {
+    let paginaActual = 1;
 
-            if (
-                paginaActual > 1
-            ) {
+const limite = 20;
 
-                paginaActual--;
 
-                cargarPreguntas();
+// botones de paginación
+document
+.getElementById('anteriorBtn')
+.addEventListener('click',()=>{
 
-            }
+    if(paginaActual > 1){
 
-        }
-    );
+        paginaActual--;
+
+        cargarPreguntas();
+
+    }
+
+});
 
 document
-    .getElementById(
-        'siguienteBtn'
-    )
-    .addEventListener(
-        'click',
-        () => {
+.getElementById('siguienteBtn')
+.addEventListener('click',()=>{
 
-            paginaActual++;
+    paginaActual++;
 
-            cargarPreguntas();
+    cargarPreguntas();
 
-        }
-    );
+});
 
 document
     .getElementById(
@@ -153,10 +148,13 @@ document
 
 }
 
-function irCrearPregunta() {
+function irCrearPregunta(){
 
-    window.location.href =
-        './crear.html';
+    if(!puede('usuario')){
+        return;
+    }
+
+    window.location.href = './crear.html';
 
 }
 
@@ -177,12 +175,20 @@ async function eliminarPregunta(id) {
         return;
     }
     
-    await fetch(
-        `${API}/preguntas/${id}`,
-        {
-            method: 'DELETE'
+    const response =
+        await fetch(
+            `${API}/preguntas/${id}`,
+            {
+                method:'DELETE'
+            }
+        );
+
+        if(!response.ok){
+
+            alert('Non foi posible eliminar a pregunta.');
+            return;
+
         }
-    );
 
     cargarPreguntas();
 

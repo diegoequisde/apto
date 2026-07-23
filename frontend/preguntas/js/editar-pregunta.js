@@ -1,3 +1,5 @@
+requireLogin();
+
 const API =
     'http://localhost:3000/api';
 
@@ -163,10 +165,11 @@ async function guardarCambios() {
             'idTema'
         ).value;
 
-    await fetch(
-        `${API}/preguntas/${idPregunta}`,
-        {
-            method: 'PUT',
+    const response =
+        await fetch(
+            `${API}/preguntas/${idPregunta}`,
+            {
+                method:'PUT',
             headers: {
                 'Content-Type':
                     'application/json'
@@ -177,6 +180,14 @@ async function guardarCambios() {
             })
         }
     );
+ 
+
+    if(!response.ok){
+
+    alert('Erro ao actualizar a pregunta.');
+    return;
+
+}
 
     const correcta =
         document.querySelector(
@@ -193,7 +204,7 @@ async function guardarCambios() {
             `texto-${letra}`
         ).value;
 
-
+    const response = 
         await fetch(
             `${API}/preguntas/${idPregunta}/opciones/${letra}`,
             {
@@ -209,6 +220,11 @@ async function guardarCambios() {
                 })
             }
         );
+
+        if(!response.ok){
+            alert('Erro ao actualizar unha opción.');
+            return;
+}
 
     }
 

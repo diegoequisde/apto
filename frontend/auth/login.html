@@ -56,6 +56,14 @@
 
 </body>
 
-<script src="/auth/js/login.js"></script>
+<script src="/auth/js/auth.js"></script>
+
+<script>
+    if (estaLogueado()) {
+        window.location.href = '/index.html';
+    }
+</script>
+
+<script src="./js/login.js"></script>
 
 </html>
