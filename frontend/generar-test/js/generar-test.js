@@ -1,3 +1,5 @@
+requireLogin();
+
 const API =
 'http://localhost:3000/api';
 
@@ -185,6 +187,7 @@ async function generarTest(){
                 'Content-Type':'application/json'
             },
             body:JSON.stringify({
+                // TODO: sustituir por el usuario autenticado cuando se implemente JWT
                 id_usuario:1,
                 temas:temasSeleccionados
             })
@@ -263,6 +266,19 @@ document
 
 async function generarTestOficial(idOposicion){
 
+    if (!puede('premium')) {
+
+        alert(
+            'Os simulacros oficiais están dispoñibles só para usuarios Premium.'
+        );
+
+        window.location.href =
+            '/suscripcion/planes.html';
+
+        return;
+
+    }
+
     const response =
     await fetch(
         `${API}/tests/oficial`,
@@ -272,6 +288,7 @@ async function generarTestOficial(idOposicion){
                 'Content-Type':'application/json'
             },
             body:JSON.stringify({
+                // TODO: sustituir por el usuario autenticado cuando se implemente JWT
                 id_usuario:1,
                 id_oposicion:idOposicion
             })

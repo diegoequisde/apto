@@ -1,15 +1,23 @@
 const API = 'http://localhost:3000/api';
 
-const buscador =
-document.getElementById('buscarOposicion');
+const buscador = document.getElementById('buscarOposicion');
 
-const resultados =
-document.getElementById('resultadosBusqueda');
+const resultados = document.getElementById('resultadosBusqueda');
 
 buscador.addEventListener(
     'input',
     buscarOposiciones
 );
+
+const btnPremium = document.getElementById('btnPremium');
+
+if (
+    btnPremium &&
+    estaLogueado() &&
+    !esFree()
+) {
+    btnPremium.remove();
+}
 
 async function buscarOposiciones(){
 

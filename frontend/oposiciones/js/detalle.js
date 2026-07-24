@@ -1,3 +1,5 @@
+requireLogin();
+
 const API =
     'http://localhost:3000/api';
 
@@ -9,12 +11,15 @@ const params =
 const idOposicion =
     params.get('id');
 
-const idUsuario = 1; /* después de la autenticación se cambiará esto
+/*const idUsuario = 1;  
+después de la autenticación se cambiará esto
 En lugar de redirigir directamente al perfil, mostraría una confirmación breve:
 ✓ Oposición engadida correctamente. [ Ir ao perfil ]
-
-
 */
+
+const usuario = getUsuarioActual();
+
+const idUsuario = usuario.id;
 
 document
     .getElementById('anadirOposicionBtn')

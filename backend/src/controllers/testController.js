@@ -53,6 +53,7 @@ const getResultadoTest = asyncHandler(async(req,res)=>{
 const getEstadisticas = asyncHandler(async(req,res)=>{
 
 const id_usuario = 1;
+// Sustituir por req.usuario.id cuando exista autenticación mediante sesión/JWT.
 
 const periodo =
 req.query.periodo || 'total';
@@ -69,7 +70,8 @@ res.json(datos);
 });
 
 const getHistorial = asyncHandler(async(req,res)=>{
-
+ 
+// Sustituir por req.usuario.id cuando exista autenticación mediante sesión/JWT.
     const id_usuario = 1;
 
     const tests =
