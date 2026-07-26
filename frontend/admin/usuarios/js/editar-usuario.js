@@ -19,29 +19,17 @@ async function cargarUsuario() {
     const usuario =
         await response.json();
 
-    document.getElementById(
-        'nombre'
-    ).value =
-        usuario.nome;
-
-    document.getElementById(
-        'email'
-    ).value =
-        usuario.email;
+    document.getElementById('nombreUsuario').value = usuario.nome;
+    document.getElementById('emailUsuario').value = usuario.email;
+    document.getElementById('tipoUsuario').value = usuario.tipo;
 
 }
 
 async function guardarCambios() {
 
-    const nome =
-        document.getElementById(
-            'nombre'
-        ).value;
-
-    const email =
-        document.getElementById(
-            'email'
-        ).value;
+    const nome = document.getElementById('nombreUsuario').value;
+    const email = document.getElementById('emailUsuario').value;
+    const tipo = document.getElementById('tipoUsuario').value;
 
     await fetch(
         `${API}/usuarios/${idUsuario}`,
@@ -53,7 +41,8 @@ async function guardarCambios() {
             },
             body: JSON.stringify({
                 nome,
-                email
+                email,
+                tipo
             })
         }
     );

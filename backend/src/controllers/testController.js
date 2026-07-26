@@ -107,15 +107,15 @@ const getTestById = asyncHandler(async (req, res) => {
 const createTest = asyncHandler(async (req, res) => {
 
     const {
-            id_usuario,
-            temas,
-            duracion
-        } = req.body;
+        id_usuario,
+        temas,
+        duracion
+    } = req.body;
 
     const id_test =
     await insertTest(
         id_usuario,
-        null
+        duracion
     );
 
    let preguntas = [];
@@ -218,13 +218,27 @@ const updateTest = asyncHandler(async (req, res) => {
 
     const { id } =
     req.params;
-
-    const {
+    
+    let {
         duracion,
         resultado,
         finalizado
     } = req.body;
 
+    if(finalizado == 1){
+
+        const test =
+        await findTestById(id);
+
+        const inicio =
+        new Date(test.data_realizacion);
+
+        duracion =
+        Math.floor(
+            (Date.now() - inicio.getTime()) / 1000
+        );
+
+    }
 
     let resultadoFinal =
     resultado;

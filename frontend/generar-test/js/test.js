@@ -8,27 +8,12 @@ const params =
         window.location.search
     );
 
-const idTest =
-    params.get('idTest');
-
+const idTest = params.get('idTest');
+ 
 let preguntas = [];
 let preguntaActual = 0;
 let inicioTest = null;
 let intervaloTemporizador;
-
-const inicio =
-Number(
-    localStorage.getItem(
-        `inicio_${idTest}`
-    )
-);
-
-const limite =
-Number(
-    localStorage.getItem(
-        `limite_${idTest}`
-    )
-);
 
 
 function mostrarNavegacion() {
@@ -90,53 +75,6 @@ async function cargarTest() {
 
     mostrarNavegacion();
     mostrarPregunta();
-
-}
-
-function iniciarTemporizador(){
-
-    if(
-        !inicio ||
-        !limite
-    ){
-        return;
-    }
-
-    intervaloTemporizador =
-    setInterval(()=>{
-
-        const transcurrido =
-        Math.floor(
-            (
-                Date.now() - inicio
-            ) / 1000
-        );
-
-        const restante =
-        limite - transcurrido;
-
-        if(restante <= 0){
-
-            clearInterval(
-                intervaloTemporizador
-            );
-
-            finalizarTest(true);
-
-            return;
-
-        }
-
-        const horas = Math.floor(restante / 3600);
-        const minutos = Math.floor((restante % 3600) / 60);
-        const segundos = restante % 60;
-
-        document
-        .getElementById('temporizador')
-        .textContent =
-        `${String(horas).padStart(2,'0')}:${String(minutos).padStart(2,'0')}:${String(segundos).padStart(2,'0')}`;
-
-    },1000);
 
 }
 
@@ -265,14 +203,13 @@ document
             mostrarPregunta();
         }
     };
-
+ 
 document
     .getElementById(
         'finalizarBtn'
     )
     .onclick =
     finalizarTest;
-
 
 function preguntasSinResponder() {
 
@@ -284,7 +221,7 @@ function preguntasSinResponder() {
 }
 
 async function finalizarTest(automatico = false) {
-
+ 
     const pendientes =
         preguntasSinResponder();
 
@@ -308,41 +245,37 @@ if(automatico){
 
     await actualizarTestFinalizado();
 
-    localStorage.removeItem(`inicio_${idTest}`);
-    localStorage.removeItem(`limite_${idTest}`);
-
     window.location.href = `resultado.html?idTest=${idTest}`;
-
 }
 
-async function actualizarTestFinalizado() {
-
-    const duracion = Math.floor(
-        (Date.now() - inicio) / 1000
-    );
+async function actualizarTestFinalizado(){
 
     const response =
-        await fetch(
-            `${API}/tests/${idTest}`,
-            {
+    await fetch(
+        `${API}/tests/${idTest}`,
+        {
+            method:'PUT',
 
-                method: 'PUT',
+            headers:{
+                'Content-Type':'application/json'
+            },
 
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+            body:JSON.stringify({
+                resultado:null,
+                finalizado:1
+            })
 
-                body: JSON.stringify({
-                    duracion,
-                    resultado: null,
-                    finalizado: 1
-                })
+        }
+    );
 
-            }
+    if(!response.ok){
+
+        throw new Error(
+            'No se pudo finalizar el test'
         );
 
+    }
+
 }
-
+ 
 cargarTest();
-
-iniciarTemporizador();

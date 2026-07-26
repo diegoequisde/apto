@@ -67,19 +67,13 @@ oposicionSelect.innerHTML += `
 
 async function cargarTemas(idOposicion){
 
-    console.log(idOposicion);
-
     const response =
     await fetch(
         `${API}/oposiciones/${idOposicion}/temas`
     );
 
-    console.log(response.status);
-
     const temas =
     await response.json();
-
-    console.log(temas);
 
     temaSelect.innerHTML='';
 
@@ -173,26 +167,36 @@ window.eliminarTema = function(index){
     pintarListaTemas();
 }
 
-async function generarTest(){
+document
+.getElementById('generarBtn')
+.addEventListener(
+    'click',
+    () => {
 
+        generarTest();
+
+    }
+);
+
+
+async function generarTest(){ 
     if(temasSeleccionados.length===0){
         alert('Engade polo menos un tema.');
         return;
     }
 
     const response =
-    await fetch(`${API}/tests`,{
-            method:'POST',
-            headers:{
-                'Content-Type':'application/json'
-            },
-            body:JSON.stringify({
-                // TODO: sustituir por el usuario autenticado cuando se implemente JWT
-                id_usuario:1,
-                temas:temasSeleccionados
-            })
-        }
-    );
+        await fetch(`${API}/tests`,{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify({
+                    id_usuario:1,
+                    temas:temasSeleccionados
+                })
+            }
+        );
 
     const data =
     await response.json();
@@ -202,22 +206,6 @@ async function generarTest(){
         return;
 
     }
-
-    const duracionSegundos = Number(document.getElementById('duracion').value);
-
-            if(duracionSegundos > 0){
-
-                localStorage.setItem(
-                    `inicio_${data.id_test}`,
-                    Date.now()
-                );
-
-                localStorage.setItem(
-                    `limite_${data.id_test}`,
-                    duracionSegundos
-                );
-
-            }
 
     window.location.href =`/generar-test/test.html?idTest=${data.id_test}`;
 
@@ -242,14 +230,6 @@ oposicionSelect.addEventListener(
 
     }
 );
-
-document
-.getElementById('generarBtn')
-.addEventListener(
-    'click',
-    generarTest
-);
-
 
 document
 .querySelectorAll('.btnOficial')

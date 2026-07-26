@@ -28,11 +28,10 @@ function aplicarPermisosNavbar(){
     navGenerarTest.style.display = 'none';
     navTemas.style.display = 'none';
     navSeguimiento.style.display = 'none';
-
+    navPremium.style.display = 'none';
     navPerfil.style.display = 'none';
     navAdmin.style.display = 'none';
-    navAdmin.style.display = 'none';
-navLogout.style.display = 'none';
+    navLogout.style.display = 'none';
 
     if(!estaLogueado()){
 
@@ -49,7 +48,6 @@ navLogout.style.display = 'none';
     navTemas.style.display = '';
     navSeguimiento.style.display = '';
     navPerfil.style.display = '';
-    navAdmin.style.display = '';
     navLogout.style.display = '';
 
     navLogin.style.display = 'none';

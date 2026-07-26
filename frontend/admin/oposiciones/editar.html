@@ -19,40 +19,47 @@
 
 <div id="navbar"></div>
 
-<h1>Editar oposición</h1>
+<main class="container">
 
-<input
-    type="text"
-    id="nombreOposicion"
-/>
+    <section class="card">
 
-<br><br>
+        <h1>Editar oposición</h1>
 
-<textarea
-    id="descripcionOposicion"
-    rows="5"
-></textarea>
+        <label>
+            Nombre
+            <input type="text" id="nombreOposicion">
+        </label>
 
-<br><br>
+        <label>
+            Descripción
+            <textarea id="descripcionOposicion" rows="5"></textarea>
+        </label>
 
-<button id="guardarBtn">
-    Guardar cambios
-</button>
+        <button id="guardarBtn">Guardar cambios</button>
 
-<hr>
+    </section>
 
-<h2>Temas de la oposición</h2>
+    <section class="card">
 
-<div id="temasOposicionContainer"></div>
+        <h2>Temas da oposición</h2>
 
-<h2>Añadir tema</h2>
+        <div id="temasOposicionContainer"></div>
 
-<select id="temaSelect"></select>
+        <hr>
 
-<button id="anadirTemaBtn">
-    Añadir tema
-</button>
+        <label>
+            Añadir tema
+            <select id="temaSelect"></select>
 
+        </label>
+
+        <button id="anadirTemaBtn">Añadir tema</button>
+
+    </section>
+
+</main>
+
+<script src="/auth/js/auth.js"></script>
 <script src="/js/navbar.js"></script>
 <script src="./js/editar-oposicion.js"></script>
 

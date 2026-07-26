@@ -20,46 +20,59 @@
 
 <div id="navbar"></div>
 
-<h1>Mi perfil</h1>
+<main class="container">
 
-<h2>Datos personales</h2>
+    <section class="card">
 
-<p>
-    <strong>Alias:</strong>
-    <span id="nombreUsuario"></span>
-</p>
+        <h1>Mi perfil</h1>
 
-<p>
-    <strong>Email:</strong>
-    <span id="emailUsuario"></span>
-</p>
+        <h2>Datos personales</h2>
 
-<p>
-    <strong>Tipo:</strong>
-    <span id="tipoUsuario"></span>
-</p>
+        <p>
+            <strong>Alias:</strong>
+            <span id="nombreUsuario"></span>
+        </p>
 
-<hr>
+        <p>
+            <strong>Email:</strong>
+            <span id="emailUsuario"></span>
+        </p>
 
-<h2>Mis oposiciones</h2>
+        <p>
+            <strong>Tipo de cuenta:</strong>
+            <span id="tipoUsuario"></span>
+        </p>
 
-<div id="oposicionesContainer"></div>
+    </section>
 
-<hr>
+    <section class="card">
 
-<h2>Añadir oposición</h2>
+        <h2>Mis oposiciones</h2>
 
-<input
-    id="buscarOposicion"
-    type="search"
-    placeholder="Buscar oposición...">
+        <div id="oposicionesContainer"></div>
 
-<div id="resultadosBusqueda"></div>
+        <hr>
 
-    <script src="/auth/js/auth.js"></script>
-    <script src="/js/navbar.js"></script>
-    <script src="/js/footer.js"></script>
-    <script src="./js/perfil.js"></script>
+        <label>
+            Añadir oposición
+
+            <input
+                id="buscarOposicion"
+                type="search"
+                placeholder="Buscar oposición...">
+
+        </label>
+
+        <div id="resultadosBusqueda"></div>
+
+    </section>
+
+</main>
+
+<script src="/auth/js/auth.js"></script>
+<script src="/js/navbar.js"></script>
+<script src="/js/footer.js"></script>
+<script src="./js/perfil.js"></script>
 
 </body>
 </html>

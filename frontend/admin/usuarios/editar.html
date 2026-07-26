@@ -19,62 +19,42 @@
 
 <div id="navbar"></div>
 
-<h1>Editar usuario</h1>
+<main class="container">
 
-<label>
-    Nombre
-</label>
+    <section class="card">
 
-<br>
+        <h1>Editar usuario</h1>
 
-<input
-    type="text"
-    id="nombreUsuario"
->
+        <label>
+            Nombre
+            <input type="text" id="nombreUsuario">
+        </label>
 
-<br><br>
+        <label>
+            Email
+            <input type="email" id="emailUsuario">
+        </label>
 
-<label>
-    Email
-</label>
+        <label>
+            Tipo de usuario
 
-<br>
+            <select id="tipoUsuario">
+                <option value="free">Free</option>
+                <option value="premium">Premium</option>
+                <option value="admin">Admin</option>
+            </select>
 
-<input
-    type="email"
-    id="emailUsuario"
->
+        </label>
 
-<br><br>
+        <button id="guardarBtn">
+            Guardar cambios
+        </button>
 
-<label>
-    Tipo de usuario
-</label>
+    </section>
 
-<br>
+</main>
 
-<select id="tipoUsuario">
-
-    <option value="free">
-        Free
-    </option>
-
-    <option value="premium">
-        Premium
-    </option>
-
-    <option value="admin">
-        Admin
-    </option>
-
-</select>
-
-<br><br>
-
-<button id="guardarBtn">
-    Guardar cambios
-</button>
-
+<script src="/auth/js/auth.js"></script>
 <script src="/js/navbar.js"></script>
 <script src="./js/editar-usuario.js"></script>
 

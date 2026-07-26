@@ -16,29 +16,32 @@
 
 </head>
 <body>
-<div id ="navbar"></div>
-<h1>Nueva oposición</h1>
 
-<input
-    type="text"
-    id="nombre"
-    placeholder="Nombre oposición"
-/>
+<div id="navbar"></div>
 
-<br><br>
+<main class="container">
 
-<textarea
-    id="descripcion"
-    rows="5"
-    placeholder="Descripción"
-></textarea>
+    <section class="card">
 
-<br><br>
+        <h1>Nueva oposición</h1>
 
-<button id="guardarBtn">
-    Guardar
-</button>
+        <label>
+            Nombre
+            <input type="text" id="nombre" placeholder="Nombre oposición">
+        </label>
 
+        <label>
+            Descripción
+            <textarea id="descripcion" rows="5" placeholder="Descripción"></textarea>
+        </label>
+
+        <button id="guardarBtn">Guardar</button>
+
+    </section>
+
+</main>
+
+<script src="/auth/js/auth.js"></script>
 <script src="/js/navbar.js"></script>
 <script src="./js/crear-oposicion.js"></script>
 
