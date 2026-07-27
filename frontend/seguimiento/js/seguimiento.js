@@ -9,15 +9,18 @@ let evolucionChart;
 let temasDistribucionChart;
 let temasAciertoChart;
 
-async function cargarEstadisticas(
-    periodo='total'
-){
+async function cargarEstadisticas(periodo='total'){
 
     const response =
     await fetch(
         `${API}/tests/estadisticas?periodo=${periodo}`
     );
 
+    if (!response.ok) {
+        alert('Non foi posible cargar as estatísticas.');
+        return;
+    }
+    
     datosEstadisticas =
         await response.json();
 
@@ -66,19 +69,26 @@ function crearGraficoEvolucion(){
 
     evolucionChart =
     new Chart(
-        document.getElementById(
-            'evolucionChart'
-        ),
+        document.getElementById('evolucionChart'),
         {
 
         type:'line',
 
         data:{
 
-            labels:
-            datosEstadisticas.evolucion.map(
-                dato=>dato.dia
-            ),
+           labels:
+            datosEstadisticas.evolucion.map(dato => {
+
+                return new Date(dato.dia)
+                    .toLocaleDateString(
+                        'es-ES',
+                        {
+                            day: '2-digit',
+                            month: 'short'
+                        }
+                    );
+
+            }),
 
 
             datasets:[
@@ -119,9 +129,7 @@ function crearGraficoDistribucion(){
 
     temasDistribucionChart =
     new Chart(
-        document.getElementById(
-            'temasDistribucionChart'
-        ),
+        document.getElementById('temasDistribucionChart'),
         {
 
         type:'doughnut',

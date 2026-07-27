@@ -12,7 +12,7 @@ const idTest = params.get('idTest');
  
 let preguntas = [];
 let preguntaActual = 0;
-let inicioTest = null;
+const inicioTest = Date.now();
 let intervaloTemporizador;
 
 
@@ -66,6 +66,7 @@ function mostrarNavegacion() {
                 });
         });
 }
+
 async function cargarTest() {
 
     const response =
@@ -250,6 +251,10 @@ if(automatico){
 
 async function actualizarTestFinalizado(){
 
+    const duracion = Math.floor(
+        (Date.now() - inicioTest) / 1000
+    );
+
     const response =
     await fetch(
         `${API}/tests/${idTest}`,
@@ -261,6 +266,7 @@ async function actualizarTestFinalizado(){
             },
 
             body:JSON.stringify({
+                duracion,
                 resultado:null,
                 finalizado:1
             })

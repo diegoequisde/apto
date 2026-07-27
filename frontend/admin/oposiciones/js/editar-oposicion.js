@@ -12,9 +12,6 @@ const idOposicion =
 async function inicializar() {
 
     await cargarOposicion();
-
-    await cargarTemas();
-
     await cargarTemasOposicion();
 
 }
@@ -41,34 +38,37 @@ async function cargarOposicion() {
 
 }
 
-async function cargarTemas() {
+async function cargarTemas(temasAsignados = []) {
 
     const response =
-        await fetch(
-            `${API}/temas`
-        );
+        await fetch(`${API}/temas`);
 
     const temas =
         await response.json();
 
     const select =
-        document.getElementById(
-            'temaSelect'
-        );
+        document.getElementById('temaSelect');
 
     select.innerHTML = '';
 
-    temas.forEach((tema) => {
+    const idsAsignados =
+        temasAsignados.map(
+            tema => tema.id_tema
+        );
 
-        select.innerHTML += `
-            <option
-                value="${tema.id_tema}"
-            >
-                ${tema.nome_tema}
-            </option>
-        `;
+    temas
+        .filter(
+            tema => !idsAsignados.includes(tema.id_tema)
+        )
+        .forEach(tema => {
 
-    });
+            select.innerHTML += `
+                <option value="${tema.id_tema}">
+                    ${tema.nome_tema}
+                </option>
+            `;
+
+        });
 
 }
 
@@ -112,6 +112,8 @@ async function cargarTemasOposicion() {
         `;
 
     });
+
+    await cargarTemas(temas);
 
 }
 

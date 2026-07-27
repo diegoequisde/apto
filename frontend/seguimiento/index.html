@@ -3,138 +3,132 @@
 
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>APTO | Seguimiento</title>
+    <title>APTO | Seguimiento</title>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-<link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
 
-<!-- favicon--> 
-<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
+    <!-- favicon-->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
 
 </head>
 
-
 <body>
 
-<div id="navbar"></div>
+    <div id="navbar"></div>
+
+    <main class="container">
+
+        <section class="page-header">
+
+            <h1>Seguimiento</h1>
+
+            <p>Consulta tu evolución y rendimiento.</p>
+
+        </section>
 
 
-<main class="container">
+        <!-- RESUMEN -->
+        <section>
+
+            <h2>Resumen</h2>
+
+            <div class="summary-grid">
+
+                <article class="summary-card">
+                    <strong>Racha</strong>
+                    <span id="racha"></span>
+                </article>
+
+                <article class="summary-card">
+                    <strong>Tests realizados</strong>
+                    <span id="tests"></span>
+                </article>
+
+                <article class="summary-card">
+                    <strong>Preguntas</strong>
+                    <span id="preguntas"></span>
+                </article>
+
+                <article class="summary-card">
+                    <strong>Acierto medio</strong>
+                    <span id="acierto"></span>
+                </article>
+
+                <article class="summary-card">
+                    <strong>Tiempo</strong>
+                    <span id="tiempo"></span>
+                </article>
+            </div>
+
+            <a href="/historial/index.html" role="button" class="secondary">Ver historial</a>
+
+        </section>
+
+        <!-- EVOLUCION -->
+
+        <section class="section">
+
+            <h2>Evolución</h2>
+
+            <div class="filters">
+                <button data-periodo="1">Hoy</button>
+                <button data-periodo="7">7 días</button>
+                <button data-periodo="30">30 días</button>
+                <button data-periodo="total">Total</button>
+            </div>
+
+            <div class="card">
+
+                <canvas id="evolucionChart"></canvas>
+
+            </div>
+
+        </section>
+
+        <!-- TEMAS -->
+        <section class="section">
+
+            <h2>Rendimiento por temas</h2>
+
+            <div class="grid">
+
+                <article class="card">
+
+                    <h3>Distribución de preguntas</h3>
+
+                    <canvas id="temasDistribucionChart"></canvas>
+
+                </article>
+
+                <article class="card">
+
+                    <h3>Acierto por tema</h3>
+
+                    <canvas id="temasAciertoChart"></canvas>
+
+                </article>
+
+            </div>
+
+        </section>
 
 
-<section class="page-header">
+    </main>
 
-<h1>Seguimiento</h1>
+    <div id="footer"></div>
 
-<p>Consulta tu evolución y rendimiento.</p>
-
-</section>
-
-
-<!-- RESUMEN -->
-
-<section>
-
-<h2>Resumen</h2>
-
-<div class="summary-grid">
-
-    <article class="summary-card">
-        <strong>Racha</strong>
-        <span id="racha">0 días</span>
-    </article>
-
-    <article class="summary-card">
-        <strong>Tests realizados</strong>
-        <span id="tests">0</span>
-    </article>
-
-    <article class="summary-card">
-        <strong>Preguntas</strong>
-        <span id="preguntas">0</span>
-    </article>
-
-    <article class="summary-card">
-        <strong>Acierto medio</strong>
-        <span id="acierto">0%</span>
-    </article>
-
-    <article class="summary-card">
-        <strong>Tiempo</strong>
-        <span id="tiempo">0</span>
-    </article>
-</div>
-
-<a href="/historial/index.html" role="button" class="secondary">Ver historial</a>
-
-</section>
-
-<!-- EVOLUCION -->
-
-<section class="section">
-
-<h2>Evolución</h2>
-
-<div class="filters">
-    <button data-periodo="1">Hoy</button>
-    <button data-periodo="7">7 días</button>
-    <button data-periodo="30">30 días</button>
-    <button data-periodo="total">Total</button>
-</div>
-
-<div class="card">
-
-<canvas id="evolucionChart"></canvas>
-
-</div>
-
-</section>
-
-<!-- TEMAS -->
-<section class="section">
-
-<h2>Rendimiento por temas</h2>
-
-<div class="grid">
-
-<article class="card">
-
-
-<h3>Distribución de preguntas</h3>
-
-
-<canvas id="temasDistribucionChart"></canvas>
-
-</article>
-
-<article class="card">
-
-<h3>Acierto por tema</h3>
-
-
-<canvas id="temasAciertoChart"></canvas>
-
-</article>
-
-</div>
-
-</section>
-
-
-</main>
-
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="/auth/js/auth.js"></script>
-<script src="/js/navbar.js"></script>
-<script src="/js/footer.js"></script>
-<script src="./js/seguimiento.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/auth/js/auth.js"></script>
+    <script src="/js/navbar.js"></script>
+    <script src="/js/footer.js"></script>
+    <script src="./js/seguimiento.js"></script>
 
 
 </body>

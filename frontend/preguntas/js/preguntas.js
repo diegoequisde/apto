@@ -50,35 +50,7 @@ async function cargarPreguntas() {
     const data =
     await response.json();
 
-    let paginaActual = 1;
 
-const limite = 20;
-
-
-// botones de paginación
-document
-.getElementById('anteriorBtn')
-.addEventListener('click',()=>{
-
-    if(paginaActual > 1){
-
-        paginaActual--;
-
-        cargarPreguntas();
-
-    }
-
-});
-
-document
-.getElementById('siguienteBtn')
-.addEventListener('click',()=>{
-
-    paginaActual++;
-
-    cargarPreguntas();
-
-});
 
 document
     .getElementById(
@@ -102,9 +74,7 @@ document
     'infoPaginacion'
     ).textContent =
         `
-        ${data.total}
-        preguntas encontradas
-        · Página
+        Página
         ${data.page}
         de
         ${data.totalPages}
@@ -112,6 +82,20 @@ document
 
     container.innerHTML = '';
 
+    const inicio =
+    (paginaActual - 1) * limite + 1;
+
+    const fin =
+        Math.min(
+            paginaActual * limite,
+            data.total
+        );
+
+    document.getElementById(
+        'contadorPreguntas'
+    ).textContent =
+        `Mostrando ${inicio}-${fin} de ${data.total} preguntas`;
+    
     preguntas.forEach((pregunta) => {
 
         container.innerHTML += `
@@ -120,16 +104,14 @@ document
                     ${pregunta.enunciado}
                 </p>
 
-                <button
-                    onclick="editarPregunta(
+                <button onclick="editarPregunta(
                         ${pregunta.id_pregunta}
                     )"
                 >
                     Editar
                 </button>
                 
-                <button
-                    onclick="eliminarPregunta(
+                <button onclick="eliminarPregunta(
                         ${pregunta.id_pregunta}
                     )"
                 >
@@ -139,12 +121,13 @@ document
                 <hr>
             </div>
         `;
-
-    document.getElementById(
-        'contadorPreguntas'
-    )   .textContent =
-        `${preguntas.length} preguntas`;
     });
+
+
+    window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+});
 
 }
 
@@ -193,6 +176,31 @@ async function eliminarPregunta(id) {
     cargarPreguntas();
 
 }
+
+// botones de paginación
+document
+.getElementById('anteriorBtn')
+.addEventListener('click',()=>{
+
+    if(paginaActual > 1){
+
+        paginaActual--;
+
+        cargarPreguntas();
+
+    }
+
+});
+
+document
+.getElementById('siguienteBtn')
+.addEventListener('click',()=>{
+
+    paginaActual++;
+
+    cargarPreguntas();
+
+});
 
 async function inicializar() {
 

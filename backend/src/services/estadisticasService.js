@@ -50,9 +50,6 @@ ${filtroFecha}
 [id_usuario]);
 
 
-
-
-
 const [evolucion] =
 await pool.query(`
 
@@ -171,6 +168,7 @@ return {
         tests: resumen.tests,
         preguntas: resumen.preguntas,
         acierto: resumen.acierto,
+        tiempo: resumen.tiempo ?? 0,
         racha
     },
     evolucion,

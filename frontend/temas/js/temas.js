@@ -1,7 +1,7 @@
 requireLogin();
 
 const API =
-'http://localhost:3000/api';
+    'http://localhost:3000/api';
 
 const temasList =
     document.getElementById('temasList');
@@ -20,36 +20,40 @@ async function cargarTemas() {
     temas.forEach((tema) => {
 
         temasList.innerHTML += `
-    <li>
+            <div>
 
-        ${tema.nome_tema}
+                <p>
+                    <strong>${tema.nome_tema}</strong>
+                </p>
 
-        <button
-            onclick="editarTema(
-                ${tema.id_tema}
-            )"
-        >
-            Editar
-        </button>
+                <button
+                    onclick="editarTema(
+                        ${tema.id_tema}
+                    )"
+                >
+                    Editar
+                </button>
 
-        <button
-            onclick="eliminarTema(
-                ${tema.id_tema}
-            )"
-        >
-            Eliminar
-        </button>
+                <button
+                    onclick="eliminarTema(
+                        ${tema.id_tema}
+                    )"
+                >
+                    Eliminar
+                </button>
 
-        <button
-            onclick="gestionarPreguntas(
-                ${tema.id_tema}
-            )"
-        >
-            Preguntas
-        </button>
+                <button
+                    onclick="gestionarPreguntas(
+                        ${tema.id_tema}
+                    )"
+                >
+                    Preguntas
+                </button>
 
-    </li>
-    `;
+                <hr>
+
+            </div>
+        `;
 
     });
 
@@ -83,24 +87,24 @@ async function eliminarTema(id) {
         await fetch(
             `${API}/temas/${id}`,
             {
-                method:'DELETE'
+                method: 'DELETE'
             }
         );
 
-        if(!response.ok){
+    if (!response.ok) {
 
-            alert('Non foi posible eliminar o tema.');
-            return;
+        alert('Non foi posible eliminar o tema.');
+        return;
 
-        }
+    }
 
-cargarTemas();
+    cargarTemas();
 
 }
 
-function irCrearTema(){
+function irCrearTema() {
 
-    if(!puede('usuario')){
+    if (!puede('usuario')) {
         return;
     }
 
