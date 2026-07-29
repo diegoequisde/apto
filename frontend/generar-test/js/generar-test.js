@@ -141,26 +141,36 @@ document.getElementById('totalPreguntas').textContent = `Total de preguntas: ${t
 
 }
 
+
+
 function pintarListaTemas(){
 
+     document.getElementById('tituloTemas').textContent =
+        `Temas seleccionados (${temasSeleccionados.length})`;
+        
     listaTemas.innerHTML='';
 
     temasSeleccionados.forEach((tema,index)=>{
 
         listaTemas.innerHTML += `
+        <div class="tema-seleccionado">
 
-        <article>
-            <strong>${tema.nome}</strong> -
-            ${tema.cantidad} preguntas
+            <span>
+                <strong>${tema.nome}</strong>
+                · ${tema.cantidad} preguntas
+            </span>
 
-            <button type="button"
+            <button
+                type="button"
                 onclick="eliminarTema(${index})">
                 Eliminar
             </button>
-        </article>
+
+        </div>
         `;
     });
 }
+
 
 window.eliminarTema = function(index){
     temasSeleccionados.splice(index,1);

@@ -23,55 +23,45 @@
     <main class="container">
         <section class="card">
 
-            <label>
-                Oposición
-                <select id="oposicion"></select>
-            </label>
+            <div class="generador-grid">
 
-            <label>
-                Tema
-                <select id="tema"></select>
-            </label>
+                <label>Oposición
+                    <select id="oposicion"></select>
+                </label>
 
-            <label>
-                Número de preguntas
-                <input type="number" id="cantidadTema" min="1" step="1" value="10">
-            </label>
+                <label>Tema
+                    <select id="tema"></select>
+                </label>
 
-            <button type="button" id="anadirTemaBtn">
-                + Añadir
-            </button>
+                <label>Preguntas
+                    <input type="number" id="cantidadTema" min="1" step="1" value="10">
+                </label>
+
+                <label>Tiempo
+                    <select id="duracion">
+                        <option value="">Sin límite</option>
+                        <option value="300">5 minutos</option>
+                        <option value="900">15 minutos</option>
+                        <option value="1800">30 minutos</option>
+                        <option value="2700">45 minutos</option>
+                        <option value="3600">60 minutos</option>
+                        <option value="5400">90 minutos</option>
+                        <option value="7200">120 minutos</option>
+                    </select>
+                </label>
+            </div>
+
+            <div class="acciones-generador">
+                <button id="anadirTemaBtn" class="secondary">+ Añadir</button>
+                <button id="generarBtn">Generar test</button>
+            </div>
 
             <hr>
 
-            <label>Tiempo límite
-
-                <select id="duracion">
-                    <option value="">Sen límite</option>
-                    <option value="300">5 minutos</option>
-                    <option value="900">15 minutos</option>
-                    <option value="1800">30 minutos</option>
-                    <option value="2700">45 minutos</option>
-                    <option value="3600">60 minutos</option>
-                    <option value="5400">90 minutos</option>
-                    <option value="7200">120 minutos</option>
-                </select>
-
-            </label>
-            
-            <hr>
-
-            <h3>Temas seleccionados</h3>
-
+            <h3 id="tituloTemas">Temas seleccionados</h3>
             <div id="listaTemas"></div>
-
             <hr>
-            
             <p id="totalPreguntas"></p>
-            
-            <button id="generarBtn">
-                Generar test
-            </button>
 
         </section>
 
@@ -80,38 +70,38 @@
         <section class="card">
 
             <h2>Simulacros oficiais</h2>
+            <div class="simulacros-grid">
+                <article>
 
-            <article>
+                    <h3>Administrativo Xunta</h3>
 
-                <h3>Administrativo Xunta</h3>
+                    <p>120 preguntas · 120 minutos</p>
 
-                <p>120 preguntas · 120 minutos</p>
+                    <button class="btnOficial" data-oposicion="2">
+                        Realizar simulacro
+                    </button>
 
-                <button class="btnOficial" data-oposicion="2">
-                    Realizar simulacro
-                </button>
+                </article>
 
-            </article>
+                <article>
 
-            <article>
+                    <h3>Auxiliar Administrativo Xunta C2</h3>
 
-                <h3>Auxiliar Administrativo Xunta C2</h3>
+                    <p>120 preguntas · 120 minutos</p>
 
-                <p>120 preguntas · 120 minutos</p>
+                    <button class="btnOficial" data-oposicion="3">
+                        Realizar simulacro
+                    </button>
 
-                <button class="btnOficial" data-oposicion="3">
-                    Realizar simulacro
-                </button>
-
-            </article>
-
+                </article>
+            </div>
         </section>
 
     </main>
 
 
     <script src="/auth/js/auth.js"></script>
-<script src="/js/navbar.js"></script>
+    <script src="/js/navbar.js"></script>
     <script src="./js/generar-test.js"></script>
 
 </body>

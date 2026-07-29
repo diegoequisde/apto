@@ -104,55 +104,63 @@ body {
     text-align:center;
 }
 
-/* Resultado*/
-.resultado-numero {
-    font-size: 3rem;
-    font-weight: bold;
-    text-align: center;
+/* Generar Test*/
+
+#listaTemas{
+    min-height:4rem;
+    max-height:220px;
+    overflow-y:auto;
 }
 
-/* Seguimiento */
-.dashboard-number {
-    font-size: 2.5rem;
-    font-weight: bold;
+.generador-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1rem;
 }
 
-.chart-placeholder {
-    height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px dashed #aaa;
-    margin-top: 1rem;
+.acciones-generador{
+    display:flex;
+    gap:1rem;
+    margin:1rem 0;
 }
 
-.filters {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
+.acciones-test button{
+    flex:1;
 }
 
-.summary-grid {
-    display: grid;
-    grid-template-columns:
-        repeat(auto-fit,
-            minmax(150px, 1fr));
-    gap: 1rem;
+#listaTemas{
+    min-height:4rem;
+    max-height:220px;
+    overflow-y:auto;
 }
 
-
-.summary-card {
-    padding: 1rem;
-    text-align: center;
+.tema-seleccionado{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:.5rem .75rem;
+    margin-bottom:.5rem;
+    border:1px solid var(--pico-muted-border-color);
+    border-radius:.5rem;
 }
 
-
-.summary-card span {
-    display: block;
-    font-size: 1.5rem;
-    font-weight: bold;
+.simulacros-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:1rem;
 }
 
+@media (max-width:768px){
+
+    .generador-grid{
+        grid-template-columns:1fr;
+    }
+
+    .simulacros-grid{
+        grid-template-columns:1fr;
+    }
+
+}
 /* Realización de test */
 .test-layout {
     display: grid;
@@ -227,6 +235,54 @@ body {
     color: white;
 }
 
+
+/* Resultado*/
+.resultado-numero {
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Seguimiento */
+.dashboard-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.chart-placeholder {
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed #aaa;
+    margin-top: 1rem;
+}
+
+.filters {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit,
+            minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+.summary-card {
+    padding: 1rem;
+    text-align: center;
+}
+
+.summary-card span {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
 /* buscador de oposiciones*/
 #resultadosBusqueda article {
     cursor: pointer;
@@ -288,7 +344,7 @@ body {
     font-weight:600;
 }
 
-/* ---------- Footer ---------- */
+/*  Footer  */
 .footer{
     margin-top:4rem;
     padding:2rem 0;
