@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+const { JWT_SECRET, JWT_EXPIRES } = require('../config/jwt');
 const asyncHandler = require('../middlewares/asyncHandler');
 const bcrypt = require('bcryptjs');
 
@@ -98,9 +100,21 @@ const login = asyncHandler(async (req,res)=>{
 
     }
 
+    const token = jwt.sign(
+        {
+            id: usuario.id_usuario,
+            tipo: usuario.tipo
+        },
+        JWT_SECRET,
+        {
+            expiresIn: JWT_EXPIRES
+        }
+    );
+
     res.json({
-        ok:true,
-        mensaje:'Login correcto',
+        ok: true,
+        mensaje: 'Login correcto',
+        token,
         usuario
     });
 

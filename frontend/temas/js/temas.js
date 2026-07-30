@@ -10,7 +10,9 @@ const temasList =
 async function cargarTemas() {
 
     const response =
-        await fetch(`${API}/temas`);
+        await fetch(
+        `${API}/temas/mis-temas`
+    );
 
     const temas =
         await response.json();

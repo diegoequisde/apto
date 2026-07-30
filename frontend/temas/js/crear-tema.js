@@ -15,7 +15,8 @@ async function guardarTema() {
             'descripcionTema'
         ).value;
 
-    await fetch(
+    const response =
+        await fetch(
         `${API}/temas`,
         {
             method: 'POST',
@@ -34,6 +35,14 @@ async function guardarTema() {
         'Tema creado correctamente'
     );
 
+    const data =
+        await response.json();
+
+        if(!response.ok){
+            alert(data.mensaje);
+            return;
+        }
+        
     window.location.href =
         './index.html';
 

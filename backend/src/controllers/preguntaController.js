@@ -51,75 +51,88 @@ const getPreguntaById = asyncHandler(async (req, res) => {
 
 const createPregunta = asyncHandler (async (req, res) => {
 
-        const {
-            enunciado,
-            id_tema,
-            id_usuario
-        } = req.body;
+    const {
+        enunciado,
+        id_tema,
+        id_usuario
+    } = req.body;
 
-       const id_pregunta = await insertPregunta(
-            enunciado,
-            id_tema,
-            id_usuario
-        );
+    if(req.usuario.tipo === 'free'){
 
-        res.status(201).json({
-            ok: true,
-            mensaje: 'Pregunta creada correctamente',
-            id_pregunta
-        });
+    const total = await preguntaService.contarPreguntasUsuario(req.usuario.id_usuario);
+
+        if(total >= 40){
+
+            return res.status(403).json({
+                mensaje: 'La cuenta gratuíta permite crear un máximo de 40 preguntas. Actualiza a Premium para eliminar este límite.'
+            });
+
+        }
+
+    }
+    const id_pregunta = await insertPregunta(
+        enunciado,
+        id_tema,
+        id_usuario
+    );
+
+    res.status(201).json({
+        ok: true,
+        mensaje: 'Pregunta creada correctamente',
+        id_pregunta
+    });
 
 });
 
 const updatePregunta = asyncHandler(async (req, res) => {
 const { id } = req.params;
 
-        const {
-            enunciado,
-            id_tema
-        } = req.body;
+    const {
+        enunciado,
+        id_tema
+    } = req.body;
 
-        const result = await updatePreguntaById(
-            id,
-            enunciado,
-            id_tema
-        );
+    const result = await updatePreguntaById(
+        id,
+        enunciado,
+        id_tema
+    );
 
-        if (result.affectedRows === 0) {
+    if (result.affectedRows === 0) {
 
-            return res.status(404).json({
-                ok: false,
-                mensaje: 'Pregunta non encontrada'
-            });
-
-        }
-
-        res.json({
-            ok: true,
-            mensaje: 'Pregunta actualizada correctamente'
+        return res.status(404).json({
+            ok: false,
+            mensaje: 'Pregunta non encontrada'
         });
+
+    }
+
+    res.json({
+        ok: true,
+        mensaje: 'Pregunta actualizada correctamente'
+    });
 
 });
 
 const deletePregunta = asyncHandler(async (req, res) => {
 
-        const { id } = req.params;
+    const { id } = req.params;
 
-        const result = await deletePreguntaById(id);
+    const result = await deletePreguntaById(id);
 
-        if (result.affectedRows === 0) {
+    if (result.affectedRows === 0) {
 
-            return res.status(404).json({
-                ok: false,
-                mensaje: 'Pregunta non encontrada'
-            });
-
-        }
-
-        res.json({
-            ok: true,
-            mensaje: 'Pregunta eliminada correctamente'
+        return res.status(404).json({
+            ok: false,
+            mensaje: 'Pregunta non encontrada'
         });
+
+    }
+
+    res.json({
+        ok: true,
+        mensaje: 'Pregunta eliminada correctamente'
+    });
 
 });
 

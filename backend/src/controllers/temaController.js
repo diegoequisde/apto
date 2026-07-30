@@ -2,15 +2,28 @@ const asyncHandler = require('../middlewares/asyncHandler');
 
 const {
     findAllTemas,
+    findTemasUsuario,
     findTemaById,
     insertTema,
     updateTemaById,
-    deleteTemaById
+    deleteTemaById,
+    contarTemasUsuario
 } = require('../services/temaService');
 
 const getTemas = asyncHandler(async (req, res) => {
 
     const temas = await findAllTemas();
+
+    res.json(temas);
+
+});
+
+const getMisTemas = asyncHandler(async (req,res)=>{
+
+    const temas =
+        await findTemasUsuario(
+            req.usuario.id_usuario
+        );
 
     res.json(temas);
 
@@ -42,9 +55,21 @@ const createTema = asyncHandler (async (req, res) => {
             descripcion_tema
         } = req.body;
 
+        if(req.usuario.tipo === 'free'){
+
+        const total = await contarTemasUsuario(req.usuario.id_usuario);
+
+        if(total >= 1){
+            return res.status(403).json({
+                mensaje: 'La cuenta gratuíta permite crear un único tema. Actualiza a Premium para crear más temas.'
+            });
+        }
+
+        }
         const id_tema = await insertTema(
             nome_tema,
-            descripcion_tema
+            descripcion_tema,
+            req.usuario.id_usuario
         );
 
         res.status(201).json({
@@ -110,6 +135,7 @@ const deleteTema = asyncHandler(async (req, res) => {
 
 module.exports = {
     getTemas,
+    getMisTemas,
     getTemaById,
     createTema,
     updateTema,

@@ -197,6 +197,19 @@ const deletePreguntaById = async (id) => {
 
 };
 
+const contarPreguntasUsuario = async (id_usuario) => {
+
+    const [[result]] = await pool.query(`
+        SELECT COUNT(*) AS total
+        FROM pregunta
+        WHERE id_usuario = ?
+        AND estado = 'activa'
+    `, [id_usuario]);
+
+    return result.total;
+
+};
+
 module.exports = {
     findAllPreguntas,
     findPreguntaById,

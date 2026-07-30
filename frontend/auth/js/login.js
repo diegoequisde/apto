@@ -42,14 +42,18 @@ document
 
             }
 
-            // guardamos en localStorage solo los datos necesarios
-            guardarUsuario({
+            guardarSesion(
+            {
                 id: data.usuario.id_usuario,
                 nome: data.usuario.nome,
                 email: data.usuario.email,
                 tipo: data.usuario.tipo
-            });
+            },
 
-            window.location.href = '/';
+            data.token
+
+        );
+
+        window.location.href = '/';
 
         });

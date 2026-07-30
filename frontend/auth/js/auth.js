@@ -1,14 +1,36 @@
 // Gestión de sesión del usuario
+const STORAGE_USER = 'usuario';
+const STORAGE_TOKEN = 'token';
 
-const STORAGE_KEY = 'usuario';
 
-function guardarUsuario(usuario){
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(usuario));
+function guardarSesion(usuario, token){
+
+    localStorage.setItem(
+        STORAGE_USER,
+        JSON.stringify(usuario)
+    );
+
+    localStorage.setItem(
+        STORAGE_TOKEN,
+        token
+    );
+
+}
+
+function getToken(){
+
+    return localStorage.getItem(STORAGE_TOKEN);
+
 }
 
 function getUsuarioActual(){
-    const usuario = localStorage.getItem(STORAGE_KEY);
-    return usuario ? JSON.parse(usuario) : null;
+
+    const usuario = localStorage.getItem(STORAGE_USER);
+
+    return usuario
+        ? JSON.parse(usuario)
+        : null;
+
 }
 
 function estaLogueado(){
@@ -16,10 +38,13 @@ function estaLogueado(){
 }
 
 function cerrarSesion(){
-    localStorage.removeItem(STORAGE_KEY);
-    window.location.href = '/';
-}
 
+    localStorage.removeItem(STORAGE_USER);
+    localStorage.removeItem(STORAGE_TOKEN);
+
+    window.location.href='/';
+
+}
 // Roles
 
 function tieneRol(rol){
@@ -104,9 +129,11 @@ function requireAdmin(){
 
 }
 
-window.guardarUsuario = guardarUsuario;
+ 
 window.getUsuarioActual = getUsuarioActual;
 window.estaLogueado = estaLogueado;
+window.guardarSesion = guardarSesion;
+window.getToken = getToken;
 window.cerrarSesion = cerrarSesion;
 
 window.esAdmin = esAdmin;
