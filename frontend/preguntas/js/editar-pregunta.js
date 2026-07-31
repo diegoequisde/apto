@@ -38,10 +38,14 @@ async function inicializar() {
 
 async function cargarPregunta() {
 
-    const response =
-        await fetch(
-            `${API}/preguntas/${idPregunta}`
-        );
+    const response = await fetch(
+        `${API}/preguntas/${idPregunta}`,
+        {
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
+        }
+    );
 
     return await response.json();
 
@@ -49,10 +53,14 @@ async function cargarPregunta() {
 
 async function cargarTemas() {
 
-    const response =
-        await fetch(
-            `${API}/temas`
-        );
+    const response = await fetch(
+        `${API}/temas/mis-temas`,
+        {
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
+        }
+    );
 
     const temas =
         await response.json();
@@ -92,10 +100,14 @@ async function cargarTemas() {
 
 async function cargarOpciones() {
 
-    const response =
-        await fetch(
-            `${API}/preguntas/${idPregunta}/opciones`
-        );
+    const response = await fetch(
+        `${API}/preguntas/${idPregunta}/opciones`,
+        {
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
+        }
+    );
 
     opcionesActuales =
         await response.json();
@@ -165,14 +177,13 @@ async function guardarCambios() {
             'idTema'
         ).value;
 
-    const response =
-        await fetch(
-            `${API}/preguntas/${idPregunta}`,
-            {
-                method:'PUT',
+    const response = await fetch(
+        `${API}/preguntas/${idPregunta}`,
+        {
+            method: 'PUT',
             headers: {
-                'Content-Type':
-                    'application/json'
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 enunciado,
@@ -204,26 +215,24 @@ async function guardarCambios() {
             `texto-${letra}`
         ).value;
 
-    const response = 
-        await fetch(
-            `${API}/preguntas/${idPregunta}/opciones/${letra}`,
-            {
-                method: 'PUT',
-                headers: {
-                    'Content-Type':
-                        'application/json'
-                },
-                body: JSON.stringify({
-                    texto,
-                    e_correcta:
-                        letra === correcta
-                })
-            }
-        );
+    const response = await fetch(
+        `${API}/preguntas/${idPregunta}/opciones/${letra}`,
+        {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${getToken()}`
+            },
+            body: JSON.stringify({
+                texto,
+                e_correcta: letra === correcta
+            })
+        }
+    );
 
-        if(!response.ok){
-            alert('Erro ao actualizar unha opción.');
-            return;
+    if(!response.ok){
+        alert('Erro ao actualizar unha opción.');
+        return;
 }
 
     }

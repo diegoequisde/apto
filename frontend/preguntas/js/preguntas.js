@@ -26,10 +26,14 @@ async function cargarTema() {
         return;
     }
 
-    const response =
-        await fetch(
-            `${API}/temas/${idTema}`
-        );
+    const response = await fetch(
+        `${API}/temas/${idTema}`,
+        {
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
+        }
+    );
 
     const tema =
         await response.json();
@@ -43,8 +47,13 @@ async function cargarTema() {
 
 async function cargarPreguntas() {
 
-    const response =
-        await fetch(`${API}/preguntas?idTema=${idTema}&page=${paginaActual}&limit=${limite}`
+    const response = await fetch(
+        `${API}/preguntas?idTema=${idTema}&page=${paginaActual}&limit=${limite}`,
+        {
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
+        }
     );
         
     const data =
@@ -158,20 +167,22 @@ async function eliminarPregunta(id) {
         return;
     }
     
-    const response =
-        await fetch(
-            `${API}/preguntas/${id}`,
-            {
-                method:'DELETE'
+    const response = await fetch(
+        `${API}/preguntas/${id}`,
+        {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${getToken()}`
             }
-        );
-
-        if(!response.ok){
-
-            alert('Non foi posible eliminar a pregunta.');
-            return;
-
         }
+    );
+
+    if(!response.ok){
+
+        alert('Non foi posible eliminar a pregunta.');
+        return;
+
+    }
 
     cargarPreguntas();
 

@@ -1,5 +1,5 @@
+const verifyToken = require('../middlewares/verifyToken');
 const express = require('express');
-
 const validateId = require('../middlewares/validateId');
 const validateRequiredFields = require('../middlewares/validateRequiredFields');
 const validatePregunta = require('../middlewares/validatePregunta');
@@ -16,12 +16,13 @@ const {
     deletePregunta
 } = require('../controllers/preguntaController');
 
-router.get('/', getPreguntas);
+router.get('/', verifyToken, getPreguntas);
 
-router.get('/:id', validateId, getPreguntaById);
+router.get('/:id', verifyToken, validateId, getPreguntaById);
 
 router.post(
     '/',
+    verifyToken, 
     validateRequiredFields([
         'enunciado',
         'id_tema'
@@ -32,6 +33,7 @@ router.post(
 
 router.put(
     '/:id',
+    verifyToken,
     validateId,
     validateRequiredFields([
         'enunciado',
@@ -41,7 +43,7 @@ router.put(
     updatePregunta
 );
 
-router.delete('/:id', validateId, deletePregunta);
+router.delete('/:id', verifyToken, validateId, deletePregunta);
 
 router.use('/:id/opciones', opcionRoutes);
 

@@ -3,7 +3,8 @@ const pool = require('../config/db');
 const findAllPreguntas = async (
     page = 1,
     limit = 20,
-    idTema = null
+    idTema = null,
+    usuario
 ) => {
 
     const offset =
@@ -13,6 +14,13 @@ const findAllPreguntas = async (
         `WHERE p.estado_pregunta = 'activa'`;
 
     const params = [];
+
+    if(usuario.tipo !== 'admin'){
+        where += `
+            AND p.id_usuario = ?
+        `;
+        params.push(usuario.id);
+    }
 
     if (idTema) {
 
@@ -73,7 +81,7 @@ const findAllPreguntas = async (
 
 };
 
-const findPreguntaById = async (id) => {
+const findPreguntaById = async (id, usuario) => {
     /*INNER JOIN tema Para obtener: nome_tema
     LEFT JOIN usuario Porque: una pregunta oficial puede no tener usuario
     o ser creada por admin y LEFT JOIN da más flexibilidad */
@@ -92,8 +100,9 @@ const findPreguntaById = async (id) => {
         LEFT JOIN usuario u
             ON p.id_usuario = u.id_usuario
         WHERE p.id_pregunta = ?
+        AND p.id_usuario= ?
         AND p.estado_pregunta = 'activa'
-    `, [id]);
+    `, [id, usuario.id]);
 
     return rows[0];
 
@@ -164,7 +173,8 @@ const insertPregunta = async (
 const updatePreguntaById = async (
     id,
     enunciado,
-    id_tema
+    id_tema,
+    usuario
 ) => {
 
     const [result] = await pool.query(`
@@ -173,25 +183,28 @@ const updatePreguntaById = async (
             enunciado = ?,
             id_tema = ?
         WHERE id_pregunta = ?
+        AND id_usuario= ?
         AND estado_pregunta = 'activa'
     `, [
         enunciado,
         id_tema,
-        id
+        id,
+        usuario.id
     ]);
 
     return result;
 
 };
 
-const deletePreguntaById = async (id) => {
+const deletePreguntaById = async (id, usuario) => {
 
     const [result] = await pool.query(`
         UPDATE pregunta
         SET estado_pregunta = 'eliminada'
         WHERE id_pregunta = ?
+        AND id_usuario= ?
         AND estado_pregunta = 'activa'
-    `, [id]);
+    `, [id, usuario.id]);
 
     return result;
 
@@ -203,7 +216,7 @@ const contarPreguntasUsuario = async (id_usuario) => {
         SELECT COUNT(*) AS total
         FROM pregunta
         WHERE id_usuario = ?
-        AND estado = 'activa'
+        AND estado_pregunta = 'activa'
     `, [id_usuario]);
 
     return result.total;
@@ -216,5 +229,6 @@ module.exports = {
     findPreguntasAleatorias,
     insertPregunta,
     updatePreguntaById,
-    deletePreguntaById
+    deletePreguntaById,
+    contarPreguntasUsuario
 };

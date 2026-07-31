@@ -5,7 +5,8 @@ const {
     findPreguntaById,
     insertPregunta,
     updatePreguntaById,
-    deletePreguntaById
+    deletePreguntaById,
+    contarPreguntasUsuario
 } = require('../services/preguntaService');
 
 const getPreguntas = asyncHandler(async (req, res) => {
@@ -23,7 +24,8 @@ const getPreguntas = asyncHandler(async (req, res) => {
         await findAllPreguntas(
             page,
             limit,
-            idTema
+            idTema,
+            req.usuario
         );
 
     res.json(preguntas);
@@ -34,7 +36,11 @@ const getPreguntaById = asyncHandler(async (req, res) => {
 
         const { id } = req.params;
 
-        const pregunta = await findPreguntaById(id);
+        const pregunta = 
+        await findPreguntaById(
+            id,
+            req.usuario
+        );
 
         if (!pregunta) {
 
@@ -53,13 +59,14 @@ const createPregunta = asyncHandler (async (req, res) => {
 
     const {
         enunciado,
-        id_tema,
-        id_usuario
+        id_tema
     } = req.body;
+
+    const id_usuario = req.usuario.id;
 
     if(req.usuario.tipo === 'free'){
 
-    const total = await preguntaService.contarPreguntasUsuario(req.usuario.id);
+    const total = await contarPreguntasUsuario(req.usuario.id);
 
         if(total >= 40){
 
@@ -92,11 +99,13 @@ const { id } = req.params;
         id_tema
     } = req.body;
 
-    const result = await updatePreguntaById(
-        id,
-        enunciado,
-        id_tema
-    );
+    const result =
+        await updatePreguntaById(
+            id,
+            enunciado,
+            id_tema,
+            req.usuario
+        );
 
     if (result.affectedRows === 0) {
 
@@ -118,7 +127,11 @@ const deletePregunta = asyncHandler(async (req, res) => {
 
     const { id } = req.params;
 
-    const result = await deletePreguntaById(id);
+    const result =
+        await deletePreguntaById(
+            id,
+            req.usuario
+        );
 
     if (result.affectedRows === 0) {
 

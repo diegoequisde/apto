@@ -5,10 +5,14 @@ const API =
 
 async function cargarTemas() {
 
-    const response =
-        await fetch(
-            `${API}/temas`
-        );
+    const response = await fetch(
+        `${API}/temas/mis-temas`,
+        {
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
+        }
+    );
 
     const temas =
         await response.json();
@@ -56,14 +60,13 @@ async function crearOpciones(
             {
                 method: 'POST',
                 headers: {
-                    'Content-Type':
-                        'application/json'
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${getToken()}`
                 },
                 body: JSON.stringify({
                     letra_opcion: letra,
                     texto,
-                    e_correcta:
-                        letra === correcta
+                    e_correcta: letra === correcta
                 })
             }
         );
@@ -84,30 +87,30 @@ async function guardarPregunta() {
             'idTema'
         ).value;
 
-   const response =
-        await fetch(
-            `${API}/preguntas`,
-            {
-                method:'POST',
-                headers:{
-                    'Content-Type':'application/json'
-                },
-                body:JSON.stringify({
-                    enunciado,
-                    id_tema:idTema
-                })
-            }
-        );
-
-        const pregunta =
-        await response.json();
-
-        if(!response.ok){
-
-            alert(pregunta.mensaje);
-            return;
-
+   const response = await fetch(
+        `${API}/preguntas`,
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${getToken()}`
+            },
+            body: JSON.stringify({
+                enunciado,
+                id_tema: idTema
+            })
         }
+    );
+
+    const pregunta =
+    await response.json();
+
+    if(!response.ok){
+
+        alert(pregunta.mensaje);
+        return;
+
+    }
 
     const idPregunta =
         pregunta.id_pregunta;
