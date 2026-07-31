@@ -22,7 +22,7 @@ const getMisTemas = asyncHandler(async (req,res)=>{
 
     const temas =
         await findTemasUsuario(
-            req.usuario.id_usuario
+            req.usuario.id
         );
 
     res.json(temas);
@@ -57,7 +57,7 @@ const createTema = asyncHandler (async (req, res) => {
 
         if(req.usuario.tipo === 'free'){
 
-        const total = await contarTemasUsuario(req.usuario.id_usuario);
+        const total = await contarTemasUsuario(req.usuario.id);
 
         if(total >= 1){
             return res.status(403).json({
@@ -69,7 +69,7 @@ const createTema = asyncHandler (async (req, res) => {
         const id_tema = await insertTema(
             nome_tema,
             descripcion_tema,
-            req.usuario.id_usuario
+            req.usuario.id
         );
 
         res.status(201).json({

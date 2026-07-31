@@ -9,11 +9,15 @@ const temasList =
 
 async function cargarTemas() {
 
-    const response =
-        await fetch(
-        `${API}/temas/mis-temas`
+    const response = await fetch(
+        `${API}/temas/mis-temas`,
+        {
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
+        }
     );
-
+    
     const temas =
         await response.json();
 

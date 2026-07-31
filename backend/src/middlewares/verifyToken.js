@@ -1,6 +1,6 @@
 const {
     jwt,
-    SECRET
+    JWT_SECRET
 } = require('../config/jwt');
 
 function verifyToken(
@@ -32,7 +32,7 @@ function verifyToken(
         const payload =
             jwt.verify(
                 token,
-                SECRET
+                JWT_SECRET
             );
 
         req.usuario =
@@ -42,7 +42,7 @@ function verifyToken(
 
     }
     catch(error){
-
+    
         return res.status(401).json({
             ok:false,
             mensaje:'Token inválido'

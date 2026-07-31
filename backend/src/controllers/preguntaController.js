@@ -59,7 +59,7 @@ const createPregunta = asyncHandler (async (req, res) => {
 
     if(req.usuario.tipo === 'free'){
 
-    const total = await preguntaService.contarPreguntasUsuario(req.usuario.id_usuario);
+    const total = await preguntaService.contarPreguntasUsuario(req.usuario.id);
 
         if(total >= 40){
 

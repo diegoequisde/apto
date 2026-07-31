@@ -7,6 +7,7 @@ process.env.JWT_SECRET ||
 const JWT_EXPIRES = '7d';
 
 module.exports = {
+    jwt,
     JWT_SECRET,
     JWT_EXPIRES
 };
