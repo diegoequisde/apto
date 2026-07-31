@@ -1,3 +1,4 @@
+const verifyToken = require('../middlewares/verifyToken');
 const express = require('express');
 
 const validateRequiredFields = require('../middlewares/validateRequiredFields');
@@ -13,10 +14,11 @@ const {
     deleteOpcion
 } = require('../controllers/opcionController');
 
-router.get('/', getOpcionesByPregunta);
+router.get('/', verifyToken, getOpcionesByPregunta);
 
 router.post(
     '/',
+    verifyToken,
     validateRequiredFields([
         'letra_opcion',
         'texto'
@@ -27,10 +29,11 @@ router.post(
 
 router.put(
     '/:letra',
+    verifyToken,
     validateOpcion,
     updateOpcion
 );
 
-router.delete('/:letra', deleteOpcion);
+router.delete('/:letra', verifyToken, deleteOpcion);
 
 module.exports = router;

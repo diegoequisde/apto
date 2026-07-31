@@ -11,7 +11,7 @@ const getOpcionesByPregunta = asyncHandler(async (req, res) => {
 
         const { id } = req.params;
 
-        const opciones = await findOpcionesByPregunta(id);
+        const opciones = await findOpcionesByPregunta(id, req.usuario);
 
         res.json(opciones);
 
@@ -32,7 +32,8 @@ const createOpcion = asyncHandler(async (req, res) => {
             id,
             letra_opcion,
             texto,
-            e_correcta
+            e_correcta,
+            req.usuario
         );
 
         res.status(201).json({
@@ -55,7 +56,8 @@ const updateOpcion = asyncHandler(async (req, res) => {
             id,
             letra,
             texto,
-            e_correcta
+            e_correcta,
+            req.usuario
         );
 
         if (result.affectedRows === 0) {
@@ -80,7 +82,8 @@ const deleteOpcion = asyncHandler(async (req, res) => {
 
         const result = await deleteOpcionById(
             id,
-            letra
+            letra,
+            req.usuario
         );
 
         if (result.affectedRows === 0) {
