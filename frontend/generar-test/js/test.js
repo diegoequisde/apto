@@ -70,7 +70,14 @@ function mostrarNavegacion() {
 async function cargarTest() {
 
     const response =
-        await fetch(`${API}/tests/${idTest}/preguntas`);
+    await fetch(
+        `${API}/tests/${idTest}/preguntas`,
+        {
+            headers:{
+                Authorization:`Bearer ${getToken()}`
+            }
+        }
+    );
 
     preguntas = await response.json();
 
@@ -154,24 +161,19 @@ async function guardarRespuesta(
         await fetch(
             `${API}/tests/${idTest}/preguntas/${idPregunta}/resposta`,
             {
-
                 method: 'PUT',
-
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    Authorization:`Bearer ${getToken()}`
                 },
-
                 body: JSON.stringify({
 
                     resposta_usuario: respuesta
 
                 })
-
             }
         );
-
 }
-
 
 document
     .getElementById('siguienteBtn')
@@ -262,7 +264,8 @@ async function actualizarTestFinalizado(){
             method:'PUT',
 
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                Authorization:`Bearer ${getToken()}`
             },
 
             body:JSON.stringify({

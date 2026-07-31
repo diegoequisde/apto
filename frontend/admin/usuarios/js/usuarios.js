@@ -10,7 +10,12 @@ async function cargarUsuarios() {
 
     const response =
         await fetch(
-            `${API}/usuarios`
+            `${API}/usuarios`,
+            {
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            }
         );
 
     const usuarios =
@@ -82,7 +87,10 @@ async function eliminarUsuario(id) {
     await fetch(
         `${API}/usuarios/${id}`,
         {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
         }
     );
 

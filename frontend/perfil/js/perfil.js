@@ -16,9 +16,13 @@ async function cargarUsuario() {
 
     const response =
         await fetch(
-            `${API}/usuarios/${idUsuario}`
+            `${API}/usuarios/${idUsuario}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            }
         );
-
     const usuario =
         await response.json();
 
@@ -43,7 +47,12 @@ async function cargarOposiciones() {
 
     const response =
         await fetch(
-            `${API}/usuarios/${idUsuario}/oposiciones`
+            `${API}/usuarios/${idUsuario}/oposiciones`,
+            {
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            }
         );
 
     const oposiciones =
@@ -61,21 +70,14 @@ async function cargarOposiciones() {
 
             container.innerHTML += `
                 <div>
-
                     ${oposicion.nome_oposicion}
-
                     <button
                         onclick="
                             eliminarOposicion(
                                 ${oposicion.id_oposicion}
                             )
-                        "
-                    >
-                        Eliminar
-                    </button>
-
+                        ">Eliminar</button>
                 </div>
-
                 <hr>
             `;
 
@@ -130,7 +132,12 @@ async function buscarOposiciones(){
     }
 
     const response = await fetch(
-        `${API}/oposiciones?search=${encodeURIComponent(texto)}`
+        `${API}/oposiciones?search=${encodeURIComponent(texto)}`,
+        {
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
+        }
     );
 
     const oposiciones = await response.json();
@@ -145,7 +152,8 @@ async function anadirOposicion(idOposicion){
         {
             method:'POST',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                Authorization: `Bearer ${getToken()}`
             },
             body:JSON.stringify({
                 id_oposicion:idOposicion
@@ -165,10 +173,13 @@ async function eliminarOposicion(
     idOposicion
 ) {
 
-    await fetch(
+   await fetch(
         `${API}/usuarios/${idUsuario}/oposiciones/${idOposicion}`,
         {
-            method: 'DELETE'
+            method:'DELETE',
+            headers:{
+                Authorization: `Bearer ${getToken()}`
+            }
         }
     );
 

@@ -42,9 +42,14 @@ cantidadTema.addEventListener('blur', () => {
 async function cargarOposiciones(){
 
 const response =
-await fetch(
-    `${API}/oposiciones`
-);
+    await fetch(
+        `${API}/oposiciones`,
+        {
+            headers:{
+                Authorization:`Bearer ${getToken()}`
+            }
+        }
+    );
 
 const oposiciones =
 await response.json();
@@ -68,9 +73,14 @@ oposicionSelect.innerHTML += `
 async function cargarTemas(idOposicion){
 
     const response =
-    await fetch(
-        `${API}/oposiciones/${idOposicion}/temas`
-    );
+        await fetch(
+            `${API}/oposiciones/${idOposicion}/temas`,
+            {
+                headers:{
+                    Authorization:`Bearer ${getToken()}`
+                }
+            }
+        );
 
     const temas =
     await response.json();
@@ -141,8 +151,6 @@ document.getElementById('totalPreguntas').textContent = `Total de preguntas: ${t
 
 }
 
-
-
 function pintarListaTemas(){
 
      document.getElementById('tituloTemas').textContent =
@@ -171,7 +179,6 @@ function pintarListaTemas(){
     });
 }
 
-
 window.eliminarTema = function(index){
     temasSeleccionados.splice(index,1);
     pintarListaTemas();
@@ -188,7 +195,6 @@ document
     }
 );
 
-
 async function generarTest(){ 
     if(temasSeleccionados.length===0){
         alert('Engade polo menos un tema.');
@@ -199,10 +205,10 @@ async function generarTest(){
         await fetch(`${API}/tests`,{
                 method:'POST',
                 headers:{
-                    'Content-Type':'application/json'
+                    'Content-Type':'application/json',
+                    Authorization:`Bearer ${getToken()}`
                 },
                 body:JSON.stringify({
-                    id_usuario:1,
                     temas:temasSeleccionados
                 })
             }
@@ -275,11 +281,10 @@ async function generarTestOficial(idOposicion){
         {
             method:'POST',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                Authorization:`Bearer ${getToken()}`
             },
             body:JSON.stringify({
-                // TODO: sustituir por el usuario autenticado cuando se implemente JWT
-                id_usuario:1,
                 id_oposicion:idOposicion
             })
         }

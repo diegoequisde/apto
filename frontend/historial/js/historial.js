@@ -3,9 +3,14 @@ const API =
 
 async function cargarHistorial() {
 
-    const response =
+   const response =
         await fetch(
-            `${API}/tests/historial`
+            `${API}/tests/historial`,
+            {
+                headers:{
+                    Authorization: `Bearer ${getToken()}`
+                }
+            }
         );
 
     const tests =

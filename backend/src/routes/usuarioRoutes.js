@@ -1,3 +1,4 @@
+const verifyToken = require('../middlewares/verifyToken');
 const express = require('express');
 
 const validateId = require('../middlewares/validateId');
@@ -13,16 +14,13 @@ const router = express.Router();
 const {
     getUsuarios,
     getUsuarioById,
-    getUsuarioByEmail,
     login,
     createUsuario,
     updateUsuario,
     deleteUsuario
 } = require('../controllers/usuarioController');
 
-router.get('/', getUsuarios);
-
-router.get('/email', getUsuarioByEmail);
+router.get('/', verifyToken, getUsuarios);
 
 router.post('/login', login);
 
@@ -38,10 +36,11 @@ router.post(
     createUsuario
 );
 
-router.get('/:id', validateId, getUsuarioById);
+router.get('/:id', verifyToken, validateId, getUsuarioById);
 
 router.put(
     '/:id',
+    verifyToken,
     validateId,
     validateRequiredFields([
         'nome',
@@ -54,10 +53,11 @@ router.put(
 
 router.delete(
     '/:id',
+    verifyToken,
     validateId,
     deleteUsuario
 );
 
-router.use('/:id/oposiciones', usuarioOposicionRoutes);
+router.use('/:id/oposiciones', verifyToken, usuarioOposicionRoutes);
 
 module.exports = router;

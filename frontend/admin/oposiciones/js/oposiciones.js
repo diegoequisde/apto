@@ -10,7 +10,12 @@ async function cargarOposiciones() {
 
     const response =
         await fetch(
-            `${API}/oposiciones`
+            `${API}/oposiciones`,
+        {
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
+        }
         );
 
     const oposiciones =
@@ -85,7 +90,10 @@ async function eliminarOposicion(id) {
     await fetch(
         `${API}/oposiciones/${id}`,
         {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
         }
     );
 

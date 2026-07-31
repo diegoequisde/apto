@@ -1,5 +1,5 @@
+const verifyToken = require('../middlewares/verifyToken');
 const express = require('express');
-
 const validateId = require('../middlewares/validateId');
 const validateRequiredFields = require('../middlewares/validateRequiredFields');
 const validateTest = require('../middlewares/validateTest');
@@ -21,25 +21,25 @@ const {
     deleteTest
 } = require('../controllers/testController');
 
-router.get('/', getTests);
+router.get('/', verifyToken, getTests);
 
-router.get('/estadisticas', getEstadisticas);
+router.get('/estadisticas', verifyToken, getEstadisticas);
 
-router.get('/historial', getHistorial);
+router.get('/historial', verifyToken, getHistorial);
 
-router.post('/oficial', validateRequiredFields(['id_usuario', 'id_oposicion']), createTestOficial);
+router.post('/oficial', verifyToken, validateRequiredFields(['id_oposicion']), createTestOficial);
 
-router.get('/:id/resultado', getResultadoTest);
+router.get('/:id/resultado', verifyToken, getResultadoTest);
 
-router.get('/:id/revision', validateId, getRevisionTest);
+router.get('/:id/revision', verifyToken, validateId, getRevisionTest);
 
-router.get('/:id', validateId, getTestById);
+router.get('/:id', verifyToken, validateId, getTestById);
 
-router.post('/', validateRequiredFields(['id_usuario']), validateTest, createTest);
+router.post('/', verifyToken, validateTest, createTest);
 
-router.put('/:id', validateId, validateTest, updateTest);
+router.put('/:id', verifyToken, validateId, validateTest, updateTest);
 
-router.delete('/:id', validateId, deleteTest);
+router.delete('/:id', verifyToken, validateId, deleteTest);
 
 router.use('/:id/preguntas', preguntaTestRoutes);
 

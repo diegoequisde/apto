@@ -21,9 +21,14 @@ async function cargarRevision(){
 
 
     const response =
-    await fetch(
-        `${API}/tests/${idTest}/revision`
-    );
+        await fetch(
+            `${API}/tests/${idTest}/revision`,
+            {
+                headers:{
+                    Authorization:`Bearer ${getToken()}`
+                }
+            }
+        );
 
 
     preguntas =

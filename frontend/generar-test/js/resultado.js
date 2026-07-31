@@ -15,9 +15,14 @@ params.get('idTest');
 async function cargarResultado(){
 
 const response =
-await fetch(
-`${API}/tests/${idTest}/resultado`
-);
+    await fetch(
+    `${API}/tests/${idTest}/resultado`,
+    {
+        headers:{
+            Authorization:`Bearer ${getToken()}`
+        }
+    }
+    );
 
 const resultado =
 await response.json();

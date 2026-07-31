@@ -13,7 +13,12 @@ async function cargarUsuario() {
 
     const response =
         await fetch(
-            `${API}/usuarios/${idUsuario}`
+            `${API}/usuarios/${idUsuario}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            }
         );
 
     const usuario =
@@ -36,8 +41,8 @@ async function guardarCambios() {
         {
             method: 'PUT',
             headers: {
-                'Content-Type':
-                    'application/json'
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 nome,

@@ -20,7 +20,12 @@ async function cargarOposicion() {
 
     const response =
         await fetch(
-            `${API}/oposiciones/${idOposicion}`
+            `${API}/oposiciones/${idOposicion}`,
+            {
+                headers:{
+                    Authorization: `Bearer ${getToken()}`
+                }
+            }
         );
 
     const oposicion =
@@ -41,7 +46,14 @@ async function cargarOposicion() {
 async function cargarTemas(temasAsignados = []) {
 
     const response =
-        await fetch(`${API}/temas`);
+        await fetch(
+            `${API}/temas`,
+            {
+                headers:{
+                    Authorization: `Bearer ${getToken()}`
+                }
+            }
+        );
 
     const temas =
         await response.json();
@@ -76,7 +88,12 @@ async function cargarTemasOposicion() {
 
     const response =
         await fetch(
-            `${API}/oposiciones/${idOposicion}/temas`
+            `${API}/oposiciones/${idOposicion}/temas`,
+            {
+                headers:{
+                    Authorization: `Bearer ${getToken()}`
+                }
+            }
         );
 
     const temas =
@@ -130,18 +147,19 @@ async function guardarCambios() {
         ).value;
 
     const response =
-await fetch(
-    `${API}/oposiciones/${idOposicion}`,
-    {
-        method:'PUT',
-        headers:{
-            'Content-Type':'application/json'
-        },
-        body:JSON.stringify({
-            nome_oposicion:nombre,
-            descripcion_oposicion:descripcion
-        })
-    }
+    await fetch(
+        `${API}/oposiciones/${idOposicion}`,
+        {
+            method:'PUT',
+            headers:{
+                'Content-Type':'application/json',
+                Authorization: `Bearer ${getToken()}`
+            },
+            body:JSON.stringify({
+                nome_oposicion:nombre,
+                descripcion_oposicion:descripcion
+            })
+        }
 );
 
 const data =
@@ -163,13 +181,13 @@ async function anadirTema() {
             'temaSelect'
         ).value;
 
-    await fetch(
+    const response = await fetch(
         `${API}/oposiciones/${idOposicion}/temas`,
         {
             method: 'POST',
             headers: {
-                'Content-Type':
-                    'application/json'
+                'Content-Type':'application/json',
+                Authorization: `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 id_tema: idTema
@@ -177,18 +195,33 @@ async function anadirTema() {
         }
     );
 
+    if (!response.ok) {
+        const data = await response.json();
+        alert(data.mensaje);
+    return;
+}
+
     cargarTemasOposicion();
 
 }
 
 async function eliminarTema(idTema) {
 
-    await fetch(
+    const response = await fetch(
         `${API}/oposiciones/${idOposicion}/temas/${idTema}`,
         {
-            method: 'DELETE'
+            method:'DELETE',
+            headers:{
+                Authorization: `Bearer ${getToken()}`
+            }
         }
     );
+    
+    if (!response.ok) {
+        const data = await response.json();
+        alert(data.mensaje);
+        return;
+    }
 
     cargarTemasOposicion();
 

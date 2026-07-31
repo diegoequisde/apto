@@ -2,7 +2,6 @@ const asyncHandler = require('../middlewares/asyncHandler');
 
 const {
     findAllTemas,
-    findTemasUsuario,
     findTemaById,
     insertTema,
     updateTemaById,
@@ -18,22 +17,11 @@ const getTemas = asyncHandler(async (req, res) => {
 
 });
 
-const getMisTemas = asyncHandler(async (req,res)=>{
-
-    const temas =
-        await findTemasUsuario(
-            req.usuario.id
-        );
-
-    res.json(temas);
-
-});
-
 const getTemaById = asyncHandler(async (req, res) => {
 
     const { id } = req.params;
 
-    const tema = await findTemaById(id);
+    const tema = await findTemaById(id, req.usuario);
 
     if (!tema) {
 
@@ -89,11 +77,13 @@ const updateTema = asyncHandler (async(req, res) => {
             descripcion_tema
         } = req.body;
 
-        const result = await updateTemaById(
-            id,
-            nome_tema,
-            descripcion_tema
-        );
+        const result =
+            await updateTemaById(
+                id,
+                nome_tema,
+                descripcion_tema,
+                req.usuario
+            );
 
         if (result.affectedRows === 0) {
 
@@ -115,7 +105,10 @@ const deleteTema = asyncHandler(async (req, res) => {
 
     const { id } = req.params;
 
-    const result = await deleteTemaById(id);
+    const result = await deleteTemaById(
+            id,
+            req.usuario
+        );
 
     if (result.affectedRows === 0) {
 

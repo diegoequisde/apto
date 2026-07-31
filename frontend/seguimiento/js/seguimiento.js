@@ -13,7 +13,12 @@ async function cargarEstadisticas(periodo='total'){
 
     const response =
     await fetch(
-        `${API}/tests/estadisticas?periodo=${periodo}`
+        `${API}/tests/estadisticas?periodo=${periodo}`,
+        {
+            headers:{
+                Authorization: `Bearer ${getToken()}`
+            }
+        }
     );
 
     if (!response.ok) {

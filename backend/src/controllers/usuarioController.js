@@ -41,25 +41,6 @@ const getUsuarioById = asyncHandler(async (req, res) => {
 
 });
 
-const getUsuarioByEmail = asyncHandler(async (req, res) => {
-
-    const { email } = req.query;
-
-    const usuario = await findUsuarioByEmail(email);
-
-    if (!usuario) {
-
-        return res.status(404).json({
-            ok: false,
-            mensaje: 'Usuario non encontrado'
-        });
-
-    }
-
-    res.json(usuario);
-
-});
-
 const login = asyncHandler(async (req,res)=>{
 
     const {
@@ -212,7 +193,6 @@ const deleteUsuario = asyncHandler(async (req, res) => {
 module.exports = {
     getUsuarios,
     getUsuarioById,
-    getUsuarioByEmail,
     login,
     createUsuario,
     updateUsuario,

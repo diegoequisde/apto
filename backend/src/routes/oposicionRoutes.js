@@ -1,3 +1,4 @@
+const verifyToken = require('../middlewares/verifyToken');
 const express = require('express');
 
 const validateId = require('../middlewares/validateId');
@@ -15,12 +16,13 @@ const {
     deleteOposicion
 } = require('../controllers/oposicionController');
 
-router.get('/', getOposiciones);
+router.get('/', verifyToken, getOposiciones);
 
-router.get('/:id', validateId, getOposicionById);
+router.get('/:id', verifyToken, validateId, getOposicionById);
 
 router.post(
     '/',
+    verifyToken,
     validateRequiredFields([
         'nome_oposicion'
     ]),
@@ -30,6 +32,7 @@ router.post(
 
 router.put(
     '/:id',
+    verifyToken,
     validateId,
     validateRequiredFields([
         'nome_oposicion'
@@ -38,8 +41,8 @@ router.put(
     updateOposicion
 );
 
-router.delete('/:id', validateId, deleteOposicion);
+router.delete('/:id', verifyToken, validateId, deleteOposicion);
 
-router.use('/:id/temas', oposicionTemaRoutes);
+router.use('/:id/temas', verifyToken, oposicionTemaRoutes);
 
 module.exports = router;

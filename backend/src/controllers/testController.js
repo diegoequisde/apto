@@ -52,17 +52,14 @@ const getResultadoTest = asyncHandler(async(req,res)=>{
 
 const getEstadisticas = asyncHandler(async(req,res)=>{
 
-const id_usuario = 1;
-// Sustituir por req.usuario.id cuando exista autenticación mediante sesión/JWT.
-
 const periodo =
-req.query.periodo || 'total';
+    req.query.periodo || 'total';
 
 const datos =
-await obtenerEstadisticas(
-id_usuario,
-periodo
-);
+    await obtenerEstadisticas(
+        req.usuario.id,
+        periodo
+    );
 
 
 res.json(datos);
@@ -70,13 +67,10 @@ res.json(datos);
 });
 
 const getHistorial = asyncHandler(async(req,res)=>{
- 
-// Sustituir por req.usuario.id cuando exista autenticación mediante sesión/JWT.
-    const id_usuario = 1;
 
-    const tests =
+  const tests =
     await findTestsByUsuario(
-        id_usuario
+        req.usuario.id
     );
 
     res.json(tests);
@@ -107,16 +101,15 @@ const getTestById = asyncHandler(async (req, res) => {
 const createTest = asyncHandler(async (req, res) => {
 
     const {
-        id_usuario,
         temas,
         duracion
     } = req.body;
 
     const id_test =
-    await insertTest(
-        id_usuario,
-        duracion
-    );
+        await insertTest(
+            req.usuario.id,
+            duracion
+        );
 
    let preguntas = [];
 
@@ -171,13 +164,14 @@ const createTestOficial = asyncHandler(async (req, res) => {
     try {
 
         const {
-            id_usuario,
             id_oposicion
         } = req.body;
 
+        const configuracion = obterConfiguracionExame(id_oposicion);
+
         const id_test =
             await insertTest(
-                id_usuario,
+                req.usuario.id,
                 duracion
             );
 
@@ -186,8 +180,6 @@ const createTestOficial = asyncHandler(async (req, res) => {
                 id_oposicion
             );
  
-        const configuracion = obterConfiguracionExame(id_oposicion);
-
         for (let i = 0; i < preguntas.length; i++) {
 
             await insertPreguntaToTest(

@@ -19,7 +19,8 @@ await fetch(
     {
         method:'POST',
         headers:{
-            'Content-Type':'application/json'
+            'Content-Type':'application/json',
+            Authorization: `Bearer ${getToken()}`
         },
         body:JSON.stringify({
             nome_oposicion:nombre,
@@ -30,6 +31,11 @@ await fetch(
 
 const data =
 await response.json();
+
+if (!response.ok) {
+    alert(data.mensaje);
+    return;
+}
 
 window.location.href = '/admin/oposiciones/index.html';
 }
