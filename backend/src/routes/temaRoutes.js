@@ -9,16 +9,16 @@ const router = express.Router();
 
 const {
     getTemas,
-    getMisTemas,
     getTemaById,
     createTema,
     updateTema,
     deleteTema
 } = require('../controllers/temaController');
 
-router.get('/mis-temas', verifyToken, getMisTemas);
-
-router.get('/', getTemas);
+router.get('/',
+            verifyToken,
+            getTemas
+        );
 
 router.get('/:id', validateId, getTemaById);
 

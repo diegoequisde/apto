@@ -12,7 +12,7 @@ const {
 
 const getTemas = asyncHandler(async (req, res) => {
 
-    const temas = await findAllTemas();
+    const temas = await findAllTemas(req.usuario);
 
     res.json(temas);
 
@@ -135,7 +135,6 @@ const deleteTema = asyncHandler(async (req, res) => {
 
 module.exports = {
     getTemas,
-    getMisTemas,
     getTemaById,
     createTema,
     updateTema,

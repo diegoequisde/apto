@@ -10,7 +10,7 @@ const findAllTemas = async () => {
             estado_tema
         FROM tema
         WHERE estado_tema='activo'
-        AND id_usuario=1
+        AND id_usuario= ?
     `);
 
     return rows;
