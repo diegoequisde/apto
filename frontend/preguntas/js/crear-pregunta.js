@@ -36,95 +36,133 @@ async function cargarTemas() {
 
 }
 
-async function crearOpciones(
-    idPregunta
-) {
+async function guardarPregunta() {
+
+    const enunciado =
+        document
+            .getElementById('enunciado')
+            .value
+            .trim();
+
+    const idTema =
+        document
+            .getElementById('idTema')
+            .value;
 
     const correcta =
         document.querySelector(
             'input[name="correcta"]:checked'
-        ).value;
+        )?.value;
 
-    const letras =
-        ['A', 'B', 'C', 'D'];
+    if (!correcta) {
 
-    for (const letra of letras) {
-
-        const texto =
-            document.getElementById(
-                `texto-${letra}`
-            ).value;
-
-        await fetch(
-            `${API}/preguntas/${idPregunta}/opciones`,
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${getToken()}`
-                },
-                body: JSON.stringify({
-                    letra_opcion: letra,
-                    texto,
-                    e_correcta: letra === correcta
-                })
-            }
+        alert(
+            'Debes seleccionar unha resposta correcta.'
         );
 
-    }
-
-}
-
-async function guardarPregunta() {
-
-    const enunciado =
-        document.getElementById(
-            'enunciado'
-        ).value;
-
-    const idTema =
-        document.getElementById(
-            'idTema'
-        ).value;
-
-   const response = await fetch(
-        `${API}/preguntas`,
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${getToken()}`
-            },
-            body: JSON.stringify({
-                enunciado,
-                id_tema: idTema
-            })
-        }
-    );
-
-    const pregunta =
-    await response.json();
-
-    if(!response.ok){
-
-        alert(pregunta.mensaje);
         return;
 
     }
 
-    const idPregunta =
-        pregunta.id_pregunta;
+    const opciones = [];
 
-    await crearOpciones(
-    idPregunta
-);
+    const letras =
+        ['A','B','C','D'];
 
-alert(
-    'Pregunta creada correctamente'
-);
+    for (const letra of letras) {
 
-window.location.href =
-    './index.html';
+        const texto =
+            document
+                .getElementById(`texto-${letra}`)
+                .value
+                .trim();
+
+        if (!texto) {
+            continue;
+        }
+
+        opciones.push({
+
+            letra_opcion:
+                letra,
+
+            texto,
+
+            e_correcta:
+                letra === correcta
+
+        });
+
+    }
+
+    const opcionCorrecta =
+        opciones.find(
+            opcion => opcion.e_correcta
+        );
+
+    if (!opcionCorrecta) {
+
+        alert(
+            'A resposta correcta debe ter texto.'
+        );
+
+        return;
+
+    }
+
+    if (opciones.length < 2) {
+
+        alert(
+            'Debes introducir polo menos dúas opcións.'
+        );
+
+        return;
+
+    }
+
+    const response =
+        await fetch(
+            `${API}/preguntas`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type':
+                        'application/json',
+                    Authorization:
+                        `Bearer ${getToken()}`
+                },
+                body: JSON.stringify({
+
+                    enunciado,
+
+                    id_tema:
+                        idTema,
+
+                    opciones
+
+                })
+            }
+        );
+
+    const data =
+        await response.json();
+
+    if (!response.ok) {
+
+        alert(
+            data.mensaje
+        );
+
+        return;
+
+    }
+
+    alert(
+        'Pregunta creada correctamente'
+    );
+
+    window.location.href =
+        `./index.html?idTema=${idTema}`;
 
 }
 

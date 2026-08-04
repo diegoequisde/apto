@@ -2,7 +2,7 @@ const asyncHandler = require('../middlewares/asyncHandler');
 
 const {
     findOpcionesByPregunta,
-    insertOpcion,
+    // insertOpcion,
     updateOpcionById,
     deleteOpcionById
 } = require('../services/opcionService');
@@ -16,7 +16,7 @@ const getOpcionesByPregunta = asyncHandler(async (req, res) => {
         res.json(opciones);
 
 });
-
+/*
 const createOpcion = asyncHandler(async (req, res) => {
 
     
@@ -42,6 +42,7 @@ const createOpcion = asyncHandler(async (req, res) => {
         });
 
 });
+*/
 
 const updateOpcion = asyncHandler(async (req, res) => {
 
@@ -104,7 +105,7 @@ const deleteOpcion = asyncHandler(async (req, res) => {
 
 module.exports = {
     getOpcionesByPregunta,
-    createOpcion,
+    // createOpcion,
     updateOpcion,
     deleteOpcion
 };

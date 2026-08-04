@@ -1,5 +1,8 @@
 requireLogin();
 
+console.log('Preguntas.js cargado');
+
+
 const API =
     'http://localhost:3000/api';
 
@@ -44,22 +47,28 @@ async function cargarTema() {
         `Preguntas · ${tema.nome_tema}`;
 
 }
-
 async function cargarPreguntas() {
 
+    let url =
+        `${API}/preguntas?page=${paginaActual}&limit=${limite}`;
+
+    if (idTema) {
+
+        url += `&idTema=${idTema}`;
+
+    }
+
     const response = await fetch(
-        `${API}/preguntas?idTema=${idTema}&page=${paginaActual}&limit=${limite}`,
+        url,
         {
             headers: {
                 Authorization: `Bearer ${getToken()}`
             }
         }
     );
-        
+
     const data =
-    await response.json();
-
-
+        await response.json(); 
 
 document
     .getElementById(
@@ -78,6 +87,8 @@ document
 
     const preguntas =
         data.items;
+
+        console.log(preguntas.length);
 
     document.getElementById(
     'infoPaginacion'
@@ -106,6 +117,8 @@ document
         `Mostrando ${inicio}-${fin} de ${data.total} preguntas`;
     
     preguntas.forEach((pregunta) => {
+
+        console.log(pregunta);
 
         container.innerHTML += `
             <div>

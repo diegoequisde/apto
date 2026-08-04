@@ -3,14 +3,15 @@ const asyncHandler = require('../middlewares/asyncHandler');
 const {
     findAllPreguntas,
     findPreguntaById,
-    insertPregunta,
+    crearPreguntaCompleta,
     updatePreguntaById,
     deletePreguntaById,
     contarPreguntasUsuario
 } = require('../services/preguntaService');
 
 const getPreguntas = asyncHandler(async (req, res) => {
-
+console.log(req.usuario);
+console.log(req.query);
     const page =
         Number(req.query.page) || 1;
 
@@ -27,7 +28,7 @@ const getPreguntas = asyncHandler(async (req, res) => {
             idTema,
             req.usuario
         );
-
+console.log(preguntas);
     res.json(preguntas);
 
 });
@@ -55,39 +56,63 @@ const getPreguntaById = asyncHandler(async (req, res) => {
 
 });
 
-const createPregunta = asyncHandler (async (req, res) => {
+const createPregunta = asyncHandler(async (req, res) => {
 
     const {
         enunciado,
-        id_tema
+        id_tema,
+        opciones
     } = req.body;
 
-    const id_usuario = req.usuario.id;
+    const id_usuario =
+        req.usuario.id;
 
-    if(req.usuario.tipo === 'free'){
+    if (req.usuario.tipo === 'free') {
 
-    const total = await contarPreguntasUsuario(req.usuario.id);
+        const total =
+            await contarPreguntasUsuario(
+                id_usuario
+            );
 
-        if(total >= 40){
+        if (total >= 40) {
 
             return res.status(403).json({
-                mensaje: 'La cuenta gratuíta permite crear un máximo de 40 preguntas. Actualiza a Premium para eliminar este límite.'
+                mensaje:
+                    'La cuenta gratuíta permite crear un máximo de 40 preguntas. Actualiza a Premium para eliminar este límite.'
             });
 
         }
 
     }
-    const id_pregunta = await insertPregunta(
-        enunciado,
-        id_tema,
-        id_usuario
-    );
 
-    res.status(201).json({
-        ok: true,
-        mensaje: 'Pregunta creada correctamente',
-        id_pregunta
+    try{
+
+        const id_pregunta =
+            await crearPreguntaCompleta(
+                enunciado,
+                id_tema,
+                id_usuario,
+                opciones
+            );
+
+        res.status(201).json({
+
+            ok: true,
+
+            mensaje:
+                'Pregunta creada correctamente',
+
+            id_pregunta
+
+        });
+
+    }catch(error){
+
+    return res.status(400).json({
+        ok:false,
+        mensaje:error.message
     });
+}
 
 });
 

@@ -18,7 +18,7 @@ const findOpcionesByPregunta = async (id, usuario) => {
     return rows;
 
 };
-
+/*
 const insertOpcion = async (
     id,
     letra_opcion,
@@ -45,7 +45,7 @@ const insertOpcion = async (
     return result;
 
 };
-
+*/
 const updateOpcionById = async (
     id,
     letra,
@@ -104,7 +104,6 @@ const deleteOpcionById = async (
 
 module.exports = {
     findOpcionesByPregunta,
-    insertOpcion,
     updateOpcionById,
     deleteOpcionById
 };

@@ -147,6 +147,7 @@ const findPreguntasAleatorias = async (
 
 };
 
+/*
 const insertPregunta = async (
     enunciado,
     id_tema,
@@ -169,7 +170,7 @@ const insertPregunta = async (
     return result.insertId;
 
 };
-
+*/
 const updatePreguntaById = async (
     id,
     enunciado,
@@ -193,6 +194,104 @@ const updatePreguntaById = async (
     ]);
 
     return result;
+
+};
+
+
+const crearPreguntaCompleta = async (
+    enunciado,
+    id_tema,
+    id_usuario,
+    opciones
+) => {
+    
+    if (!Array.isArray(opciones) || opciones.length < 2) {
+
+        throw new Error(
+            'A pregunta debe ter polo menos dúas opcións.'
+        );
+
+    }
+
+    const correctas =
+        opciones.filter(
+            opcion => opcion.e_correcta
+        );
+
+    if (correctas.length !== 1) {
+
+        throw new Error(
+            'Debe existir unha única resposta correcta.'
+        );
+
+    }
+
+    const connection =
+        await pool.getConnection();
+
+    try {
+
+        await connection.beginTransaction();
+
+        const [pregunta] =
+            await connection.query(`
+                INSERT INTO pregunta(
+                    enunciado,
+                    id_tema,
+                    id_usuario
+                )
+                VALUES(?,?,?)
+            `,[
+                enunciado,
+                id_tema,
+                id_usuario
+            ]);
+
+        const id_pregunta =
+            pregunta.insertId;
+
+       for (const opcion of opciones) {
+
+            if (!opcion.texto?.trim()) {
+
+                throw new Error(
+                    'Todas as opcións deben ter texto.'
+                );
+
+            }
+
+            await connection.query(`
+                INSERT INTO opcion(
+                    id_pregunta,
+                    letra_opcion,
+                    texto,
+                    e_correcta
+                )
+                VALUES(?,?,?,?)
+            `,[
+                id_pregunta,
+                opcion.letra_opcion,
+                opcion.texto,
+                opcion.e_correcta
+            ]);
+
+        }
+
+        await connection.commit();
+
+        return id_pregunta;
+
+    } catch(error){
+
+        await connection.rollback();
+
+        throw error;
+
+    } finally{
+
+        connection.release();
+
+    }
 
 };
 
@@ -227,7 +326,7 @@ module.exports = {
     findAllPreguntas,
     findPreguntaById,
     findPreguntasAleatorias,
-    insertPregunta,
+    crearPreguntaCompleta,
     updatePreguntaById,
     deletePreguntaById,
     contarPreguntasUsuario
