@@ -20,10 +20,11 @@ router.get('/',
             getTemas
         );
 
-router.get('/:id', validateId, getTemaById);
+router.get('/:id', verifyToken, validateId, getTemaById);
 
 router.post(
     '/',
+    verifyToken,
     validateRequiredFields([
         'nome_tema'
     ]),
@@ -33,6 +34,7 @@ router.post(
 
 router.put(
     '/:id',
+    verifyToken,
     validateId,
     validateRequiredFields([
         'nome_tema'
@@ -41,6 +43,6 @@ router.put(
     updateTema
 );
  
-router.delete('/:id', validateId, deleteTema);
+router.delete('/:id', verifyToken, validateId, deleteTema);
 
 module.exports = router;

@@ -45,7 +45,7 @@ const findPreguntasByTest = async (id_test) => {
 };
 
 
-const findRevisionByTest = async (id_test) => {
+const findRevisionByTest = async (id_test, id_usuario) => {
 
     const [preguntas] = await pool.query(`
 
@@ -59,10 +59,13 @@ const findRevisionByTest = async (id_test) => {
 
         INNER JOIN pregunta p
             ON pt.id_pregunta = p.id_pregunta
+        JOIN test t
+            ON pt.id_test = t.id_test
         WHERE pt.id_test = ?
+        AND t.id_usuario = ?
         ORDER BY pt.orde
 
-    `,[id_test]);
+    `,[id_test, id_usuario]);
 
 
     for(const pregunta of preguntas){

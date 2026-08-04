@@ -43,7 +43,7 @@ const findTestsByUsuario = async (
 };
 
 const findResultadoTest = async (
-    id_test
+    id_test, id_usuario
 ) => {
 
    const [rows] = await pool.query(`
@@ -55,7 +55,8 @@ const findResultadoTest = async (
         JOIN test t
             ON pt.id_test = t.id_test
         WHERE pt.id_test = ?
-    `, [id_test]);
+        AND t.id_usuario = ?
+    `, [id_test, id_usuario]);
 
     const total = rows[0].total;
     const aciertos = rows[0].aciertos || 0;
@@ -72,7 +73,10 @@ const findResultadoTest = async (
 };
 
 
-const findTestById = async (id) => {
+const findTestById = async (
+    id,
+    id_usuario
+) => {
 
     const [rows] = await pool.query(`
         SELECT
@@ -84,7 +88,11 @@ const findTestById = async (id) => {
             finalizado
         FROM test
         WHERE id_test = ?
-    `, [id]);
+        AND id_usuario = ?
+    `, [
+        id,
+        id_usuario
+    ]);
 
     return rows[0] || null;
 
@@ -113,6 +121,7 @@ const insertTest = async (
 
 const updateTestById = async (
     id,
+    id_usuario,
     duracion,
     resultado,
     finalizado
@@ -125,23 +134,29 @@ const updateTestById = async (
             resultado = ?,
             finalizado = ?
         WHERE id_test = ?
+        AND id_usuario = ?
     `, [
         duracion,
         resultado,
         finalizado,
-        id
+        id,
+        id_usuario
     ]);
 
     return result;
 
 };
 
-const deleteTestById = async (id) => {
+const deleteTestById = async (
+        id,
+        id_usuario
+    ) => {
 
     const [result] = await pool.query(`
         DELETE FROM test
         WHERE id_test = ?
-    `, [id]);
+        AND id_usuario = ?
+    `, [id, id_usuario]);
 
     return result;
 

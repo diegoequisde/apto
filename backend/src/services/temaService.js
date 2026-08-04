@@ -51,7 +51,7 @@ const insertTema = async (
     `, [
         nome_tema,
         descripcion_tema,
-        req.usuario
+        usuario
     ]);
 
     return result.insertId;

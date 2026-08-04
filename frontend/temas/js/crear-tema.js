@@ -21,8 +21,8 @@ async function guardarTema() {
         {
             method: 'POST',
             headers: {
-                'Content-Type':
-                    'application/json'
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 nome_tema,

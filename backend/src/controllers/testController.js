@@ -44,7 +44,10 @@ const getResultadoTest = asyncHandler(async(req,res)=>{
     req.params;
 
     const resultado =
-    await findResultadoTest(id);
+    await findResultadoTest(
+        id,
+        req.usuario.id
+    );
 
     res.json(resultado);
 
@@ -82,7 +85,10 @@ const getTestById = asyncHandler(async (req, res) => {
 
         const { id } = req.params;
 
-        const test = await findTestById(id);
+        const test = await findTestById(
+            id,
+            req.usuario.id
+        );
 
         if (!test) {
 
@@ -167,12 +173,13 @@ const createTestOficial = asyncHandler(async (req, res) => {
             id_oposicion
         } = req.body;
 
-        const configuracion = obterConfiguracionExame(id_oposicion);
+        const configuracion =
+            obterConfiguracionExame(id_oposicion);
 
         const id_test =
             await insertTest(
                 req.usuario.id,
-                duracion
+                configuracion.duracion
             );
 
         const preguntas =
@@ -219,8 +226,11 @@ const updateTest = asyncHandler(async (req, res) => {
 
     if(finalizado == 1){
 
-        const test =
-        await findTestById(id);
+       const test =
+        await findTestById(
+            id,
+            req.usuario.id
+        );
 
         const inicio =
         new Date(test.data_realizacion);
@@ -247,6 +257,7 @@ const updateTest = asyncHandler(async (req, res) => {
     const result =
     await updateTestById(
         id,
+        req.usuario.id,
         duracion,
         resultadoFinal,
         finalizado
@@ -278,7 +289,7 @@ const deleteTest = asyncHandler(async (req, res) => {
     
         const { id } = req.params;
 
-        const result = await deleteTestById(id);
+        const result = await deleteTestById(id, req.usuario.id);
 
         if (result.affectedRows === 0) {
 
@@ -298,17 +309,13 @@ const deleteTest = asyncHandler(async (req, res) => {
 
 const getRevisionTest = asyncHandler(async (req,res)=>{
 
-
     const { id } =
     req.params;
 
-
     const revision =
-    await findRevisionByTest(id);
-
+    await findRevisionByTest(id, req.usuario.id);
 
     res.json(revision);
-
 
 });
 
