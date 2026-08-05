@@ -1,10 +1,6 @@
 requireLogin();
 
-console.log('Preguntas.js cargado');
-
-
-const API =
-    'http://localhost:3000/api';
+const API = CONFIG.API;
 
 const container =
     document.getElementById(
@@ -88,8 +84,6 @@ document
     const preguntas =
         data.items;
 
-        console.log(preguntas.length);
-
     document.getElementById(
     'infoPaginacion'
     ).textContent =
@@ -118,8 +112,6 @@ document
     
     preguntas.forEach((pregunta) => {
 
-        console.log(pregunta);
-
         container.innerHTML += `
             <div>
                 <p>
@@ -144,7 +136,6 @@ document
             </div>
         `;
     });
-
 
     window.scrollTo({
     top: 0,

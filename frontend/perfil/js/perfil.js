@@ -1,6 +1,6 @@
 requireLogin();
 
-const API = 'http://localhost:3000/api';
+const API = CONFIG.API;
 
 const usuario = getUsuarioActual();
 const idUsuario = usuario.id;

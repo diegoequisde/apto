@@ -1,8 +1,6 @@
 requireLogin();
 
-const API =
-'http://localhost:3000/api';
-
+const API = CONFIG.API;
 
 const params =
 new URLSearchParams(
