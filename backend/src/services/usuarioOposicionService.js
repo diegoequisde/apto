@@ -23,18 +23,35 @@ const insertOposicionToUsuario = async (
     id_oposicion
 ) => {
 
-    const [result] = await pool.query(`
-        INSERT INTO usuario_oposicion (
+    try {
+
+        const [result] = await pool.query(`
+            INSERT INTO usuario_oposicion (
+                id_usuario,
+                id_oposicion
+            )
+            VALUES (?, ?)
+        `, [
             id_usuario,
             id_oposicion
-        )
-        VALUES (?, ?)
-    `, [
-        id_usuario,
-        id_oposicion
-    ]);
+        ]);
 
-    return result;
+        return result;
+
+    } catch (error) {
+
+        if (error.code === 'ER_DUP_ENTRY') {
+
+            const err = new Error(
+                'A oposición xa está gardada nos teus favoritos.'
+            );
+
+            err.status = 409;
+            throw err;
+
+        }
+        throw error;
+    }
 
 };
 

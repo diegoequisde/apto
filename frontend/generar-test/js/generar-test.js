@@ -2,20 +2,14 @@ requireLogin();
 
 const API = CONFIG.API;
 
-const oposicionSelect =
-document.getElementById('oposicion');
-
-const temaSelect =
-document.getElementById('tema');
-
-const listaTemas =
-document.getElementById('listaTemas');
-
+const oposicionSelect = document.getElementById('oposicion');
+const temaSelect = document.getElementById('tema');
+const bloqueTemas = document.getElementById('bloqueTemas');
+const listaTemas = document.getElementById('listaTemas');
 let temasSeleccionados = [];
 
 // evitar que se escriba algo que no sean numeros
-const cantidadTema =
-    document.getElementById('cantidadTema');
+const cantidadTema = document.getElementById('cantidadTema');
 
 cantidadTema.addEventListener('input', () => {
 
@@ -31,11 +25,8 @@ cantidadTema.addEventListener('blur', () => {
         cantidadTema.value === '' ||
         Number(cantidadTema.value) < 1
     ) {
-
         cantidadTema.value = 1;
-
     }
-
 });
 
 async function cargarOposiciones(){
@@ -98,7 +89,6 @@ async function cargarTemas(idOposicion){
 
 }
 
-
 function anadirTema(){
 
     const idTema =
@@ -139,43 +129,52 @@ function anadirTema(){
         cantidad
     });
 
-    // mostrar el total de preguntas seleccionadas
-const total = temasSeleccionados.reduce(
-    (suma, tema) => suma + tema.cantidad, 0
-);
-
-document.getElementById('totalPreguntas').textContent = `Total de preguntas: ${total}`;
-
     pintarListaTemas();
 
 }
 
-function pintarListaTemas(){
+function pintarListaTemas() {
 
-     document.getElementById('tituloTemas').textContent =
+    if (temasSeleccionados.length === 0) {
+        bloqueTemas.style.display = 'none';
+        return;
+    }
+
+    bloqueTemas.style.display = '';
+
+    document.getElementById('tituloTemas').textContent =
         `Temas seleccionados (${temasSeleccionados.length})`;
-        
-    listaTemas.innerHTML='';
 
-    temasSeleccionados.forEach((tema,index)=>{
+    const total =
+        temasSeleccionados.reduce(
+            (suma, tema) => suma + tema.cantidad,
+            0
+        );
+
+    document.getElementById('totalPreguntas').textContent =
+        `Total de preguntas: ${total}`;
+
+    listaTemas.innerHTML = '';
+
+    temasSeleccionados.forEach((tema, index) => {
 
         listaTemas.innerHTML += `
-        <div class="tema-seleccionado">
+            <div class="tema-seleccionado">
 
-            <span>
-                <strong>${tema.nome}</strong>
-                · ${tema.cantidad} preguntas
-            </span>
+                <span>
+                    <strong>${tema.nome}</strong>
+                    · ${tema.cantidad} preguntas
+                </span>
 
-            <button
-                type="button"
-                onclick="eliminarTema(${index})">
-                Eliminar
-            </button>
+                <button type="button" onclick="eliminarTema(${index})">
+                    Eliminar
+                </button>
 
-        </div>
+            </div>
         `;
+
     });
+
 }
 
 window.eliminarTema = function(index){
@@ -195,23 +194,35 @@ document
 );
 
 async function generarTest(){ 
-    if(temasSeleccionados.length===0){
-        alert('Engade polo menos un tema.');
-        return;
+    let temas = [...temasSeleccionados];
+
+    // Si el usuario no ha añadido ningún tema,
+    // usar el que tiene seleccionado actualmente.
+    if (temas.length === 0) {
+
+        if (!temaSelect.value) {
+            alert('Selecciona un tema.');
+            return;
+        }
+
+        temas.push({
+            id_tema: temaSelect.value,
+            nome: temaSelect.options[temaSelect.selectedIndex].text,
+            cantidad: Number(cantidadTema.value)
+        });
+
     }
 
-    const response =
-        await fetch(`${API}/tests`,{
-                method:'POST',
-                headers:{
-                    'Content-Type':'application/json',
-                    Authorization:`Bearer ${getToken()}`
-                },
-                body:JSON.stringify({
-                    temas:temasSeleccionados
-                })
-            }
-        );
+    const response = await fetch(`${API}/tests`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getToken()}`
+        },
+        body: JSON.stringify({
+            temas
+        })
+    });
 
     const data =
     await response.json();

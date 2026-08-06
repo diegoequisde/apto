@@ -119,7 +119,7 @@ body {
 }
 
 .acciones-generador{
-    display:flex;
+    display:flex; 
     gap:1rem;
     margin:1rem 0;
 }
@@ -161,6 +161,8 @@ body {
     }
 
 }
+
+
 /* Realización de test */
 .test-layout {
     display: grid;
@@ -169,9 +171,23 @@ body {
     align-items: start;
 }
 
+.test-main{
+    display:flex;
+    flex-direction:column;
+    min-height:70vh;
+}
+
 .test-sidebar {
     position: sticky;
     top: 1rem;
+}
+
+#question-container{
+    flex:1;
+}
+
+.acciones-test{
+    margin-top:2rem;
 }
 
 

@@ -128,27 +128,53 @@ ${pregunta.opciones
 
         `;
 
-    document
-        .querySelectorAll(
-            'input[name="respuesta"]'
-        )
-        .forEach(input => {
+    const radios =
+    document.querySelectorAll(
+        'input[name="respuesta"]'
+    );
 
+let radioMarcado =
+    document.querySelector(
+        'input[name="respuesta"]:checked'
+    );
 
-            input.addEventListener(
-                'change',
-                () => {
+radios.forEach(input => {
 
-                    guardarRespuesta(
-                        pregunta.id_pregunta,
-                        input.value
-                    );
+    input.addEventListener('click', async () => {
 
-                    pregunta.resposta_usuario = input.value;
+        // Si vuelvo a pulsar el mismo radio, lo desmarco
+        if (radioMarcado === input) {
 
-                    mostrarNavegacion();
-                });
-        });
+            input.checked = false;
+            radioMarcado = null;
+
+            pregunta.resposta_usuario = null;
+
+            await guardarRespuesta(
+                pregunta.id_pregunta,
+                null
+            );
+
+            mostrarNavegacion();
+
+            return;
+        }
+
+        // Nueva selección
+        radioMarcado = input;
+
+        pregunta.resposta_usuario = input.value;
+
+        await guardarRespuesta(
+            pregunta.id_pregunta,
+            input.value
+        );
+
+        mostrarNavegacion();
+
+    });
+
+});
 }
 
 async function guardarRespuesta(

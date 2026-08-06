@@ -10,8 +10,6 @@ const {
 } = require('../services/preguntaService');
 
 const getPreguntas = asyncHandler(async (req, res) => {
-console.log(req.usuario);
-console.log(req.query);
     const page =
         Number(req.query.page) || 1;
 
@@ -26,9 +24,9 @@ console.log(req.query);
             page,
             limit,
             idTema,
-            req.usuario
+            req.usuario.id
         );
-console.log(preguntas);
+
     res.json(preguntas);
 
 });
@@ -40,7 +38,7 @@ const getPreguntaById = asyncHandler(async (req, res) => {
         const pregunta = 
         await findPreguntaById(
             id,
-            req.usuario
+            req.usuario.id
         );
 
         if (!pregunta) {
@@ -129,7 +127,7 @@ const { id } = req.params;
             id,
             enunciado,
             id_tema,
-            req.usuario
+            req.usuario.id
         );
 
     if (result.affectedRows === 0) {
@@ -155,7 +153,7 @@ const deletePregunta = asyncHandler(async (req, res) => {
     const result =
         await deletePreguntaById(
             id,
-            req.usuario
+            req.usuario.id
         );
 
     if (result.affectedRows === 0) {

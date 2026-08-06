@@ -1,5 +1,3 @@
-requireLogin();
-
 const API = CONFIG.API;
 
 const params =
@@ -18,7 +16,13 @@ En lugar de redirigir directamente al perfil, mostraría una confirmación breve
 
 const usuario = getUsuarioActual();
 
-const idUsuario = usuario.id;
+const idUsuario = usuario?.id;
+
+const btn = document.getElementById('anadirOposicionBtn');
+
+if(!estaLogueado()){
+    btn.textContent = 'Inicia sesión para guardar esta oposición';
+}
 
 document
     .getElementById('anadirOposicionBtn')
@@ -52,13 +56,19 @@ async function cargarOposicion(){
 
 async function anadirOposicion(){
 
+    if(!estaLogueado()){
+        window.location.href = '/auth/login.html';
+        return;
+    }
+
     const response =
         await fetch(
             `${API}/usuarios/${idUsuario}/oposiciones`,
             {
                 method: 'POST',
                 headers:{
-                    'Content-Type':'application/json'
+                    'Content-Type':'application/json',
+                    Authorization:`Bearer ${getToken()}`
                 },
                 body: JSON.stringify({
                     id_oposicion:idOposicion

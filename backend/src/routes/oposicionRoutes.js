@@ -1,5 +1,5 @@
-const verifyToken = require('../middlewares/verifyToken');
 const express = require('express');
+const verifyToken = require('../middlewares/verifyToken');
 
 const validateId = require('../middlewares/validateId');
 const validateRequiredFields = require('../middlewares/validateRequiredFields');
@@ -16,9 +16,9 @@ const {
     deleteOposicion
 } = require('../controllers/oposicionController');
 
-router.get('/', verifyToken, getOposiciones);
+router.get('/', getOposiciones);
 
-router.get('/:id', verifyToken, validateId, getOposicionById);
+router.get('/:id', getOposicionById);
 
 router.post(
     '/',

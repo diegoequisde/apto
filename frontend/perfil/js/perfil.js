@@ -192,4 +192,59 @@ async function inicializar() {
     await cargarOposiciones();
 }
 
+const planCard =
+    document.getElementById(
+        'planCard'
+    );
+
+if (usuario.tipo === 'free') {
+
+    planCard.innerHTML = `
+        <article>
+
+            <h3>
+                Plan actual
+            </h3>
+
+            <p>
+                <strong>🟢 Free</strong>
+            </p>
+
+            <ul>
+                <li>1 tema</li>
+                <li>40 preguntas</li>
+            </ul>
+
+            <a href="/suscripcion/planes.html"
+                role="button"
+                class="contrast"
+            >
+                Actualizar a Premium
+            </a>
+
+        </article>
+    `;
+
+} else {
+
+    planCard.innerHTML = `
+        <article>
+
+            <h3>
+                Plan actual
+            </h3>
+
+            <p>
+                <strong>🟡 Premium</strong>
+            </p>
+
+            <p>
+                Disfrutas de todas las funcionalidades.
+            </p>
+
+        </article>
+    `;
+
+}
+
 inicializar();

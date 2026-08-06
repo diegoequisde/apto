@@ -4,7 +4,7 @@ const findAllPreguntas = async (
     page = 1,
     limit = 20,
     idTema = null,
-    usuario
+    idUsuario = null
 ) => {
 
     const offset =
@@ -15,11 +15,14 @@ const findAllPreguntas = async (
 
     const params = [];
 
-    if(usuario.tipo !== 'admin'){
+    if (idUsuario) {
+
         where += `
             AND p.id_usuario = ?
         `;
-        params.push(usuario.id);
+
+        params.push(idUsuario);
+
     }
 
     if (idTema) {
@@ -81,11 +84,11 @@ const findAllPreguntas = async (
 
 };
 
-const findPreguntaById = async (id, usuario) => {
+const findPreguntaById = async (id,  idUsuario = null) => {
     /*INNER JOIN tema Para obtener: nome_tema
     LEFT JOIN usuario Porque: una pregunta oficial puede no tener usuario
     o ser creada por admin y LEFT JOIN da más flexibilidad */
-    const [rows] = await pool.query(`
+    let sql = `
         SELECT
             p.id_pregunta,
             p.enunciado,
@@ -99,12 +102,27 @@ const findPreguntaById = async (id, usuario) => {
             ON p.id_tema = t.id_tema
         LEFT JOIN usuario u
             ON p.id_usuario = u.id_usuario
-        WHERE p.id_pregunta = ?
-        AND p.id_usuario= ?
-        AND p.estado_pregunta = 'activa'
-    `, [id, usuario.id]);
+        WHERE
+            p.id_pregunta = ?
+        AND p.estado_pregunta='activa'
+        `;
 
-    return rows[0];
+        const params = [id];
+
+        if(idUsuario){
+
+            sql += `
+                AND p.id_usuario = ?
+            `;
+
+            params.push(idUsuario);
+
+        }
+
+        const [rows] =
+            await pool.query(sql, params);
+
+        return rows[0];
 
 };
 
@@ -175,25 +193,39 @@ const updatePreguntaById = async (
     id,
     enunciado,
     id_tema,
-    usuario
+    idUsuario = null
 ) => {
 
-    const [result] = await pool.query(`
+    let sql = `
         UPDATE pregunta
         SET
-            enunciado = ?,
-            id_tema = ?
-        WHERE id_pregunta = ?
-        AND id_usuario= ?
-        AND estado_pregunta = 'activa'
-    `, [
-        enunciado,
-        id_tema,
-        id,
-        usuario.id
-    ]);
+            enunciado=?,
+            id_tema=?
+        WHERE
+            id_pregunta=?
+        AND estado_pregunta='activa'
+        `;
 
-    return result;
+        const params = [
+            enunciado,
+            id_tema,
+            id
+        ];
+
+        if(idUsuario){
+
+            sql += `
+                AND id_usuario=?
+            `;
+
+            params.push(idUsuario);
+
+        }
+
+        const [result] =
+            await pool.query(sql, params);
+
+        return result;
 
 };
 
@@ -295,7 +327,7 @@ const crearPreguntaCompleta = async (
 
 };
 
-const deletePreguntaById = async (id, usuario) => {
+const deletePreguntaById = async (id, idUsuario=null) => {
 
     const [result] = await pool.query(`
         UPDATE pregunta
