@@ -1,8 +1,7 @@
-const verifyToken = require('../middlewares/verifyToken');
 const express = require('express');
 
+const verifyToken = require('../middlewares/verifyToken');
 const validateRequiredFields = require('../middlewares/validateRequiredFields');
-
 const validateOpcion = require('../middlewares/validateOpcion');
 
 const router = express.Router({ mergeParams: true });

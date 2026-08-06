@@ -1,15 +1,13 @@
-const verifyToken = require('../middlewares/verifyToken');
 const express = require('express');
+const router = express.Router();
 
+const verifyToken = require('../middlewares/verifyToken');
 const validateId = require('../middlewares/validateId');
 const validateRequiredFields = require('../middlewares/validateRequiredFields');
 const validateEmail = require('../middlewares/validateEmail');
 const validateUsuario = require('../middlewares/validateUsuario');
 
 const usuarioOposicionRoutes = require('./usuarioOposicionRoutes');
-
-const router = express.Router();
-
 
 const {
     getUsuarios,

@@ -1,12 +1,12 @@
-const verifyToken = require('../middlewares/verifyToken');
 const express = require('express');
+const router = express.Router();
+
+const verifyToken = require('../middlewares/verifyToken');
 const validateId = require('../middlewares/validateId');
 const validateRequiredFields = require('../middlewares/validateRequiredFields');
 const validatePregunta = require('../middlewares/validatePregunta');
 
 const opcionRoutes = require('./opcionRoutes');
-
-const router = express.Router();
 
 const {
     getPreguntas,
