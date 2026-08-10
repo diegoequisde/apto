@@ -20,6 +20,9 @@ async function inicializar() {
     const pregunta =
         await cargarPregunta();
 
+    idTemaInicial =
+        pregunta.id_tema;
+
     document.getElementById(
         'enunciado'
     ).value =
@@ -33,7 +36,6 @@ async function inicializar() {
     await cargarOpciones();
 
 }
-
 
 async function cargarPregunta() {
 
@@ -72,7 +74,7 @@ async function cargarTemas() {
     select.innerHTML = '';
 
 /*
-    // Si quisiera ordenar alfbéticamente
+    // Si se quisiera ordenar alfabéticamente
 
     temas.sort((a, b) =>
                 a.nome_tema.localeCompare(
@@ -194,7 +196,7 @@ async function guardarCambios() {
 
     if(!response.ok){
 
-    alert('Erro ao actualizar a pregunta.');
+    alert('Error al actualizar la pregunta.');
     return;
 
 }
@@ -230,15 +232,18 @@ async function guardarCambios() {
     );
 
     if(!response.ok){
-        alert('Erro ao actualizar unha opción.');
+        alert('Error al actualizar una opción.');
         return;
 }
 
     }
 
     alert(
-        'Pregunta actualizada'
+    'Pregunta actualizada correctamente'
     );
+
+    window.location.href =
+        `./index.html?idTema=${idTemaInicial}`;
 
 }
 

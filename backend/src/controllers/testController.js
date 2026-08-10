@@ -1,8 +1,8 @@
 const asyncHandler = require('../middlewares/asyncHandler');
-
+const pool = require('../config/db');
 const xerarDistribucionExame = require('../utils/generadorExamenOficial');
 const { crearExameOficial } = require('../services/examenOficialService');
-const examenesOficiais = require('../config/examenesOficiais');
+const { obterConfiguracionExame } = require('../config/examenesOficiais');
 
 const {
     findAllTests,
@@ -103,13 +103,42 @@ const getTestById = asyncHandler(async (req, res) => {
 
 });
 
-
 const createTest = asyncHandler(async (req, res) => {
 
     const {
         temas,
         duracion
     } = req.body;
+
+    
+    // Los usuarios FREE solo pueden utilizar sus propios temas
+    if (req.usuario.tipo === 'free') {
+
+        for (const tema of temas) {
+
+            const [rows] = await pool.query(`
+                SELECT id_tema
+                FROM tema
+                WHERE id_tema = ?
+                AND id_usuario = ?
+                AND estado_tema = 'activo'
+            `, [
+                tema.id_tema,
+                req.usuario.id
+            ]);
+
+            if (rows.length === 0) {
+
+                return res.status(403).json({
+                    ok: false,
+                    mensaje: 'Tu cuenta gratuíta sólo puede generar tests con tus temas personalizados.'
+                });
+
+            }
+
+        }
+
+    }
 
     const id_test =
         await insertTest(
@@ -132,7 +161,7 @@ const createTest = asyncHandler(async (req, res) => {
 
             return res.status(400).json({
                 ok:false,
-                mensaje: `O tema ${tema.nome} só dispón de ${preguntasTema.length} preguntas dispoñibles.`
+                mensaje: `El tema ${tema.nome} sólo dispone de ${preguntasTema.length} preguntas disponibles.`
             });
 
         }
@@ -165,6 +194,7 @@ const createTest = asyncHandler(async (req, res) => {
     });
 
 });
+
 const createTestOficial = asyncHandler(async (req, res) => {
 
     try {

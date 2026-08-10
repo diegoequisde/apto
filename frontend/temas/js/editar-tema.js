@@ -14,8 +14,20 @@ async function cargarTema() {
 
     const response =
         await fetch(
-            `${API}/temas/${idTema}`
+            `${API}/temas/${idTema}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            }
         );
+
+    if (!response.ok) {
+
+        alert('No se ha podido cargar el tema.');
+        return;
+
+    }
 
     const tema =
         await response.json();
@@ -44,23 +56,39 @@ async function guardarCambios() {
             'descripcionTema'
         ).value;
 
-    await fetch(
-        `${API}/temas/${idTema}`,
-        {
-            method: 'PUT',
-            headers: {
-                'Content-Type':
-                    'application/json'
-            },
-            body: JSON.stringify({
-                nome_tema,
-                descripcion_tema
-            })
-        }
-    );
+    const response =
+        await fetch(
+            `${API}/temas/${idTema}`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type':
+                        'application/json',
+                    Authorization:
+                        `Bearer ${getToken()}`
+                },
+                body: JSON.stringify({
+                    nome_tema,
+                    descripcion_tema
+                })
+            }
+        );
+
+    if (!response.ok) {
+
+        const data =
+            await response.json();
+
+        alert(
+            data.mensaje || 'No se ha podido actualizar el tema.'
+        );
+
+        return;
+
+    }
 
     alert(
-        'Tema actualizado'
+        'Tema actualizado correctamente'
     );
 
     window.location.href =

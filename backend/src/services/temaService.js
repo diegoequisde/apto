@@ -38,7 +38,7 @@ const findTemaById = async (id, usuario) => {
 const insertTema = async (
     nome_tema,
     descripcion_tema,
-    usuario
+    id_usuario
 ) => {
 
     const [result] = await pool.query(`
@@ -47,11 +47,11 @@ const insertTema = async (
             descripcion_tema,
             id_usuario
         )
-        VALUES (?,?,?)
+        VALUES (?, ?, ?)
     `, [
         nome_tema,
         descripcion_tema,
-        usuario.id
+        id_usuario
     ]);
 
     return result.insertId;

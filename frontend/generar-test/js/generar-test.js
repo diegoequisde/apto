@@ -6,6 +6,7 @@ const oposicionSelect = document.getElementById('oposicion');
 const temaSelect = document.getElementById('tema');
 const bloqueTemas = document.getElementById('bloqueTemas');
 const listaTemas = document.getElementById('listaTemas');
+const usuarioActual = getUsuarioActual();
 let temasSeleccionados = [];
 
 // evitar que se escriba algo que no sean numeros
@@ -275,7 +276,7 @@ async function generarTestOficial(idOposicion){
     if (!puede('premium')) {
 
         alert(
-            'Os simulacros oficiais están dispoñibles só para usuarios Premium.'
+            'Los simulacros oficiales están disponibles sólo para usuarios Premium.'
         );
 
         window.location.href =
@@ -325,7 +326,57 @@ async function generarTestOficial(idOposicion){
 
 async function inicializar(){
 
-    await cargarOposiciones();
+    if (usuarioActual.tipo === 'free') {
+
+        await cargarTemaPersonalizado();
+
+    } else {
+
+        await cargarOposiciones();
+
+    }
+
+}
+
+async function cargarTemaPersonalizado() {
+
+    const response =
+        await fetch(
+            `${API}/temas`,
+            {
+                headers: {
+                    Authorization:
+                        `Bearer ${getToken()}`
+                }
+            }
+        );
+
+    const temas =
+        await response.json();
+
+    if (!response.ok || temas.length === 0) {
+
+        alert(
+            'No tienes ningún tema personalizado disponible.'
+        );
+
+        return;
+
+    }
+
+    const tema = temas[0];
+
+    temaSelect.innerHTML = `
+        <option value="${tema.id_tema}">
+            ${tema.nome_tema}
+        </option>
+    `;
+
+    // No necesitamos seleccionar oposición ni permitir añadir varios temas.
+    oposicionSelect.parentElement.style.display = 'none';
+    document
+        .getElementById('anadirTemaBtn')
+        .style.display = 'none';
 
 }
 
