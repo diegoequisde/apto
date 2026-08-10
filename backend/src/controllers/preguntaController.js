@@ -74,44 +74,27 @@ const createPregunta = asyncHandler(async (req, res) => {
 
         if (total >= 40) {
 
-            return res.status(403).json({
-                mensaje:
-                    'La cuenta gratuíta permite crear un máximo de 40 preguntas. Actualiza a Premium para eliminar este límite.'
-            });
+           const error = new Error( 'La cuenta gratuita permite crear un máximo de 40 preguntas. Actualiza a Premium para eliminar este límite.' );
+           error.status = 403;
+           throw error;
 
         }
 
     }
 
-    try{
-
-        const id_pregunta =
-            await crearPreguntaCompleta(
-                enunciado,
-                id_tema,
-                id_usuario,
-                opciones
-            );
-
-        res.status(201).json({
-
-            ok: true,
-
-            mensaje:
-                'Pregunta creada correctamente',
-
-            id_pregunta
-
-        });
-
-    }catch(error){
-
-    return res.status(400).json({
-        ok:false,
-        mensaje:error.message
+    const id_pregunta = 
+        await crearPreguntaCompleta( 
+            enunciado, 
+            id_tema, 
+            id_usuario, 
+            opciones 
+        );
+        
+    res.status(201).json({ 
+        ok: true, 
+        mensaje: 'Pregunta creada correctamente', 
+        id_pregunta 
     });
-}
-
 });
 
 const updatePregunta = asyncHandler(async (req, res) => {

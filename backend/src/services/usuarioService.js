@@ -102,22 +102,42 @@ const insertUsuario = async (
     password
 ) => {
 
-    const [result] = await pool.query(`
-        INSERT INTO usuario (
+    try {
+
+        const [result] = await pool.query(`
+            INSERT INTO usuario (
+                nome,
+                email,
+                contrasinal_hash,
+                tipo,
+                estado_usuario
+            )
+            VALUES (?, ?, ?, 'free', 'activo')
+        `, [
             nome,
             email,
-            contrasinal_hash,
-            tipo,
-            estado_usuario
-        )
-        VALUES (?, ?, ?, 'free', 'activo')
-    `, [
-        nome,
-        email,
-        password
-    ]);
+            password
+        ]);
 
-    return result.insertId;
+        return result.insertId;
+
+    } catch (error) {
+
+        if (error.code === 'ER_DUP_ENTRY') {
+
+            const err = new Error(
+                'Ya existe un usuario registrado con ese correo electrónico.'
+            );
+
+            err.status = 409;
+
+            throw err;
+
+        }
+
+        throw error;
+
+    }
 
 };
 
@@ -128,22 +148,42 @@ const updateUsuarioById = async (
     tipo
 ) => {
 
-    const [result] = await pool.query(`
-        UPDATE usuario
-        SET
-            nome = ?,
-            email = ?,
-            tipo = ?
-        WHERE id_usuario = ?
-        AND estado_usuario = 'activo'
-    `, [
-        nome,
-        email,
-        tipo,
-        id
-    ]);
+    try {
 
-    return result;
+        const [result] = await pool.query(`
+            UPDATE usuario
+            SET
+                nome = ?,
+                email = ?,
+                tipo = ?
+            WHERE id_usuario = ?
+            AND estado_usuario = 'activo'
+        `, [
+            nome,
+            email,
+            tipo,
+            id
+        ]);
+
+        return result;
+
+    } catch (error) {
+
+        if (error.code === 'ER_DUP_ENTRY') {
+
+            const err = new Error(
+                'Ya existe otro usuario registrado con ese correo electrónico.'
+            );
+
+            err.status = 409;
+
+            throw err;
+
+        }
+
+        throw error;
+
+    }
 
 };
 

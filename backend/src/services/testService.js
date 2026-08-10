@@ -143,20 +143,47 @@ const updateTestById = async (
         id_usuario
     ]);
 
+    if (result.affectedRows === 0) {
+
+        const error = new Error(
+            'Test no encontrado.'
+        );
+
+        error.status = 404;
+
+        throw error;
+
+    }
+
     return result;
 
 };
 
 const deleteTestById = async (
-        id,
-        id_usuario
-    ) => {
+    id,
+    id_usuario
+) => {
 
     const [result] = await pool.query(`
         DELETE FROM test
         WHERE id_test = ?
         AND id_usuario = ?
-    `, [id, id_usuario]);
+    `, [
+        id,
+        id_usuario
+    ]);
+
+    if (result.affectedRows === 0) {
+
+        const error = new Error(
+            'Test no encontrado.'
+        );
+
+        error.status = 404;
+
+        throw error;
+
+    }
 
     return result;
 

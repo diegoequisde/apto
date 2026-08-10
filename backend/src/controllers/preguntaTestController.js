@@ -34,7 +34,7 @@ const addPreguntaToTest = asyncHandler(async (req, res) => {
 
         res.status(201).json({
             ok: true,
-            mensaje: 'Pregunta añadida ao test'
+            mensaje: 'Pregunta añadida al test'
         });
 
 });
@@ -55,14 +55,14 @@ const answerPreguntaTest = asyncHandler (async (req, res) => {
 
             return res.status(404).json({
                 ok: false,
-                mensaje: 'Pregunta do test non encontrada'
+                mensaje: 'Pregunta del test no encontrada'
             });
 
         }
 
         res.json({
             ok: true,
-            mensaje: 'Resposta gardada correctamente'
+            mensaje: 'Respuesta guardada correctamente'
         });
 
 });
@@ -80,14 +80,14 @@ const deletePreguntaFromTest = asyncHandler(async (req, res) => {
 
             return res.status(404).json({
                 ok: false,
-                mensaje: 'Pregunta do test non encontrada'
+                mensaje: 'Pregunta del test no encontrada'
             });
 
         }
 
         res.json({
             ok: true,
-            mensaje: 'Pregunta eliminada do test'
+            mensaje: 'Pregunta eliminada del test'
         });
 
 });

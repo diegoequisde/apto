@@ -17,11 +17,15 @@ async function crearExameOficial(idOposicion) {
 
     if (!configuracion) {
 
-        throw new Error(
-            'Configuración de exame non encontrada'
-        );
+    const error = new Error(
+        'No se ha encontrado la configuración del examen.'
+    );
 
-    }
+    error.status = 404;
+
+    throw error;
+
+}
 
     const distribucion =
         generarDistribucionExame(configuracion);
@@ -37,14 +41,15 @@ async function crearExameOficial(idOposicion) {
                 true
             );
 
-        if (
-            preguntasTema.length <
-            tema.cantidad
-        ) {
+        if (preguntasTema.length < tema.cantidad) {
 
-            throw new Error(
-                `O tema "${tema.nome}" só dispón de ${preguntasTema.length} preguntas dispoñibles.`
+            const error = new Error(
+                `El tema "${tema.nome}" solo tiene ${preguntasTema.length} preguntas disponibles y se necesitan ${tema.cantidad}.`
             );
+
+            error.status = 409;
+
+            throw error;
 
         }
 

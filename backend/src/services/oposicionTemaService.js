@@ -24,18 +24,38 @@ const insertTemaToOposicion = async (
     id_tema
 ) => {
 
-    const [result] = await pool.query(`
-        INSERT INTO oposicion_tema (
+    try {
+
+        const [result] = await pool.query(`
+            INSERT INTO oposicion_tema (
+                id_oposicion,
+                id_tema
+            )
+            VALUES (?, ?)
+        `, [
             id_oposicion,
             id_tema
-        )
-        VALUES (?, ?)
-    `, [
-        id_oposicion,
-        id_tema
-    ]);
+        ]);
 
-    return result;
+        return result;
+
+    } catch (error) {
+
+        if (error.code === 'ER_DUP_ENTRY') {
+
+            const err = new Error(
+                'El tema ya está asociado a esta oposición.'
+            );
+
+            err.status = 409;
+
+            throw err;
+
+        }
+
+        throw error;
+
+    }
 
 };
 

@@ -213,6 +213,7 @@ const createTestOficial = asyncHandler(async (req, res) => {
     }
 
 });
+
 const updateTest = asyncHandler(async (req, res) => {
 
     const { id } =
@@ -224,23 +225,28 @@ const updateTest = asyncHandler(async (req, res) => {
         finalizado
     } = req.body;
 
-    if(finalizado == 1){
+    if (finalizado == 1) {
 
-       const test =
-        await findTestById(
-            id,
-            req.usuario.id
-        );
+    const test = await findTestById(
+        id,
+        req.usuario.id
+    );
 
-        const inicio =
+    if (!test) {
+        return res.status(404).json({
+            ok: false,
+            mensaje: 'Test no encontrado'
+        });
+    }
+
+    const inicio =
         new Date(test.data_realizacion);
 
-        duracion =
+    duracion =
         Math.floor(
             (Date.now() - inicio.getTime()) / 1000
         );
-
-    }
+}
 
     let resultadoFinal =
     resultado;

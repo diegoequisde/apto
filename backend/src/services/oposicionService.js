@@ -36,18 +36,38 @@ const insertOposicion = async (
     descripcion_oposicion
 ) => {
 
-    const [result] = await pool.query(`
-        INSERT INTO oposicion (
+    try {
+
+        const [result] = await pool.query(`
+            INSERT INTO oposicion (
+                nome_oposicion,
+                descripcion_oposicion
+            )
+            VALUES (?, ?)
+        `, [
             nome_oposicion,
             descripcion_oposicion
-        )
-        VALUES (?, ?)
-    `, [
-        nome_oposicion,
-        descripcion_oposicion
-    ]);
+        ]);
 
-    return result.insertId;
+        return result.insertId;
+
+    } catch (error) {
+
+        if (error.code === 'ER_DUP_ENTRY') {
+
+            const err = new Error(
+                'Ya existe una oposición con ese nombre.'
+            );
+
+            err.status = 409;
+
+            throw err;
+
+        }
+
+        throw error;
+
+    }
 
 };
 
@@ -57,19 +77,39 @@ const updateOposicionById = async (
     descripcion_oposicion
 ) => {
 
-    const [result] = await pool.query(`
-        UPDATE oposicion
-        SET
-            nome_oposicion = ?,
-            descripcion_oposicion = ?
-        WHERE id_oposicion = ?
-    `, [
-        nome_oposicion,
-        descripcion_oposicion,
-        id
-    ]);
+    try {
 
-    return result;
+        const [result] = await pool.query(`
+            UPDATE oposicion
+            SET
+                nome_oposicion = ?,
+                descripcion_oposicion = ?
+            WHERE id_oposicion = ?
+        `, [
+            nome_oposicion,
+            descripcion_oposicion,
+            id
+        ]);
+
+        return result;
+
+    } catch (error) {
+
+        if (error.code === 'ER_DUP_ENTRY') {
+
+            const err = new Error(
+                'Ya existe otra oposición con ese nombre.'
+            );
+
+            err.status = 409;
+
+            throw err;
+
+        }
+
+        throw error;
+
+    }
 
 };
 

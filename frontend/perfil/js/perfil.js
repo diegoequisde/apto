@@ -147,23 +147,37 @@ async function buscarOposiciones(){
 
 async function anadirOposicion(idOposicion){
 
-    await fetch(
-        `${API}/usuarios/${idUsuario}/oposiciones`,
-        {
-            method:'POST',
-            headers:{
-                'Content-Type':'application/json',
-                Authorization: `Bearer ${getToken()}`
-            },
-            body:JSON.stringify({
-                id_oposicion:idOposicion
-            })
-        }
-    );
+    const response =
+        await fetch(
+            `${API}/usuarios/${idUsuario}/oposiciones`,
+            {
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json',
+                    Authorization: `Bearer ${getToken()}`
+                },
+                body:JSON.stringify({
+                    id_oposicion:idOposicion
+                })
+            }
+        );
 
-    buscador.value='';
+    const data =
+        await response.json();
 
-    resultados.innerHTML='';
+    if (!response.ok) {
+
+        alert(
+            data.mensaje || 'No se ha podido guardar la oposición.'
+        );
+
+        return;
+
+    }
+
+    buscador.value = '';
+
+    resultados.innerHTML = '';
 
     cargarOposiciones();
 

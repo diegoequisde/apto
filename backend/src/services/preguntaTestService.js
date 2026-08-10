@@ -135,20 +135,40 @@ const insertPreguntaToTest = async (
     orde
 ) => {
 
-    const [result] = await pool.query(`
-        INSERT INTO pregunta_test (
+    try {
+
+        const [result] = await pool.query(`
+            INSERT INTO pregunta_test (
+                id_test,
+                id_pregunta,
+                orde
+            )
+            VALUES (?, ?, ?)
+        `, [
             id_test,
             id_pregunta,
             orde
-        )
-        VALUES (?, ?, ?)
-    `, [
-        id_test,
-        id_pregunta,
-        orde
-    ]);
+        ]);
 
-    return result;
+        return result;
+
+    } catch (error) {
+
+        if (error.code === 'ER_DUP_ENTRY') {
+
+            const err = new Error(
+                'La pregunta ya está añadida a este test.'
+            );
+
+            err.status = 409;
+
+            throw err;
+
+        }
+
+        throw error;
+
+    }
 
 };
 

@@ -164,31 +164,7 @@ const findPreguntasAleatorias = async (
     return rows;
 
 };
-
-/*
-const insertPregunta = async (
-    enunciado,
-    id_tema,
-    id_usuario
-) => {
-
-    const [result] = await pool.query(`
-        INSERT INTO pregunta (
-            enunciado,
-            id_tema,
-            id_usuario
-        )
-        VALUES (?, ?, ?)
-    `, [
-        enunciado,
-        id_tema,
-        id_usuario
-    ]);
-
-    return result.insertId;
-
-};
-*/
+ 
 const updatePreguntaById = async (
     id,
     enunciado,
@@ -239,9 +215,9 @@ const crearPreguntaCompleta = async (
     
     if (!Array.isArray(opciones) || opciones.length < 2) {
 
-        throw new Error(
-            'A pregunta debe ter polo menos dúas opcións.'
-        );
+        const error = new Error( 'La pregunta debe tener al menos dos opciones.' ); 
+        error.status = 400;
+        throw error;
 
     }
 
@@ -252,9 +228,9 @@ const crearPreguntaCompleta = async (
 
     if (correctas.length !== 1) {
 
-        throw new Error(
-            'Debe existir unha única resposta correcta.'
-        );
+        const error = new Error( 'Debe existir una única respuesta correcta.' );
+        error.status = 400;
+        throw error;
 
     }
 
@@ -286,9 +262,9 @@ const crearPreguntaCompleta = async (
 
             if (!opcion.texto?.trim()) {
 
-                throw new Error(
-                    'Todas as opcións deben ter texto.'
-                );
+                const error = new Error( 'Todas las opciones deben tener texto.' );
+                error.status = 400;
+                throw error;
 
             }
 
@@ -327,15 +303,35 @@ const crearPreguntaCompleta = async (
 
 };
 
-const deletePreguntaById = async (id, idUsuario=null) => {
+const deletePreguntaById = async (
+    id,
+    idUsuario = null
+) => {
 
-    const [result] = await pool.query(`
+    let sql = `
         UPDATE pregunta
         SET estado_pregunta = 'eliminada'
         WHERE id_pregunta = ?
-        AND id_usuario= ?
         AND estado_pregunta = 'activa'
-    `, [id, usuario.id]);
+    `;
+
+    const params = [id];
+
+    if (idUsuario) {
+
+        sql += `
+            AND id_usuario = ?
+        `;
+
+        params.push(idUsuario);
+
+    }
+
+    const [result] =
+        await pool.query(
+            sql,
+            params
+        );
 
     return result;
 

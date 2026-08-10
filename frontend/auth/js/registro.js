@@ -22,7 +22,7 @@ async(e)=>{
 
     if(password !== repetirPassword){
 
-        alert('As contrasinais non coinciden.');
+        alert('Las contraseñas no coinciden.');
         return;
 
     }
@@ -59,7 +59,7 @@ async(e)=>{
 
     }
 
-    alert('Conta creada correctamente.');
+    alert('Cuenta creada correctamente.');
 
     window.location.href = '/auth/login.html';
 

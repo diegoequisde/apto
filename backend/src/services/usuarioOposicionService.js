@@ -43,7 +43,7 @@ const insertOposicionToUsuario = async (
         if (error.code === 'ER_DUP_ENTRY') {
 
             const err = new Error(
-                'A oposición xa está gardada nos teus favoritos.'
+                'La oposición ya está guardada en tus favoritos.'
             );
 
             err.status = 409;
