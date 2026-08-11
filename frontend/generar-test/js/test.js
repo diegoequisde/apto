@@ -11,12 +11,13 @@ const idTest = params.get('idTest');
  
 let preguntas = [];
 let preguntaActual = 0;
-const inicioTest = Date.now();
 let intervaloTemporizador;
+let tiempoRestante = null;
+let testFinalizado = false;
+let abandonandoTest = false;
 
 
 function mostrarNavegacion() {
-
 
     const nav =
         document.getElementById(
@@ -68,20 +69,48 @@ function mostrarNavegacion() {
 
 async function cargarTest() {
 
-    const response =
-    await fetch(
-        `${API}/tests/${idTest}/preguntas`,
-        {
-            headers:{
-                Authorization:`Bearer ${getToken()}`
+    const responseTest =
+        await fetch(
+            `${API}/tests/${idTest}`,
+            {
+                headers: {
+                    Authorization:
+                        `Bearer ${getToken()}`
+                }
             }
-        }
-    );
+        );
 
-    preguntas = await response.json();
+    if (!responseTest.ok) {
+
+        alert('No se pudo cargar el test.');
+
+        return;
+
+    }
+
+    const test =
+        await responseTest.json();
+
+    const responsePreguntas =
+        await fetch(
+            `${API}/tests/${idTest}/preguntas`,
+            {
+                headers: {
+                    Authorization:
+                        `Bearer ${getToken()}`
+                }
+            }
+        );
+
+    preguntas =
+        await responsePreguntas.json();
 
     mostrarNavegacion();
     mostrarPregunta();
+    iniciarTemporizador(test);
+    configurarNavegacionInterna();
+    configurarBotonAtras();
+    configurarBeforeUnload();
 
 }
 
@@ -142,7 +171,7 @@ radios.forEach(input => {
 
     input.addEventListener('click', async () => {
 
-        // Si vuelvo a pulsar el mismo radio, lo desmarco
+        // Si vuelvo a pulsar el mismo radio button, se desmarca
         if (radioMarcado === input) {
 
             input.checked = false;
@@ -211,10 +240,13 @@ document
 
         } else {
 
-            const confirmar = confirm('Has llegado a la última pregunta. ¿Deseas finalizar el test?');
+            const confirmar =
+                confirm(
+                    'Has llegado a la última pregunta. ¿Deseas finalizar el test?'
+                );
 
             if (confirmar) {
-                finalizarTest();
+                await finalizarTest();
             }
         }
     };
@@ -237,7 +269,7 @@ document
         'finalizarBtn'
     )
     .onclick =
-    finalizarTest;
+    () => finalizarTest();
 
 function preguntasSinResponder() {
 
@@ -248,68 +280,291 @@ function preguntasSinResponder() {
 
 }
 
+function iniciarTemporizador(test) {
+
+    // Sin límite
+    if (!test.duracion_limite) {
+
+        document
+            .getElementById('temporizador')
+            .textContent =
+            'Sen límite de tempo';
+
+        return;
+
+    }
+
+    const inicio =
+        new Date(
+            test.data_realizacion
+        ).getTime();
+
+    const limite =
+        Number(
+            test.duracion_limite
+        ) * 1000;
+
+    function actualizarTemporizador() {
+
+        const transcurrido =
+            Date.now() - inicio;
+
+        tiempoRestante =
+            Math.max(
+                0,
+                limite - transcurrido
+            );
+
+        const segundos =
+            Math.ceil(
+                tiempoRestante / 1000
+            );
+
+        const minutos =
+            Math.floor(
+                segundos / 60
+            );
+
+        const segundosRestantes =
+            segundos % 60;
+
+        document
+            .getElementById('temporizador')
+            .textContent =
+            `Tempo restante: ${
+                minutos
+            }:${
+                String(
+                    segundosRestantes
+                ).padStart(2, '0')
+            }`;
+
+        if (tiempoRestante <= 0) {
+
+            clearInterval(
+                intervaloTemporizador
+            );
+
+            finalizarTest(true);
+
+        }
+
+    }
+
+    actualizarTemporizador();
+
+    intervaloTemporizador =
+        setInterval(
+            actualizarTemporizador,
+            1000
+        );
+
+}
+
 async function finalizarTest(automatico = false) {
- 
-    const pendientes =
-        preguntasSinResponder();
 
-    if(
-    pendientes > 0 &&
-    !automatico
-){
-
-    const confirmar =
-    confirm(`Tienes ${pendientes} preguntas sin responder. ¿Quieres finalizar igualmente?`);
-
-    if(!confirmar){
+    if (testFinalizado) {
         return;
     }
 
-}
+    // Si la finalización es automática, no pedir confirmación.
+    if (automatico) {
 
-if(automatico){
-    alert('Tempo esgotado. O exame finalizouse automaticamente.');
-}
+        testFinalizado = true;
+
+        if (intervaloTemporizador) {
+            clearInterval(intervaloTemporizador);
+        }
+
+        alert(
+            'Tiempo agotado. El examen se finalizó automáticamente.'
+        );
+
+        await actualizarTestFinalizado();
+
+        window.location.href =
+            `resultado.html?idTest=${idTest}`;
+
+        return;
+    }
+
+    const pendientes =
+        preguntasSinResponder();
+
+    if (pendientes > 0) {
+
+        const confirmar =
+            confirm(
+                `Tienes ${pendientes} preguntas sin responder. ¿Quieres finalizar igualmente?`
+            );
+
+        if (!confirmar) {
+            return;
+        }
+
+    }
+
+    testFinalizado = true;
+
+    if (intervaloTemporizador) {
+        clearInterval(intervaloTemporizador);
+    }
 
     await actualizarTestFinalizado();
 
-    window.location.href = `resultado.html?idTest=${idTest}`;
+    window.location.href =
+        `resultado.html?idTest=${idTest}`;
+
 }
 
-async function actualizarTestFinalizado(){
-
-    const duracion = Math.floor(
-        (Date.now() - inicioTest) / 1000
-    );
+async function actualizarTestFinalizado() {
 
     const response =
-    await fetch(
-        `${API}/tests/${idTest}`,
-        {
-            method:'PUT',
+        await fetch(
+            `${API}/tests/${idTest}`,
+            {
+                method: 'PUT',
 
-            headers:{
-                'Content-Type':'application/json',
-                Authorization:`Bearer ${getToken()}`
-            },
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${getToken()}`
+                },
 
-            body:JSON.stringify({
-                duracion,
-                resultado:null,
-                finalizado:1
-            })
+                body: JSON.stringify({
+                    finalizado: 1
+                })
+            }
+        );
 
-        }
-    );
+    if (!response.ok) {
 
-    if(!response.ok){
+        const data =
+            await response.json();
 
         throw new Error(
+            data.mensaje ||
             'No se pudo finalizar el test'
         );
 
     }
 
 }
- 
+
+async function confirmarAbandono() {
+
+    if (testFinalizado) {
+        return true;
+    }
+
+    const confirmar =
+        confirm('Si sales del test, el intento actual finalizará. ¿Estás seguro de que quieres salir?');
+
+    if (!confirmar) {
+        return false;
+    }
+
+    abandonandoTest = true;
+
+    await finalizarTest(
+        false,
+        true
+    );
+
+    return true;
+}
+
+function configurarNavegacionInterna() {
+
+    document
+        .querySelectorAll('a[href]')
+        .forEach(enlace => {
+
+            enlace.addEventListener(
+                'click',
+                async event => {
+
+                    // Ignorar enlaces que no abandonan realmente la página.
+                    if (
+                        enlace.target === '_blank' ||
+                        enlace.hasAttribute('download') ||
+                        enlace.getAttribute('href').startsWith('#')
+                    ) {
+                        return;
+                    }
+
+                    event.preventDefault();
+
+                    const puedeSalir =
+                        await confirmarAbandono();
+
+                    if (puedeSalir) {
+
+                        window.location.href =
+                            enlace.href;
+                    }
+
+                }
+            );
+
+        });
+}
+
+function configurarBotonAtras() {
+
+    history.pushState(
+        {
+            testEnCurso: true
+        },
+        '',
+        window.location.href
+    );
+
+    window.addEventListener(
+        'popstate',
+        async () => {
+
+            // Volvemos a colocar el estado para mantener al usuario en el test mientras mostramos la confirmación.
+            history.pushState(
+                {
+                    testEnCurso: true
+                },
+                '',
+                window.location.href
+            );
+
+            const puedeSalir =
+                await confirmarAbandono();
+
+            if (puedeSalir) {
+
+                // El test ya está finalizado. Ahora sí permitimos salir.
+                history.back();
+            }
+
+        }
+    );
+}
+
+/*
+    El navegador mostrará su propio mensaje de confirmación. No podemos controlar el texto exacto.
+    Si el usuario confirma el cierre, no podemos garantizar que el test se marque como finalizado en la base de datos.
+    Para los enlaces internos y el botón Atrás sí podemos hacerlo. 
+*/
+function configurarBeforeUnload() {
+
+    window.addEventListener(
+        'beforeunload',
+        event => {
+
+            if (testFinalizado) {
+                return;
+            }
+
+            event.preventDefault();
+
+            event.returnValue = '';
+        }
+    );
+}
+
 cargarTest();

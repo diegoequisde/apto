@@ -84,6 +84,7 @@ const findTestById = async (
             id_usuario,
             data_realizacion,
             duracion,
+            duracion_limite,
             resultado,
             finalizado
         FROM test
@@ -101,18 +102,18 @@ const findTestById = async (
 
 const insertTest = async (
     id_usuario,
-    duracion
+    duracionLimite
 ) => {
 
     const [result] = await pool.query(`
         INSERT INTO test (
             id_usuario,
-            duracion
+            duracion_limite
         )
         VALUES (?, ?)
     `, [
         id_usuario,
-        duracion
+        duracionLimite
     ]);
 
     return result.insertId;

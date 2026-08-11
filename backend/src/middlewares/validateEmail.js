@@ -9,7 +9,7 @@ const validateEmail = (req, res, next) => {
 
         return res.status(400).json({
             ok: false,
-            mensaje: 'Email non válido'
+            mensaje: 'Email no válido'
         });
 
     }

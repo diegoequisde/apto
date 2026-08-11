@@ -24,7 +24,7 @@ const validateOpcion = (req, res, next) => {
 
         return res.status(400).json({
             ok: false,
-            mensaje: 'O texto da opción é obrigatorio'
+            mensaje: 'El texto de la opción es obligatorio'
         });
 
     }

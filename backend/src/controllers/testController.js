@@ -107,7 +107,7 @@ const createTest = asyncHandler(async (req, res) => {
 
     const {
         temas,
-        duracion
+        duracion: duracionLimite
     } = req.body;
 
     
@@ -143,7 +143,7 @@ const createTest = asyncHandler(async (req, res) => {
     const id_test =
         await insertTest(
             req.usuario.id,
-            duracion
+            duracionLimite || null
         );
 
    let preguntas = [];
@@ -257,10 +257,11 @@ const updateTest = asyncHandler(async (req, res) => {
 
     if (finalizado == 1) {
 
-    const test = await findTestById(
-        id,
-        req.usuario.id
-    );
+    const test =
+        await findTestById(
+            id,
+            req.usuario.id
+        );
 
     if (!test) {
         return res.status(404).json({
@@ -270,12 +271,25 @@ const updateTest = asyncHandler(async (req, res) => {
     }
 
     const inicio =
-        new Date(test.data_realizacion);
+        new Date(
+            test.data_realizacion
+        );
 
     duracion =
         Math.floor(
-            (Date.now() - inicio.getTime()) / 1000
+            (Date.now() -
+            inicio.getTime()) / 1000
         );
+
+    if (
+        test.duracion_limite &&
+        duracion > test.duracion_limite
+    ) {
+
+        duracion =
+            test.duracion_limite;
+
+    }
 }
 
     let resultadoFinal =

@@ -214,6 +214,14 @@ async function generarTest(){
 
     }
 
+    const duracionSeleccionada =
+    document.getElementById('duracion').value;
+
+    const duracion =
+        duracionSeleccionada === ''
+            ? null
+            : Number(duracionSeleccionada);
+
     const response = await fetch(`${API}/tests`, {
         method: 'POST',
         headers: {
@@ -221,7 +229,10 @@ async function generarTest(){
             Authorization: `Bearer ${getToken()}`
         },
         body: JSON.stringify({
-            temas
+            temas,
+            duracion: duracion === ''
+                ? null
+                : Number(duracion)
         })
     });
 
@@ -309,16 +320,6 @@ async function generarTestOficial(idOposicion){
         return;
 
     }
-
-    localStorage.setItem(
-        `inicio_${data.id_test}`,
-        Date.now()
-    );
-
-    localStorage.setItem(
-        `limite_${data.id_test}`,
-        data.duracion * 60
-    );
 
     window.location.href =`/generar-test/test.html?idTest=${data.id_test}`;
 
