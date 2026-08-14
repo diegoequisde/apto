@@ -27,7 +27,7 @@ const getTemaById = asyncHandler(async (req, res) => {
 
         return res.status(404).json({
             ok: false,
-            mensaje: 'Tema non encontrado'
+            mensaje: 'Tema no encontrado'
         });
 
     }
@@ -89,7 +89,7 @@ const updateTema = asyncHandler (async(req, res) => {
 
             return res.status(404).json({
                 ok: false,
-                mensaje: 'Tema non encontrado'
+                mensaje: 'Tema no encontrado'
             });
 
         }
@@ -114,7 +114,7 @@ const deleteTema = asyncHandler(async (req, res) => {
 
         return res.status(404).json({
             ok: false,
-            mensaje: 'Tema non encontrado'
+            mensaje: 'Tema no encontrado'
         });
 
     }

@@ -29,7 +29,7 @@ const addTemaToOposicion = asyncHandler (async (req, res) => {
 
         res.status(201).json({
             ok: true,
-            mensaje: 'Tema añadido á oposición'
+            mensaje: 'Tema añadido a la oposición'
         });
 
 });
@@ -47,7 +47,7 @@ const deleteTemaFromOposicion = asyncHandler (async (req, res) => {
 
             return res.status(404).json({
                 ok: false,
-                mensaje: 'Relación non encontrada'
+                mensaje: 'Relación no encontrada'
             });
 
         }

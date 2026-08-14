@@ -15,34 +15,7 @@ const getOpcionesByPregunta = asyncHandler(async (req, res) => {
 
         res.json(opciones);
 
-});
-/*
-const createOpcion = asyncHandler(async (req, res) => {
-
-    
-        const { id } = req.params;
-
-        const {
-            letra_opcion,
-            texto,
-            e_correcta
-        } = req.body;
-
-        await insertOpcion(
-            id,
-            letra_opcion,
-            texto,
-            e_correcta,
-            req.usuario
-        );
-
-        res.status(201).json({
-            ok: true,
-            mensaje: 'Opción creada correctamente'
-        });
-
-});
-*/
+}); 
 
 const updateOpcion = asyncHandler(async (req, res) => {
 
@@ -65,7 +38,7 @@ const updateOpcion = asyncHandler(async (req, res) => {
 
             return res.status(404).json({
                 ok: false,
-                mensaje: 'Opción non encontrada'
+                mensaje: 'Opción no encontrada'
             });
 
         }
@@ -91,7 +64,7 @@ const deleteOpcion = asyncHandler(async (req, res) => {
 
             return res.status(404).json({
                 ok: false,
-                mensaje: 'Opción non encontrada'
+                mensaje: 'Opción no encontrada'
             });
 
         }
@@ -105,7 +78,6 @@ const deleteOpcion = asyncHandler(async (req, res) => {
 
 module.exports = {
     getOpcionesByPregunta,
-    // createOpcion,
     updateOpcion,
     deleteOpcion
 };

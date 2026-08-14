@@ -29,7 +29,7 @@ const addOposicionToUsuario = asyncHandler(async (req, res) => {
 
         res.status(201).json({
             ok: true,
-            mensaje: 'Oposición añadida ao usuario'
+            mensaje: 'Oposición añadida al usuario'
         });
 
 });
@@ -47,14 +47,14 @@ const deleteOposicionFromUsuario = asyncHandler(async (req, res) => {
 
             return res.status(404).json({
                 ok: false,
-                mensaje: 'Relación non encontrada'
+                mensaje: 'Relación no encontrada'
             });
 
         }
 
         res.json({
             ok: true,
-            mensaje: 'Oposición eliminada do usuario'
+            mensaje: 'Oposición eliminada del usuario'
         });
 
 });

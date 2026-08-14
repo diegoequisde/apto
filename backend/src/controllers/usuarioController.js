@@ -32,7 +32,7 @@ const getUsuarioById = asyncHandler(async (req, res) => {
 
             return res.status(404).json({
                 ok: false,
-                mensaje: 'Usuario non encontrado'
+                mensaje: 'Usuario no encontrado'
             });
 
         }
@@ -58,7 +58,7 @@ const login = asyncHandler(async (req,res)=>{
 
         return res.status(401).json({
             ok:false,
-            mensaje:'Credenciais incorrectas'
+            mensaje:'Credenciales incorrectas'
         });
 
     }
@@ -67,7 +67,7 @@ const login = asyncHandler(async (req,res)=>{
 
         return res.status(401).json({
             ok:false,
-            mensaje:'Credenciais incorrectas'
+            mensaje:'Credenciales incorrectas'
         });
 
     }
@@ -114,7 +114,7 @@ const createUsuario = asyncHandler(async (req, res) => {
             if(usuarioExistente){
                 return res.status(409).json({
                     ok:false,
-                    mensaje:'Xa existe un usuario con ese correo.'
+                    mensaje:'Ya existe un usuario con ese correo.'
                 });
             }
 
@@ -155,7 +155,7 @@ const updateUsuario = asyncHandler(async (req, res) => {
 
             return res.status(404).json({
                 ok: false,
-                mensaje: 'Usuario non encontrado'
+                mensaje: 'Usuario no encontrado'
             });
 
         }
@@ -177,7 +177,7 @@ const deleteUsuario = asyncHandler(async (req, res) => {
 
             return res.status(404).json({
                 ok: false,
-                mensaje: 'Usuario non encontrado'
+                mensaje: 'Usuario no encontrado'
             });
 
         }

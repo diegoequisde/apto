@@ -45,7 +45,7 @@ const getPreguntaById = asyncHandler(async (req, res) => {
 
             return res.status(404).json({
                 ok: false,
-                mensaje: 'Pregunta non encontrada'
+                mensaje: 'Pregunta no encontrada'
             });
 
         }
@@ -117,7 +117,7 @@ const { id } = req.params;
 
         return res.status(404).json({
             ok: false,
-            mensaje: 'Pregunta non encontrada'
+            mensaje: 'Pregunta no encontrada'
         });
 
     }
@@ -143,7 +143,7 @@ const deletePregunta = asyncHandler(async (req, res) => {
 
         return res.status(404).json({
             ok: false,
-            mensaje: 'Pregunta non encontrada'
+            mensaje: 'Pregunta no encontrada'
         });
 
     }

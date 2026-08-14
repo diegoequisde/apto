@@ -94,7 +94,7 @@ const getTestById = asyncHandler(async (req, res) => {
 
             return res.status(404).json({
                 ok: false,
-                mensaje: 'Test non encontrado'
+                mensaje: 'Test no encontrado'
             });
 
         }
@@ -229,7 +229,7 @@ const createTestOficial = asyncHandler(async (req, res) => {
 
         res.status(201).json({
             ok: true,
-            mensaje: 'Exame oficial creado correctamente',
+            mensaje: 'Examen oficial creado correctamente',
             id_test,
             duracion: configuracion.duracion
         });
@@ -319,7 +319,7 @@ const updateTest = asyncHandler(async (req, res) => {
 
         return res.status(404).json({
             ok:false,
-            mensaje: 'Test non encontrado'
+            mensaje: 'Test no encontrado'
 
         });
 
@@ -345,7 +345,7 @@ const deleteTest = asyncHandler(async (req, res) => {
 
             return res.status(404).json({
                 ok: false,
-                mensaje: 'Test non encontrado'
+                mensaje: 'Test no encontrado'
             });
 
         }

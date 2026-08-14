@@ -29,7 +29,7 @@ const getOposicionById = asyncHandler(async (req, res) => {
 
             return res.status(404).json({
                 ok: false,
-                mensaje: 'Oposición non encontrada'
+                mensaje: 'Oposición no encontrada'
             });
 
         }
@@ -77,7 +77,7 @@ const updateOposicion = asyncHandler(async (req, res) => {
 
             return res.status(404).json({
                 ok: false,
-                mensaje: 'Oposición non encontrada'
+                mensaje: 'Oposición no encontrada'
             });
 
         }
@@ -99,7 +99,7 @@ const deleteOposicion = asyncHandler(async (req, res) => {
 
             return res.status(404).json({
                 ok: false,
-                mensaje: 'Oposición non encontrada'
+                mensaje: 'Oposición no encontrada'
             });
 
         }
