@@ -94,11 +94,37 @@ async function cargarLayout() {
     );
 
     aplicarPermisosNavbar();
+    
+    inicializarMenuMobile();
 
     await cargarComponente(
         'footer',
         '/componentes/footer.html'
     );
+
+}
+
+function inicializarMenuMobile() {
+
+    const menuToggle = document.getElementById('menuToggle');
+    const navbar = document.querySelector('.navbar');
+
+    if (!menuToggle || !navbar) return;
+
+    menuToggle.addEventListener('click', () => {
+
+        const abierto = navbar.classList.toggle('mobile-open');
+
+        menuToggle.setAttribute('aria-expanded', abierto);
+
+        menuToggle.setAttribute(
+            'aria-label',
+            abierto ? 'Cerrar menú' : 'Abrir menú'
+        );
+
+        menuToggle.textContent = abierto ? '✕' : '☰';
+
+    });
 
 }
 

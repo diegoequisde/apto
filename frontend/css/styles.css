@@ -158,15 +158,13 @@ body {
  */
 
 /* NAVBAR */
-
 .navbar {
     padding: 0 1rem;
     border-bottom: 1px solid var(--apto-border);
 }
 
-.navbar strong {
-    font-size: 1.3rem;
-}
+
+/* LOGO */
 
 .navbar .logo {
     display: flex;
@@ -190,8 +188,102 @@ body {
     text-decoration: none;
 }
 
+.navbar a:hover,
+.navbar a:focus {
+    font-weight: 700;
+}
+
 .navbar #navPremium a {
     padding-inline: 1rem;
+}
+
+
+/* BOTÓN HAMBURGUESA */
+.menu-toggle {
+    display: none;
+}
+
+
+/* MENU MOBILE */
+@media (max-width: 768px) {
+
+    /* NAVBAR */
+    .navbar {
+        display: block;
+        position: relative;
+        padding: .75rem 1rem;
+    }
+
+
+    /* LOGO */
+    .navbar > ul:first-of-type {
+        display: block;
+        width: auto;
+        margin: 0;
+        padding: 0;
+    }
+
+    .navbar > ul:first-of-type li {
+        margin: 0;
+        padding: 0;
+    }
+
+    .navbar.mobile-open > ul:first-of-type {
+    display: none;
+}
+
+    /* BOTÓN */
+    .menu-toggle {
+        display: block;
+        position: absolute;
+        top: .75rem;
+        right: 1rem;
+        width: auto;
+        height: auto;
+        margin: 0;
+        padding: .4rem;
+        border: none;
+        background: transparent;
+        color: var(--apto-primary);
+        font-size: 1.5rem;
+        line-height: 1;
+    }
+
+    /* OCULTAMOS LOS DOS MENÚS */
+    .navbar > .nav-principal,
+    .navbar > .nav-usuario {
+        display: none;
+    }
+
+    /* MENÚ ABIERTO */
+    .navbar.mobile-open > .nav-principal,
+    .navbar.mobile-open > .nav-usuario {
+        display: block;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+
+    /* SEPARACIÓN ENTRE LOS DOS BLOQUES */
+    .navbar.mobile-open > .nav-usuario {
+        margin-top: .5rem;
+    }
+
+    /* ELEMENTOS */
+    .navbar.mobile-open > ul li {
+        display: block;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+
+    .navbar.mobile-open > ul li a {
+        display: block;
+        width: 100%;
+        padding: .65rem;
+    }
 }
 
 /*  Footer  */
@@ -249,19 +341,58 @@ body {
 
 .generador-grid{
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+    grid-template-columns: repeat(3, 1fr) auto;
     gap:1rem;
+    align-items: center;
 }
-
+/*
 .acciones-generador{
     display:flex; 
+    align-items: center;
     gap:1rem;
     margin:1rem 0;
+}*/
+.acciones-generador {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.acciones-generador label {
+    flex: 0 0 70%;
+    margin: 0;
+}
+
+.acciones-generador select {
+    width: 100%;
+}
+
+#generarBtn {
+    flex: 1;
+    width: auto;
+    margin: 0;
+    margin-top: 0.7rem;
 }
 
 .acciones-test button{
     flex:1;
 }
+
+/* Revisar este botón, se usa al añadir temas antes de generar test y al añadir temas en editar oposicion*/
+#anadirTemaBtn{
+    width: auto;
+    height: fit-content;
+    white-space: nowrap;
+    margin-top: 0.3rem;
+}
+/*
+#generarBtn{
+    width: auto;
+    height: fit-content;
+    margin-top: 0;
+    white-space: nowrap;
+}*/ 
 
 .tema-seleccionado{
     display:flex;
@@ -284,7 +415,12 @@ body {
     .generador-grid{
         grid-template-columns:1fr;
     }
-
+    
+    .acciones-generador {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
     .simulacros-grid{
         grid-template-columns:1fr;
     }
@@ -318,24 +454,6 @@ body {
 .acciones-test{
     margin-top:2rem;
 }
-
-#anadirTemaBtn{
-  height: fit-content;
-  width: fit-content;
-  /*  margin-top: 10%;
-  revisar la poscion de este botón y el sigueinte - al estar dentro de un div con grid, lo ajusta en tamaño y posición
-  tambien sale esta clase en oposiciones/editar -> quizá mejor separar en 2 clases. ( o quitar la clase e nel de oposicion y dejar boton geneerico) 
-  */
-}
-
-
-#generarBtn{
-  height: fit-content;
-  width: fit-content; 
-  margin-top: 2.5%;
-  /* revisar la poscion de este botón*/
-}
-
 
 /* Navegación preguntas */
 .preguntas-nav {

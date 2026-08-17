@@ -1,5 +1,7 @@
 <nav class="navbar">
 
+    <!-- LOGO -->
+
     <ul>
         <li>
             <a href="/" class="logo">
@@ -9,7 +11,10 @@
         </li>
     </ul>
 
-    <ul>
+
+    <!-- NAVEGACIÓN PRINCIPAL -->
+
+    <ul class="nav-principal">
 
         <li>
             <a href="/index.html">Inicio</a>
@@ -28,14 +33,17 @@
         </li>
 
         <li id="navPremium" style="display:none">
-            <a href="/suscripcion/planes.html" role="button" class="contrast">
+            <a href="/suscripcion/planes.html" role="button">
                 Hazte PRO
             </a>
         </li>
 
     </ul>
 
-    <ul>
+
+    <!-- USUARIO -->
+
+    <ul class="nav-usuario">
 
         <li id="navPerfil">
             <a href="/perfil/index.html">Mi perfil</a>
@@ -58,5 +66,17 @@
         </li>
 
     </ul>
+
+
+    <!-- BOTÓN MENÚ MOBILE -->
+
+    <button
+        id="menuToggle"
+        class="menu-toggle"
+        type="button"
+        aria-label="Abrir menú"
+        aria-expanded="false">
+        ☰
+    </button>
 
 </nav>
