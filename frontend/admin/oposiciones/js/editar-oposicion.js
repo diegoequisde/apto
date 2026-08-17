@@ -110,7 +110,9 @@ async function cargarTemasOposicion() {
         container.innerHTML += `
             <div>
 
-                ${tema.nome_tema}
+                <p>
+                    <strong>${tema.nome_tema}</strong>
+                </p>
 
                 <button
                     onclick="
@@ -121,10 +123,10 @@ async function cargarTemasOposicion() {
                 >
                     Eliminar
                 </button>
-
-            </div>
-
             <hr>
+            
+            </div>
+            
         `;
 
     });
