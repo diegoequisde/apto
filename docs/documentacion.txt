@@ -1,3 +1,0 @@
-instalacion de nodemon para seridopr de pruebas
-
-instalar bcrypt par ahash de contraseñas

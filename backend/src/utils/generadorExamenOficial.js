@@ -13,11 +13,11 @@ function generarDistribucionExame(exame) {
         );
 
     if (minimoTotal > exame.totalPreguntas) {
-        throw new Error('A configuración do exame é incorrecta: a suma dos mínimos supera o número total de preguntas.');
+        throw new Error('La configuración del examen es incorrecta: la suma de los mínimos supera el número total de preguntas.');
     }
 
     if (maximoTotal < exame.totalPreguntas) {
-        throw new Error('A configuración do exame é incorrecta: a suma dos máximos non permite completar o exame.');
+        throw new Error('La configuración del examen es incorrecta: la suma de los máximos no permite completar el examen.');
     }
 
     const distribucion = exame.temas.map(tema => ({

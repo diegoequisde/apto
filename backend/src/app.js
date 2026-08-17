@@ -57,7 +57,7 @@ app.get('/db-test', async (req, res) => {
 
         res.status(500).json({
             ok: false,
-            mensaje: 'Erro na conexión coa base de datos'
+            mensaje: 'Error en la conexión con la base de datos'
         });
 
     }
@@ -75,7 +75,7 @@ app.use((req, res) => {
 
     res.status(404).json({
         ok: false,
-        mensaje: 'Ruta non encontrada'
+        mensaje: 'Ruta no encontrada'
     });
 
 });

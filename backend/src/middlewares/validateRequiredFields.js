@@ -12,7 +12,7 @@ const validateRequiredFields = (fields) => {
 
                 return res.status(400).json({
                     ok: false,
-                    mensaje: `O campo ${field} é obrigatorio`
+                    mensaje: `El campo ${field} es obligatorio`
                 });
 
             }

@@ -183,7 +183,7 @@ async function eliminarPregunta(id) {
 
     if(!response.ok){
 
-        alert('Non foi posible eliminar a pregunta.');
+        alert('No fue posible eliminar la pregunta.');
         return;
 
     }

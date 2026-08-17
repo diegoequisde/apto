@@ -18,34 +18,7 @@ const findOpcionesByPregunta = async (id, usuario) => {
     return rows;
 
 };
-/*
-const insertOpcion = async (
-    id,
-    letra_opcion,
-    texto,
-    e_correcta,
-    usuario
-) => {
-
-    const [result] = await pool.query(`
-        INSERT INTO opcion (
-            id_pregunta,
-            letra_opcion,
-            texto,
-            e_correcta
-        )
-        VALUES (?, ?, ?, ?)
-    `, [
-        id,
-        letra_opcion,
-        texto,
-        e_correcta
-    ]);
-
-    return result;
-
-};
-*/
+ 
 const updateOpcionById = async (
     id,
     letra,

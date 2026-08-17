@@ -9,7 +9,7 @@ const validateTema = (req, res, next) => {
 
         return res.status(400).json({
             ok: false,
-            mensaje: 'O nome do tema é obrigatorio'
+            mensaje: 'El nombre del tema es obligatorio'
         });
 
     }
@@ -18,7 +18,7 @@ const validateTema = (req, res, next) => {
 
         return res.status(400).json({
             ok: false,
-            mensaje: 'O nome do tema é demasiado longo'
+            mensaje: 'El nombre del tema es demasiado largo'
         });
 
     }
@@ -30,7 +30,7 @@ const validateTema = (req, res, next) => {
 
         return res.status(400).json({
             ok: false,
-            mensaje: 'A descrición é demasiado longa'
+            mensaje: 'La descripción es demasiado larga'
         });
 
     }

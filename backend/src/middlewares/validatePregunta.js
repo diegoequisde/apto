@@ -9,7 +9,7 @@ const validatePregunta = (req, res, next) => {
 
         return res.status(400).json({
             ok: false,
-            mensaje: 'O enunciado é obrigatorio'
+            mensaje: 'El enunciado es obligatorio'
         });
 
     }
@@ -18,7 +18,7 @@ const validatePregunta = (req, res, next) => {
 
         return res.status(400).json({
             ok: false,
-            mensaje: 'O enunciado é demasiado longo'
+            mensaje: 'El enunciado es demasiado largo'
         });
 
     }

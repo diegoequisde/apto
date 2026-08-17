@@ -87,9 +87,7 @@ async function guardarCambios() {
 
     }
 
-    alert(
-        'Tema actualizado correctamente'
-    );
+    alert('Tema actualizado correctamente');
 
     window.location.href =
         './index.html';

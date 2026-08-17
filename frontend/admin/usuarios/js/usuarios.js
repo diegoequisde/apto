@@ -76,9 +76,7 @@ function editarUsuario(id) {
 async function eliminarUsuario(id) {
 
     if (
-        !confirm(
-            '¿Eliminar usuario?'
-        )
+        !confirm('¿Eliminar usuario?')
     ) {
         return;
     }

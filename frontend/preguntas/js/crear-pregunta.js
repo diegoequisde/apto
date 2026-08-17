@@ -56,7 +56,7 @@ async function guardarPregunta() {
     if (!correcta) {
 
         alert(
-            'Debes seleccionar unha resposta correcta.'
+            'Debes seleccionar una respuesta correcta.'
         );
 
         return;
@@ -101,9 +101,7 @@ async function guardarPregunta() {
 
     if (!opcionCorrecta) {
 
-        alert(
-            'A resposta correcta debe ter texto.'
-        );
+        alert('La respuesta correcta debe tener texto.');
 
         return;
 
@@ -111,9 +109,7 @@ async function guardarPregunta() {
 
     if (opciones.length < 2) {
 
-        alert(
-            'Debes introducir polo menos dúas opcións.'
-        );
+        alert('Debes introducir por lo menos dos opciones.');
 
         return;
 
@@ -148,9 +144,7 @@ async function guardarPregunta() {
 
     if (!response.ok) {
 
-        alert(
-            data.mensaje
-        );
+        alert(data.mensaje);
 
         return;
 

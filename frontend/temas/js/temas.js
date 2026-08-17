@@ -98,7 +98,7 @@ async function eliminarTema(id) {
 
     if (!response.ok) {
 
-        alert('Non foi posible eliminar o tema.');
+        alert('No fue posible eliminar el tema.');
         return;
 
     }

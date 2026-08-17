@@ -21,7 +21,7 @@ async function cargarEstadisticas(periodo='total'){
     );
 
     if (!response.ok) {
-        alert('Non foi posible cargar as estatísticas.');
+        alert('No fue posible cargar las estadísticas.');
         return;
     }
     

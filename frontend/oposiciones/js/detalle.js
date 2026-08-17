@@ -90,7 +90,7 @@ async function anadirOposicion(){
 
     alert(
         error.mensaje ||
-        'Non foi posible engadir a oposición (duplicada)'
+        'No fue posible añadir la oposición (duplicada)'
     );
 
 }

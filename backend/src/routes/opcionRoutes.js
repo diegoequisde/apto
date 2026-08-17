@@ -8,7 +8,6 @@ const router = express.Router({ mergeParams: true });
 
 const {
     getOpcionesByPregunta,
-   //  createOpcion,
     updateOpcion,
     deleteOpcion
 } = require('../controllers/opcionController');
@@ -23,7 +22,6 @@ router.post(
         'texto'
     ]),
     validateOpcion
-    //, createOpcion
 );
 
 router.put(

@@ -11,7 +11,7 @@ const validateUsuario = (req, res, next) => {
 
         return res.status(400).json({
             ok: false,
-            mensaje: 'O nome é obrigatorio'
+            mensaje: 'El nombre es obligatorio'
         });
 
     }
@@ -20,7 +20,7 @@ const validateUsuario = (req, res, next) => {
 
         return res.status(400).json({
             ok: false,
-            mensaje: 'O nome é demasiado longo'
+            mensaje: 'El nombre es demasiado largo'
         });
 
     }
@@ -32,7 +32,7 @@ const validateUsuario = (req, res, next) => {
 
         return res.status(400).json({
             ok: false,
-            mensaje: 'O contrasinal debe ter mínimo 6 caracteres'
+            mensaje: 'La contraseña debe tener mínimo 6 caracteres'
         });
 
     }

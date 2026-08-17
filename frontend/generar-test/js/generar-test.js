@@ -115,13 +115,8 @@ function anadirTema(){
     );
 
     if(existente){
-
-        alert(
-            'Ese tema xa foi engadido.'
-        );
-
+        alert('Ese tema ya fue añadido.');
         return;
-
     }
 
     temasSeleccionados.push({

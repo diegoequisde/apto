@@ -9,7 +9,7 @@ const validateOposicion = (req, res, next) => {
 
         return res.status(400).json({
             ok: false,
-            mensaje: 'O nome da oposición é obrigatorio'
+            mensaje: 'El nombre de la oposición es obligatorio'
         });
 
     }
@@ -18,7 +18,7 @@ const validateOposicion = (req, res, next) => {
 
         return res.status(400).json({
             ok: false,
-            mensaje: 'O nome da oposición é demasiado longo'
+            mensaje: 'El nombre de la oposición es demasiado largo'
         });
 
     }
@@ -30,7 +30,7 @@ const validateOposicion = (req, res, next) => {
 
         return res.status(400).json({
             ok: false,
-            mensaje: 'A descrición é demasiado longa'
+            mensaje: 'La descripción es demasiado larga'
         });
 
     }

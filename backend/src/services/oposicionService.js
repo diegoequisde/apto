@@ -60,13 +60,9 @@ const insertOposicion = async (
             );
 
             err.status = 409;
-
             throw err;
-
         }
-
         throw error;
-
     }
 
 };
@@ -102,15 +98,11 @@ const updateOposicionById = async (
             );
 
             err.status = 409;
-
             throw err;
-
         }
 
         throw error;
-
     }
-
 };
 
 const deleteOposicionById = async (id) => {

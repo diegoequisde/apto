@@ -27,44 +27,44 @@ if(periodo === '30'){
 }
 
 const [[resumen]] =
-await pool.query(`
+    await pool.query(`
 
-SELECT
+    SELECT
 
-COUNT(*) AS tests,
+    COUNT(*) AS tests,
 
-SUM(
-(SELECT COUNT(*)
-FROM pregunta_test pt
-WHERE pt.id_test = t.id_test)
-) AS preguntas,
+    SUM(
+    (SELECT COUNT(*)
+    FROM pregunta_test pt
+    WHERE pt.id_test = t.id_test)
+    ) AS preguntas,
 
-AVG(resultado) AS acierto,
-SUM(t.duracion) AS tiempo
-FROM test t
+    AVG(resultado) AS acierto,
+    SUM(t.duracion) AS tiempo
+    FROM test t
 
-WHERE t.id_usuario = ? 
-AND t.finalizado = 1
-${filtroFecha} 
-`,
-[id_usuario]);
+    WHERE t.id_usuario = ? 
+    AND t.finalizado = 1
+    ${filtroFecha} 
+    `,
+    [id_usuario]);
 
 
 const [evolucion] =
-await pool.query(`
+    await pool.query(`
 
-SELECT
-DATE(data_realizacion) AS dia,
-COUNT(pt.id_pregunta) AS preguntas,
-AVG(t.resultado) AS acierto
-FROM test t
-INNER JOIN pregunta_test pt
-ON t.id_test = pt.id_test
-WHERE t.id_usuario = ? 
-AND t.finalizado = 1
-${filtroFecha} 
-GROUP BY DATE(data_realizacion)
-ORDER BY dia
+    SELECT
+    DATE(data_realizacion) AS dia,
+    COUNT(pt.id_pregunta) AS preguntas,
+    AVG(t.resultado) AS acierto
+    FROM test t
+    INNER JOIN pregunta_test pt
+    ON t.id_test = pt.id_test
+    WHERE t.id_usuario = ? 
+    AND t.finalizado = 1
+    ${filtroFecha} 
+    GROUP BY DATE(data_realizacion)
+    ORDER BY dia
 
 
 `,
@@ -75,46 +75,31 @@ const [temas] =
 await pool.query(`
 
 
-SELECT
-te.nome_tema,
-
-COUNT(pt.id_pregunta) AS preguntas,
-
-AVG(
-pt.e_correcta * 100
-) AS acierto
-
+SELECT te.nome_tema,
+    COUNT(pt.id_pregunta) AS preguntas,
+    AVG(pt.e_correcta * 100) AS acierto
 FROM pregunta_test pt
-INNER JOIN pregunta p
-ON pt.id_pregunta = p.id_pregunta
-INNER JOIN tema te
-ON p.id_tema = te.id_tema
-INNER JOIN test t
-ON pt.id_test = t.id_test
-
+    INNER JOIN pregunta p
+    ON pt.id_pregunta = p.id_pregunta
+    INNER JOIN tema te
+    ON p.id_tema = te.id_tema
+    INNER JOIN test t
+    ON pt.id_test = t.id_test
 WHERE t.id_usuario = ? 
 AND t.finalizado = 1
 ${filtroFecha}
 GROUP BY te.id_tema
-
-
 `,
 [id_usuario]);
 
 const [diasEstudio] =
 await pool.query(`
 
-SELECT DISTINCT
-DATE(data_realizacion) AS dia
-
+SELECT DISTINCT DATE(data_realizacion) AS dia
 FROM test
-
 WHERE id_usuario = ?
-
 AND finalizado = 1
-
 ORDER BY dia DESC
-
 `,
 [id_usuario]);
 
@@ -180,7 +165,5 @@ return {
 
 
 module.exports = {
-
-obtenerEstadisticas
-
+    obtenerEstadisticas
 };
