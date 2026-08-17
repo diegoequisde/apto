@@ -55,9 +55,7 @@ async function guardarPregunta() {
 
     if (!correcta) {
 
-        alert(
-            'Debes seleccionar una respuesta correcta.'
-        );
+        alert('Debes seleccionar una respuesta correcta.');
 
         return;
 
@@ -150,9 +148,7 @@ async function guardarPregunta() {
 
     }
 
-    alert(
-        'Pregunta creada correctamente'
-    );
+    alert('Pregunta creada correctamente');
 
     window.location.href =
         `./index.html?idTema=${idTema}`;

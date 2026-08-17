@@ -281,9 +281,7 @@ async function generarTestOficial(idOposicion){
 
     if (!puede('premium')) {
 
-        alert(
-            'Los simulacros oficiales están disponibles sólo para usuarios Premium.'
-        );
+        alert('Los simulacros oficiales están disponibles sólo para usuarios Premium.');
 
         window.location.href =
             '/suscripcion/planes.html';
@@ -352,9 +350,7 @@ async function cargarTemaPersonalizado() {
 
     if (!response.ok || temas.length === 0) {
 
-        alert(
-            'No tienes ningún tema personalizado disponible.'
-        );
+        alert('No tienes ningún tema personalizado disponible.');
 
         return;
 

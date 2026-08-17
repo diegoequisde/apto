@@ -79,9 +79,7 @@ async function guardarCambios() {
         const data =
             await response.json();
 
-        alert(
-            data.mensaje || 'No se ha podido actualizar el tema.'
-        );
+        alert(data.mensaje || 'No se ha podido actualizar el tema.');
 
         return;
 

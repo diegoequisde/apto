@@ -288,7 +288,7 @@ function iniciarTemporizador(test) {
         document
             .getElementById('temporizador')
             .textContent =
-            'Sen límite de tempo';
+            'Sin límite de tiempo';
 
         return;
 
@@ -331,7 +331,7 @@ function iniciarTemporizador(test) {
         document
             .getElementById('temporizador')
             .textContent =
-            `Tempo restante: ${
+            `Tiempo restante: ${
                 minutos
             }:${
                 String(
@@ -376,9 +376,7 @@ async function finalizarTest(automatico = false) {
             clearInterval(intervaloTemporizador);
         }
 
-        alert(
-            'Tiempo agotado. El examen se finalizó automáticamente.'
-        );
+        alert('Tiempo agotado. El examen se finalizó automáticamente.');
 
         await actualizarTestFinalizado();
 

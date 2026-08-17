@@ -70,13 +70,14 @@ async function cargarOposiciones() {
 
             container.innerHTML += `
                 <div>
-                    ${oposicion.nome_oposicion}
-                    <button
-                        onclick="
-                            eliminarOposicion(
-                                ${oposicion.id_oposicion}
-                            )
-                        ">Eliminar</button>
+                    <p><strong>
+                        ${oposicion.nome_oposicion}
+                    </strong></p>
+                    <button onclick="
+                        eliminarOposicion(
+                            ${oposicion.id_oposicion}
+                        )
+                    ">Eliminar</button>
                 </div>
                 <hr>
             `;
@@ -167,10 +168,7 @@ async function anadirOposicion(idOposicion){
 
     if (!response.ok) {
 
-        alert(
-            data.mensaje || 'No se ha podido guardar la oposición.'
-        );
-
+        alert(data.mensaje || 'No se ha podido guardar la oposición.');
         return;
 
     }

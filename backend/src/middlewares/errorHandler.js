@@ -12,10 +12,7 @@ const errorHandler = (
     ).json({
 
         ok: false,
-
-        mensaje:
-            error.message ||
-            'Error interno del servidor'
+        mensaje: error.message || 'Error interno del servidor'
 
     });
 

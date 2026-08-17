@@ -238,9 +238,7 @@ async function guardarCambios() {
 
     }
 
-    alert(
-    'Pregunta actualizada correctamente'
-    );
+    alert('Pregunta actualizada correctamente');
 
     window.location.href =
         `./index.html?idTema=${idTemaInicial}`;

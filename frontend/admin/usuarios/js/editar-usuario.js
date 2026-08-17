@@ -51,9 +51,7 @@ async function guardarCambios() {
         }
     );
 
-    alert(
-        'Usuario actualizado'
-    );
+    alert('Usuario actualizado');
 
     window.location.href =
         './index.html';

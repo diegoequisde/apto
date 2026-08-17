@@ -30,9 +30,7 @@ async function guardarTema() {
         }
     );
 
-    alert(
-        'Tema creado correctamente'
-    );
+    alert('Tema creado correctamente');
 
     const data =
         await response.json();

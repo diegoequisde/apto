@@ -54,7 +54,7 @@ const deleteTemaFromOposicion = asyncHandler (async (req, res) => {
 
         res.json({
             ok: true,
-            mensaje: 'Tema eliminado da oposición'
+            mensaje: 'Tema eliminado de la oposición'
         });
 
 });
