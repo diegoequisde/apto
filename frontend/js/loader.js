@@ -97,6 +97,8 @@ async function cargarLayout() {
     
     inicializarMenuMobile();
 
+    inicializarTema();
+
     await cargarComponente(
         'footer',
         '/componentes/footer.html'
@@ -126,6 +128,65 @@ function inicializarMenuMobile() {
 
     });
 
+}
+
+function inicializarTema() {
+
+    const themeSwitch =
+        document.getElementById('themeSwitch');
+
+    const themeToggle =
+        document.getElementById('themeToggle');
+
+    if (!themeToggle) return;
+
+    const html =
+        document.documentElement;
+
+    const temaGuardado =
+        localStorage.getItem('tema');
+
+
+    if (temaGuardado === 'dark') {
+
+        html.setAttribute('data-theme', 'dark');
+        themeToggle.checked = true;
+
+    }
+
+
+    /* Actualizar accesibilidad */
+    function actualizarAccesibilidad() {
+
+        const modoOscuro =
+            html.getAttribute('data-theme') === 'dark';
+
+        const texto = modoOscuro ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro';
+
+        themeToggle.setAttribute('aria-label', texto);
+        themeToggle.setAttribute('title', texto);
+        themeSwitch.setAttribute('title', texto);
+
+    }
+
+    themeToggle.addEventListener('change', () => {
+
+        if (themeToggle.checked) {
+
+            html.setAttribute('data-theme', 'dark');
+            localStorage.setItem('tema', 'dark');
+
+        } else {
+
+            html.removeAttribute('data-theme');
+            localStorage.setItem('tema', 'light');
+        }
+
+        actualizarAccesibilidad();
+
+    });
+
+    actualizarAccesibilidad();
 }
 
 cargarLayout();

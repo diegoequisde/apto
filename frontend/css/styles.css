@@ -5,15 +5,12 @@
 }
 */
 
-/* APTO - estilos globales */
-:root,
-html[data-theme="light"],
-html[data-theme="dark"], 
-html:not([data-theme]) {
+/* APTO - estilos globales */ 
+:root {
     /* Reducimos ligeramente el tamaño general respecto al valor por defecto de Pico */
     font-size: 15px;
 
-    /* Colores APTO */
+    /* Colores APTO - tema claro */
     --apto-primary: #114dd0;
     --apto-primary-hover: #0d3fae;
 
@@ -25,48 +22,105 @@ html:not([data-theme]) {
     --apto-success: #198754;
     --apto-danger: #dc3545;
     --apto-warning: #b7791f;
-
-    /* Adaptación de PicoCSS a la identidad de APTO */
-    --pico-primary: var(--apto-primary) !important;
-    --pico-primary-background: var(--apto-primary) !important;
-    --pico-primary-border: var(--apto-primary) !important;
-    --pico-primary-hover: var(--apto-primary-hover) !important;
-
-    /* En Pico CSS v2, los botones usan estas variables específicas */
-    --pico-border-color: var(--apto-primary) !important;
-    --pico-primary-hover-background: var(--apto-primary-hover) !important;
-    --pico-primary-hover-border: var(--apto-primary-hover) !important;
-
-    --pico-primary-focus: rgba(17, 77, 208, 0.2)!important;
 }
 
-/* Forzar el estado base (en reposo) global para botones principales 
-button:not(:hover):not(:focus),
-input[type="button"]:not(:hover):not(:focus),
-input[type="submit"]:not(:hover):not(:focus),
-[role="button"]:not(:hover):not(:focus) {
-    background-color: var(--apto-primary) !important;
-    border-color: var(--apto-primary) !important;
-    color: #ffffff !important; 
-}
-*/
-/* Forzar el estado hover/focus global para botones principales 
-button:hover,
-input[type="button"]:hover,
-input[type="submit"]:hover,
-[role="button"]:hover {
-    background-color: var(--apto-primary-hover) !important;
-    border-color: var(--apto-primary-hover) !important;
-}
-*/
 
+/*  TEMA CLARO  */
+
+[data-theme="light"],
+:root:not([data-theme="dark"]) {
+
+    --pico-primary: var(--apto-primary);
+    --pico-primary-background: var(--apto-primary);
+    --pico-primary-border: var(--apto-primary);
+    --pico-primary-hover: var(--apto-primary-hover);
+    --pico-primary-hover-background: var(--apto-primary-hover);
+    --pico-primary-hover-border: var(--apto-primary-hover);
+    --pico-primary-focus: rgba(17, 77, 208, 0.2);
+}
+
+
+/* TEMA OSCURO */
+[data-theme="dark"] {
+
+    --apto-primary: #7DA4F2;
+    --apto-primary-hover: #6694F0;
+    --pico-primary: var(--apto-primary);
+    --pico-primary-background: var(--apto-primary);
+    --pico-primary-border: var(--apto-primary);
+    --pico-primary-hover: var(--apto-primary-hover);
+    --pico-primary-hover-background: var(--apto-primary-hover);
+    --pico-primary-hover-border: var(--apto-primary-hover);
+    --pico-primary-focus: rgba(91, 141, 239, 0.25);
+}
+
+/* TOGGLE MODO CLARO / OSCURO */
+.theme-switch-container {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.theme-switch {
+    position: relative;
+    display: block;
+    width: 3.2rem !important;
+    height: 1.7rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    cursor: pointer;
+}
+
+.theme-switch input {
+    position: absolute;
+    opacity: 0;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.theme-slider {
+    position: absolute;
+    display: block;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 999px;
+    background: #d5d8de;
+    transition: background .2s ease;
+}
+
+.theme-slider::before {
+    content: "";
+    position: absolute;
+    top: .2rem;
+    left: .2rem;
+    width: 1.3rem;
+    height: 1.3rem;
+    margin: 0;
+    padding: 0;
+    border-radius: 50%;
+    background: #ffffff;
+    transition: transform .2s ease;
+}
+
+.theme-switch input:checked + .theme-slider {
+    background: var(--apto-primary);
+}
+
+.theme-switch input:checked + .theme-slider::before {
+    transform: translateX(1.5rem);
+}
+
+
+/* GENERAL */
 body {
     /*font-family: Arial, sans-serif;*/
     padding-bottom: 3rem;
 }
 
-
-/* GENERAL */
 .container {
     max-width: 90%;
 }
@@ -179,9 +233,8 @@ body {
 }
 
 .navbar .logo span {
-    font-weight: 700;
-    font-size: 1.15rem;
-    letter-spacing: -.02em;
+    font-weight: 600;
+    font-size: 1.25rem;
 }
 
 .navbar a {
