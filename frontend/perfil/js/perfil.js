@@ -73,7 +73,7 @@ async function cargarOposiciones() {
                     <p><strong>
                         ${oposicion.nome_oposicion}
                     </strong></p>
-                    <button onclick="
+                    <button class="eliminar" onclick="
                         eliminarOposicion(
                             ${oposicion.id_oposicion}
                         )
@@ -213,27 +213,16 @@ if (usuario.tipo === 'free') {
 
     planCard.innerHTML = `
         <article>
-
-            <h3>
-                Plan actual
-            </h3>
-
-            <p>
-                <strong>🟢 Free</strong>
-            </p>
-
+            <h3>Plan actual</h3>
+            <p><strong>Free</strong></p>
             <ul>
-                <li>1 tema</li>
-                <li>40 preguntas</li>
+                <li>Máximo de 1 tema personalizado</li>
+                <li>Máximo de 40 preguntas personalizadas</li>
             </ul>
 
-            <a href="/suscripcion/planes.html"
-                role="button"
-                class="contrast"
-            >
-                Actualizar a Premium
+            <a href="/suscripcion/planes.html" role="button" id ="btn-pro" class="contrast">
+                Actualizar a PRO
             </a>
-
         </article>
     `;
 
@@ -241,19 +230,9 @@ if (usuario.tipo === 'free') {
 
     planCard.innerHTML = `
         <article>
-
-            <h3>
-                Plan actual
-            </h3>
-
-            <p>
-                <strong>🟡 Premium</strong>
-            </p>
-
-            <p>
-                Disfrutas de todas las funcionalidades.
-            </p>
-
+            <h3>Plan actual</h3>
+                <p><strong>Premium</strong></p>
+                <p>Disfrutas de todas las funcionalidades.</p>
         </article>
     `;
 

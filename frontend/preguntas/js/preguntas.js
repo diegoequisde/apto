@@ -118,14 +118,14 @@ document
                     ${pregunta.enunciado}
                 </p>
 
-                <button onclick="editarPregunta(
+                <button class= "editar" onclick="editarPregunta(
                         ${pregunta.id_pregunta}
                     )"
                 >
                     Editar
                 </button>
                 
-                <button onclick="eliminarPregunta(
+                <button class= "eliminar" onclick="eliminarPregunta(
                         ${pregunta.id_pregunta}
                     )"
                 >

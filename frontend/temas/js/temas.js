@@ -31,7 +31,7 @@ async function cargarTemas() {
                     <strong>${tema.nome_tema}</strong>
                 </p>
 
-                <button
+                <button class= "editar"
                     onclick="editarTema(
                         ${tema.id_tema}
                     )"
@@ -39,7 +39,7 @@ async function cargarTemas() {
                     Editar
                 </button>
 
-                <button
+                <button class= "eliminar"
                     onclick="eliminarTema(
                         ${tema.id_tema}
                     )"

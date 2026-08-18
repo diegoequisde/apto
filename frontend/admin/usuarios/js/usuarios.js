@@ -41,7 +41,7 @@ async function cargarUsuarios() {
                     ${usuario.tipo}
                 </p>
 
-                <button
+                <button class= "editar"
                     onclick="editarUsuario(
                         ${usuario.id_usuario}
                     )"
@@ -49,7 +49,7 @@ async function cargarUsuarios() {
                     Editar
                 </button>
 
-                <button
+                <button class= "eliminar"
                     onclick="eliminarUsuario(
                         ${usuario.id_usuario}
                     )"

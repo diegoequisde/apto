@@ -26,17 +26,19 @@ async function cargarOposiciones() {
         (oposicion) => {
 
             container.innerHTML += `
-                <div>
+                <div class="oposicion-card">
 
                     <h3>
+                        <a href="/oposiciones/detalle.html?id=${oposicion.id_oposicion}">
                         ${oposicion.nome_oposicion}
+                        </a>
                     </h3>
 
                     <p>
                         ${oposicion.descripcion_oposicion  || ''}
                     </p>
 
-                    <button
+                    <button class = "editar"
                         onclick="editarOposicion(
                             ${oposicion.id_oposicion}
                         )"
@@ -44,7 +46,7 @@ async function cargarOposiciones() {
                         Editar
                     </button>
 
-                    <button
+                    <button class = "eliminar"
                         onclick="eliminarOposicion(
                             ${oposicion.id_oposicion}
                         )"
