@@ -12,15 +12,19 @@
     /* Colores APTO - tema claro */
     --apto-primary: #114dd0;
     --apto-primary-hover: #0d3fae;
+    --apto-secondary: #5474B6; 
+    --apto-secondary-hover: #3D588F;
+    
+    /* REVISAR estas variables: */
     --apto-surface: #f8fafc;
     --apto-border: #e5e7eb;
-    --apto-text: #1f2937;
+    --apto-text: #1f2937;   /* No se usa */
     --apto-muted: #64748b;
+    /*--apto-muted: #ABAED0;  */
     --apto-success: #198754;
     --apto-danger: #dc3545;
-    --apto-warning: #b7791f;
+    --apto-warning: #b7791f;  /* No se usa */
 }
-
 
 /*  tema claro  */
 [data-theme="light"],
@@ -32,8 +36,13 @@
     --pico-primary-hover-background: var(--apto-primary-hover);
     --pico-primary-hover-border: var(--apto-primary-hover);
     --pico-primary-focus: rgba(17, 77, 208, 0.2);
+    
+    /* POR DEFINIR */
+    --pico-secondary-background: var(--apto-secondary); 
+    --pico-secondary-hover: var(--apto-secondary-hover); 
+    --pico-secondary-hover-background: var(--apto-secondary-hover);
+    --pico-secondary-focus: none;
 }
-
 
 /* tema oscuro */
 [data-theme="dark"] {
@@ -46,6 +55,12 @@
     --pico-primary-hover-background: var(--apto-primary-hover);
     --pico-primary-hover-border: var(--apto-primary-hover);
     --pico-primary-focus: rgba(91, 141, 239, 0.25);
+
+    /* POR DEFINIR */
+    --pico-secondary-background: var(--apto-secondary);
+    --pico-secondary-hover: var(--apto-secondary-hover);
+    --pico-secondary-hover-background: var(--apto-secondary-hover);
+    --pico-secondary-focus: none;
 }
 
 /* TOGGLE  */
@@ -110,7 +125,6 @@
 
 
 /* GENERAL */
-
 html,
 body {
     min-height: 100%;
@@ -129,6 +143,14 @@ main {
 
 .container {
     max-width: 90%;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+
+h3 {
+    font-size: 1.25em;
 }
 
 .page-header {
@@ -383,6 +405,7 @@ button.eliminar:focus-visible {
     padding: 2rem 0 0 0;
     border-top: 1px solid var(--apto-border);
     text-align: center;
+    
 }
 
 .footer-links {
@@ -395,11 +418,13 @@ button.eliminar:focus-visible {
 
 .footer-links a {
     text-decoration: none;
+    font-size: small;
 }
 
 .footer-copy {
     color: var(--apto-muted);
     margin-bottom: .25rem;
+    font-size: smaller;
 }
 
 .footer small {
