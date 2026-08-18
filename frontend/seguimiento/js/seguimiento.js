@@ -2,13 +2,13 @@ requireLogin();
 
 const API = CONFIG.API;
 
-
 let datosEstadisticas;
 let evolucionChart;
 let temasDistribucionChart;
 let temasAciertoChart;
+let periodoActual = 'total';
 
-async function cargarEstadisticas(periodo='total'){
+async function cargarEstadisticas(periodo){
 
     const response =
     await fetch(
@@ -33,6 +33,11 @@ async function cargarEstadisticas(periodo='total'){
 }
 
 function crearGraficos(){
+
+    console.log('RESUMEN:', datosEstadisticas.resumen);
+    console.log('EVOLUCION:', datosEstadisticas.evolucion);
+    console.log('TEMAS:', datosEstadisticas.temas);
+
     crearGraficoEvolucion();
     crearGraficoDistribucion();
     crearGraficoAcierto();
@@ -40,28 +45,28 @@ function crearGraficos(){
 
 function cargarResumen(){
 
-const resumen =
-datosEstadisticas.resumen;
+    const resumen =
+    datosEstadisticas.resumen;
 
-document
-.getElementById('tiempo')
-.textContent = formatearTiempo(resumen.tiempo);
+    document
+    .getElementById('tiempo')
+    .textContent = formatearTiempo(resumen.tiempo);
 
-document
-.getElementById('racha')
-.textContent = `${resumen.racha} días`;
+    document
+    .getElementById('racha')
+    .textContent = `${resumen.racha} días`;
 
-document
-.getElementById('tests')
-.textContent = resumen.tests;
+    document
+    .getElementById('tests')
+    .textContent = resumen.tests;
 
-document
-.getElementById('preguntas')
-.textContent = resumen.preguntas;
+    document
+    .getElementById('preguntas')
+    .textContent = resumen.preguntas;
 
-document
-.getElementById('acierto')
-.textContent = `${Math.round(resumen.acierto)}%`;
+    document
+    .getElementById('acierto')
+    .textContent = `${Math.round(resumen.acierto)}%`;
 
 }
 
@@ -168,6 +173,11 @@ function crearGraficoAcierto(){
         temasAciertoChart.destroy();
     }
 
+    const temasConDatos =
+        datosEstadisticas.temas.filter(
+            tema => tema.acierto !== null
+        );
+
     temasAciertoChart =
     new Chart(
         document.getElementById('temasAciertoChart'),
@@ -178,9 +188,10 @@ function crearGraficoAcierto(){
         data:{
 
             labels:
-            datosEstadisticas.temas.map(
-                tema=>tema.nome_tema
+            temasConDatos.map(
+                tema => tema.nome_tema
             ),
+
 
             datasets:[
 
@@ -189,8 +200,8 @@ function crearGraficoAcierto(){
                 label:'Acierto %',
 
                 data:
-                datosEstadisticas.temas.map(
-                    tema=>tema.acierto
+                temasConDatos.map(
+                        tema => Number(tema.acierto)
                 )
                 }
             ]
@@ -223,28 +234,51 @@ function formatearTiempo(segundos){
 
 }
 
-let periodoActual = 'total';
-
 function gestionarFiltros(){
 
-    document
-    .querySelectorAll('.filters button')
-    .forEach(
-    button=>{
+    const botones =
+        document.querySelectorAll('.filters button');
 
-        button.addEventListener(
-        'click',
-        ()=>{
+    function actualizarBotonActivo() {
 
-        periodoActual =
-        button.dataset.periodo;
+        botones.forEach(
+            boton => {
 
-        cargarEstadisticas(
-            periodoActual
+                boton.classList.toggle(
+                    'activo',
+                    boton.dataset.periodo === periodoActual
+                );
+
+            }
         );
-        });
-    });
+
+    }
+
+    botones.forEach(
+        button => {
+
+            button.addEventListener(
+                'click',
+                () => {
+
+                    periodoActual =
+                        button.dataset.periodo;
+
+                    actualizarBotonActivo();
+
+                    cargarEstadisticas(
+                        periodoActual
+                    );
+
+                }
+            );
+
+        }
+    );
+
+    actualizarBotonActivo();
 }
 
-cargarEstadisticas();
+cargarEstadisticas(periodoActual);
+
 gestionarFiltros();

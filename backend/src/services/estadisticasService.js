@@ -16,13 +16,13 @@ if(periodo === '1'){
 
 if(periodo === '7'){
     filtroFecha =
-    'AND t.data_realizacion >= DATE_SUB(NOW(), INTERVAL 7 DAY)';
+    'AND t.data_realizacion >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)';
 }
 
 
 if(periodo === '30'){
     filtroFecha =
-    'AND t.data_realizacion >= DATE_SUB(NOW(), INTERVAL 30 DAY)';
+    'AND t.data_realizacion >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)';
 
 }
 

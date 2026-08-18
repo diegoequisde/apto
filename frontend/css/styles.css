@@ -630,6 +630,24 @@ button.eliminar:focus-visible {
     font-weight: bold;
 }
 
+.filters button {
+    background-color: transparent;
+    color: var(--apto-primary);
+    border: 1px solid var(--apto-primary);
+}
+
+.filters button.activo {
+    background-color: var(--apto-primary);
+    color: white;
+    border-color: var(--apto-primary);
+}
+
+.filters button:hover {
+    background-color: var(--apto-primary);
+    color: white;
+}
+
+
 /* BUSCADOR DE OPOSICIONES */
 #resultadosBusqueda article {
     cursor: pointer;
