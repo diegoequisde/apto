@@ -145,6 +145,12 @@ main {
     max-width: 90%;
 }
 
+input:not([type="checkbox"], [type="radio"]),
+select,
+textarea {
+    margin-bottom: 0.5rem;
+}
+
 h2 {
     font-size: 1.5em;
 }
@@ -316,13 +322,14 @@ button.eliminar:focus-visible {
 /* MENU MOBILE */
 @media (max-width: 768px) {
 
-    /* NAVBAR */
+    /* Navbar */
     .navbar {
         display: block;
         position: relative;
         padding: .75rem 1rem;
     }
 
+    /* Logo */
     .navbar > ul:first-of-type {
         display: block;
         width: auto;
@@ -337,9 +344,9 @@ button.eliminar:focus-visible {
 
     .navbar.mobile-open > ul:first-of-type {
     display: none;
-}
+    }
 
-    /* botón */
+    /* botón hamburguesa*/
     .menu-toggle {
         display: block;
         position: absolute;
@@ -362,6 +369,19 @@ button.eliminar:focus-visible {
     }
 
     /* menú abierto */
+    .navbar.mobile-open {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100dvh;
+        z-index: 1000;
+        overflow-y: auto;
+        background: var(--pico-background-color);
+    }
+
     .navbar.mobile-open > .nav-principal,
     .navbar.mobile-open > .nav-usuario {
         display: block;
@@ -386,7 +406,7 @@ button.eliminar:focus-visible {
     .navbar.mobile-open > ul li a {
         display: block;
         width: 100%;
-        padding: .65rem;
+        padding: .65rem 1rem;
     }
 
     .navbar.mobile-open > ul li.theme-switch-container {
@@ -394,6 +414,8 @@ button.eliminar:focus-visible {
         justify-content: center;
         align-items: center;
         margin-top: 1em;
+
+        padding: .5rem 0;
     }
 }
 
@@ -633,7 +655,7 @@ button.eliminar:focus-visible {
 .filters {
     display: flex;
     gap: 1rem;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
 
 .summary-grid {
@@ -743,4 +765,51 @@ button.eliminar:focus-visible {
 /* BOTÓN ACTUALIZAR A PRO */
 #btn-pro {
     color: #DAA520;
+}
+
+/* BOTONERA CRUDS */
+.acciones {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: .5rem;
+    align-items: center;
+}
+
+.acciones button {
+    white-space: nowrap;
+}
+
+/* HISTORIAL 
+.tabla-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.tabla-responsive table {
+    width: 100%;
+
+.historial-tabla {
+    width: 100%;
+}
+
+.historial-tabla th,
+.historial-tabla td {
+    white-space: nowrap;
+}
+.historial-tabla td:last-child {
+    text-align: center;
+}}*/
+.resultado-bajo {
+    color: var(--apto-danger);
+    font-weight: 600;
+}
+
+.resultado-medio {
+    color: var(--apto-warning);
+    font-weight: 600;
+}
+
+.resultado-alto {
+    color: var(--apto-success);
+    font-weight: 600;
 }

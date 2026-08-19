@@ -85,8 +85,6 @@ async function cargarTemas() {
     
         temas.forEach((tema) => {
 
-        
-
         select.innerHTML += `
             <option
                 value="${tema.id_tema}"

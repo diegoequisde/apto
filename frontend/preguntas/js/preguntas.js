@@ -117,21 +117,21 @@ document
                 <p>
                     ${pregunta.enunciado}
                 </p>
-
-                <button class= "editar" onclick="editarPregunta(
-                        ${pregunta.id_pregunta}
-                    )"
-                >
-                    Editar
-                </button>
-                
-                <button class= "eliminar" onclick="eliminarPregunta(
-                        ${pregunta.id_pregunta}
-                    )"
-                >
-                    Eliminar
-                </button>
-
+                <div class = "acciones">
+                    <button class= "editar" onclick="editarPregunta(
+                            ${pregunta.id_pregunta}
+                        )"
+                    >
+                        Editar
+                    </button>
+                    
+                    <button class= "eliminar" onclick="eliminarPregunta(
+                            ${pregunta.id_pregunta}
+                        )"
+                    >
+                        Eliminar
+                    </button>
+                </div>
                 <hr>
             </div>
         `;

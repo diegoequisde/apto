@@ -31,31 +31,32 @@ async function cargarTemas() {
                     <strong>${tema.nome_tema}</strong>
                 </p>
 
-                <button class= "editar"
-                    onclick="editarTema(
-                        ${tema.id_tema}
-                    )"
-                >
-                    Editar
-                </button>
+                <div class = "acciones">
+                    <button class= "editar"
+                        onclick="editarTema(
+                            ${tema.id_tema}
+                        )"
+                    >
+                        Editar
+                    </button>
 
-                <button class= "eliminar"
-                    onclick="eliminarTema(
-                        ${tema.id_tema}
-                    )"
-                >
-                    Eliminar
-                </button>
+                    <button class= "eliminar"
+                        onclick="eliminarTema(
+                            ${tema.id_tema}
+                        )"
+                    >
+                        Eliminar
+                    </button>
 
-                <button
-                    onclick="gestionarPreguntas(
-                        ${tema.id_tema}
-                    )"
-                >
-                    Preguntas
-                </button>
-
-                <hr>
+                    <button
+                        onclick="gestionarPreguntas(
+                            ${tema.id_tema}
+                        )"
+                    >
+                        Preguntas
+                    </button>
+                </div>
+            <hr>
 
             </div>
         `;

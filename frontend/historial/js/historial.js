@@ -20,16 +20,15 @@ async function cargarHistorial() {
         document.getElementById(
             'historial'
         );
-
-
+ 
     tests.forEach(test => {
-
 
         tabla.innerHTML += `
             <tr>
-                <td>${new Date(test.data_realizacion).toLocaleDateString()}</td>
-                <td>${test.resultado ?? '-'}</td>
-                <td>${formatearTiempo(test.duracion)}</td>
+                <td>${formatearFecha(test.data_realizacion)}</td>
+                <td class="${test.resultado != null ? claseResultado(test.resultado) : ''}">
+                    ${test.resultado != null ? Math.round(test.resultado) + '%' : '-'}
+                </td>
                 <td>
                     <a href="/generar-test/revision.html?idTest=${test.id_test}" role="button">Revisar</a>
                 </td>
@@ -40,24 +39,22 @@ async function cargarHistorial() {
 
 }
 
-function formatearTiempo(segundos){
+function claseResultado(resultado) {
 
-    if(!segundos){
-        return '0 min';
-    }
+    if (resultado < 50) return 'resultado-bajo';
+    if (resultado <= 80) return 'resultado-medio';
+    return 'resultado-alto';
+}
 
-    const horas =
-    Math.floor(segundos / 3600);
+function formatearFecha(fecha) {
 
-    const minutos =
-    Math.floor((segundos % 3600) / 60);
+    const date = new Date(fecha);
 
-    if(horas === 0){
-        return `${minutos} min`;
-    }
+    const dia = date.getDate();
+    const mes = date.getMonth() + 1;
+    const ano = String(date.getFullYear()).slice(-2);
 
-    return `${horas} h ${minutos} min`;
-
+    return `${dia}/${mes}/${ano}`;
 }
 
 cargarHistorial();
