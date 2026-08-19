@@ -167,7 +167,7 @@ const data =
 await response.json();
 
 if(!response.ok){
-    alert(data.mensaje);
+    mostrarToast(data.mensaje, 'error');
     return;
 }
 
@@ -198,7 +198,7 @@ async function anadirTema() {
 
     if (!response.ok) {
         const data = await response.json();
-        alert(data.mensaje);
+        mostrarToast(data.mensaje, 'error');
     return;
 }
 
@@ -220,7 +220,7 @@ async function eliminarTema(idTema) {
     
     if (!response.ok) {
         const data = await response.json();
-        alert(data.mensaje);
+        mostrarToast(data.mensaje, 'error');
         return;
     }
 

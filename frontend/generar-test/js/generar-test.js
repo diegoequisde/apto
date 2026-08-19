@@ -115,7 +115,7 @@ function anadirTema(){
     );
 
     if(existente){
-        alert('Ese tema ya fue añadido.');
+        mostrarToast('Ese tema ya fue añadido.', 'warning');
         return;
     }
 
@@ -197,7 +197,7 @@ async function generarTest(){
     if (temas.length === 0) {
 
         if (!temaSelect.value) {
-            alert('Selecciona un tema.');
+            mostrarToast('Selecciona un tema.', 'warning');
             return;
         }
 
@@ -235,7 +235,7 @@ async function generarTest(){
     await response.json();
 
     if(!response.ok){
-        alert(data.mensaje);
+        mostrarToast(data.mensaje, 'error');
         return;
 
     }
@@ -281,7 +281,7 @@ async function generarTestOficial(idOposicion){
 
     if (!puede('premium')) {
 
-        alert('Los simulacros oficiales están disponibles sólo para usuarios Premium.');
+        mostrarToast('Los simulacros oficiales están disponibles sólo para usuarios Premium.', 'error');
 
         window.location.href =
             '/suscripcion/planes.html';
@@ -309,7 +309,7 @@ async function generarTestOficial(idOposicion){
     await response.json();
 
     if(!response.ok){
-        alert(data.mensaje);
+        mostrarToast(data.mensaje, 'error');
         return;
 
     }
@@ -350,7 +350,7 @@ async function cargarTemaPersonalizado() {
 
     if (!response.ok || temas.length === 0) {
 
-        alert('No tienes ningún tema personalizado disponible.');
+        mostrarToast('No tienes ningún tema personalizado disponible.', 'error');
 
         return;
 

@@ -36,7 +36,7 @@ document
 
             if (!response.ok) {
 
-                alert(data.mensaje);
+                mostrarToast(data.mensaje, 'error');
                 return;
 
             }

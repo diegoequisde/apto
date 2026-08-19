@@ -183,7 +183,7 @@ async function eliminarPregunta(id) {
 
     if(!response.ok){
 
-        alert('No fue posible eliminar la pregunta.');
+        mostrarToast('No fue posible eliminar la pregunta.', 'warning');
         return;
 
     }

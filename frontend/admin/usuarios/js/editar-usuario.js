@@ -51,10 +51,11 @@ async function guardarCambios() {
         }
     );
 
-    alert('Usuario actualizado');
-
-    window.location.href =
-        './index.html';
+    mostrarToast('Usuario actualizado', 'success');
+        
+    setTimeout(() => {
+        window.location.href = './index.html';
+    }, 500);
 
 }
 

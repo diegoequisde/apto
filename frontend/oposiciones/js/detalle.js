@@ -88,7 +88,7 @@ async function anadirOposicion(){
     const error =
         await response.json();
 
-    alert(error.mensaje || 'No fue posible añadir la oposición (duplicada)');
+    mostrarToast(error.mensaje || 'No fue posible añadir la oposición (duplicada)', 'warning');
 
 }
 

@@ -54,11 +54,8 @@ async function guardarPregunta() {
         )?.value;
 
     if (!correcta) {
-
-        alert('Debes seleccionar una respuesta correcta.');
-
+        mostrarToast('Debes seleccionar una respuesta correcta.', 'warning');
         return;
-
     }
 
     const opciones = [];
@@ -98,19 +95,13 @@ async function guardarPregunta() {
         );
 
     if (!opcionCorrecta) {
-
-        alert('La respuesta correcta debe tener texto.');
-
+        mostrarToast('La respuesta correcta debe tener texto.', 'warning');
         return;
-
     }
 
     if (opciones.length < 2) {
-
-        alert('Debes introducir por lo menos dos opciones.');
-
+        mostrarToast('Debes introducir por lo menos dos opciones.', 'warning');
         return;
-
     }
 
     const response =
@@ -141,17 +132,15 @@ async function guardarPregunta() {
         await response.json();
 
     if (!response.ok) {
-
-        alert(data.mensaje);
-
+        mostrarToast(data.mensaje, 'error');
         return;
-
     }
 
-    alert('Pregunta creada correctamente');
+    mostrarToast('Pregunta creada correctamente', 'success');
 
-    window.location.href =
-        `./index.html?idTema=${idTema}`;
+    setTimeout(() => {
+        window.location.href = `./index.html?idTema=${idTema}`;
+    }, 500);
 
 }
 

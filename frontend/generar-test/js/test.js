@@ -77,7 +77,7 @@ async function cargarTest() {
 
     if (!responseTest.ok) {
 
-        alert('No se pudo cargar el test.');
+        mostrarToast('No se pudo cargar el test.', 'error');
 
         return;
 
@@ -368,7 +368,7 @@ async function finalizarTest(automatico = false) {
             clearInterval(intervaloTemporizador);
         }
 
-        alert('Tiempo agotado. El examen se finalizó automáticamente.');
+        mostrarToast('Tiempo agotado. El examen se finalizó automáticamente.', 'warning');
 
         await actualizarTestFinalizado();
 

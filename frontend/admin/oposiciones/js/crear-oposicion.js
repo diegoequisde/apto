@@ -32,7 +32,7 @@ const data =
 await response.json();
 
 if (!response.ok) {
-    alert(data.mensaje);
+      mostrarToast(data.mensaje, 'error');
     return;
 }
 

@@ -194,7 +194,7 @@ async function guardarCambios() {
 
     if(!response.ok){
 
-    alert('Error al actualizar la pregunta.');
+    mostrarToast('Error al actualizar la pregunta.', 'error');
     return;
 
 }
@@ -230,17 +230,18 @@ async function guardarCambios() {
     );
 
     if(!response.ok){
-        alert('Error al actualizar una opción.');
+        mostrarToast('Error al actualizar una opción.', 'error');
         return;
 }
 
     }
 
-    alert('Pregunta actualizada correctamente');
+    mostrarToast('Pregunta actualizada correctamente', 'success');
 
-    window.location.href =
+    setTimeout(() => {
+        window.location.href =
         `./index.html?idTema=${idTemaInicial}`;
-
+    }, 500);
 }
 
 document

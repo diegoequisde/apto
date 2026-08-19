@@ -168,7 +168,7 @@ async function anadirOposicion(idOposicion){
 
     if (!response.ok) {
 
-        alert(data.mensaje || 'No se ha podido guardar la oposición.');
+        mostrarToast(data.mensaje || 'No se ha podido guardar la oposición.', 'warning');
         return;
 
     }

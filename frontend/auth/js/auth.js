@@ -114,7 +114,7 @@ function requirePremium(){
 
     if(!puede('premium')){
 
-        alert('Esta funcionalidad requiere unha cuenta Premium.');
+        mostrarToast('Esta funcionalidad requiere unha cuenta Premium.', 'error');
         window.location.href = '/suscripcion/planes.html';
 
     }

@@ -22,7 +22,7 @@ async(e)=>{
 
     if(password !== repetirPassword){
 
-        alert('Las contraseñas no coinciden.');
+        mostrarToast('Las contraseñas no coinciden.', 'error');
         return;
 
     }
@@ -54,13 +54,15 @@ async(e)=>{
 
     if(!response.ok){
 
-        alert(data.mensaje);
+        mostrarToast(data.mensaje, 'error');
         return;
 
     }
 
-    alert('Cuenta creada correctamente.');
-
-    window.location.href = '/auth/login.html';
+    mostrarToast('Cuenta creada correctamente.', 'success');
+    
+    setTimeout(() => {
+        window.location.href = '/auth/login.html';
+    }, 500);
 
 });

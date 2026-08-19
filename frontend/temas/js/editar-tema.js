@@ -24,7 +24,7 @@ async function cargarTema() {
 
     if (!response.ok) {
 
-        alert('No se ha podido cargar el tema.');
+        mostrarToast('No se ha podido cargar el tema.', 'warning');
         return;
 
     }
@@ -79,16 +79,16 @@ async function guardarCambios() {
         const data =
             await response.json();
 
-        alert(data.mensaje || 'No se ha podido actualizar el tema.');
-
+        mostrarToast(data.mensaje || 'No se ha podido actualizar el tema.', 'error');
         return;
 
     }
 
-    alert('Tema actualizado correctamente');
+    mostrarToast('Tema actualizado correctamente', 'success');
 
-    window.location.href =
-        './index.html';
+    setTimeout(() => {
+        window.location.href = './index.html';
+    }, 500);
 
 }
 

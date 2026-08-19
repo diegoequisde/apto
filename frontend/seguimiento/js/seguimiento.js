@@ -21,7 +21,7 @@ async function cargarEstadisticas(periodo){
     );
 
     if (!response.ok) {
-        alert('No fue posible cargar las estadísticas.');
+        mostrarToast('No fue posible cargar las estadísticas.', 'warning');
         return;
     }
     

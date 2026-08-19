@@ -30,18 +30,19 @@ async function guardarTema() {
         }
     );
 
-    alert('Tema creado correctamente');
+    mostrarToast('Tema creado correctamente', 'success');
 
     const data =
         await response.json();
 
         if(!response.ok){
-            alert(data.mensaje);
+            mostrarToast(data.mensaje, 'error');
             return;
         }
         
-    window.location.href =
-        './index.html';
+    setTimeout(() => {
+        window.location.href = './index.html';
+    }, 500);
 
 }
 

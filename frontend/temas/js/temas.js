@@ -98,10 +98,8 @@ async function eliminarTema(id) {
         );
 
     if (!response.ok) {
-
-        alert('No fue posible eliminar el tema.');
+        mostrarToast('No fue posible eliminar el tema.', 'warning');
         return;
-
     }
 
     cargarTemas();
