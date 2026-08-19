@@ -237,7 +237,6 @@ async function generarTest(){
     if(!response.ok){
         mostrarToast(data.mensaje, 'error');
         return;
-
     }
 
     window.location.href =`/generar-test/test.html?idTest=${data.id_test}`;
@@ -283,8 +282,9 @@ async function generarTestOficial(idOposicion){
 
         mostrarToast('Los simulacros oficiales están disponibles sólo para usuarios Premium.', 'error');
 
-        window.location.href =
-            '/suscripcion/planes.html';
+        setTimeout(() => {
+            window.location.href = '/suscripcion/planes.html';
+        }, 500);
 
         return;
 
@@ -311,7 +311,6 @@ async function generarTestOficial(idOposicion){
     if(!response.ok){
         mostrarToast(data.mensaje, 'error');
         return;
-
     }
 
     window.location.href =`/generar-test/test.html?idTest=${data.id_test}`;
@@ -351,7 +350,6 @@ async function cargarTemaPersonalizado() {
     if (!response.ok || temas.length === 0) {
 
         mostrarToast('No tienes ningún tema personalizado disponible.', 'error');
-
         return;
 
     }

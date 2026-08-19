@@ -73,11 +73,12 @@ app.use('/api/oposiciones', oposicionRoutes);
 // 404 - Ruta no encontrada
 app.use((req, res) => {
 
-    res.status(404).json({
-        ok: false,
-        mensaje: 'Ruta no encontrada'
-    });
-
+    res.status(404).sendFile(
+        path.join(
+            __dirname,
+            '../../frontend/404.html'
+        )
+    );
 });
 
 // Error handler global

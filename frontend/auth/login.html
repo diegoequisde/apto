@@ -53,17 +53,17 @@
 
         </section>
     </main>
+        
+    <script src="/js/loader.js"></script>
+    <script src="/auth/js/auth.js"></script>
 
+    <script>
+        if (estaLogueado()) {
+            window.location.href = '/index.html';
+        }
+    </script>
+    <script src="/js/config.js"></script>
+    <script src="./js/login.js"></script>
 </body>
-<script src="/js/loader.js"></script>
-<script src="/auth/js/auth.js"></script>
-
-<script>
-    if (estaLogueado()) {
-        window.location.href = '/index.html';
-    }
-</script>
-<script src="/js/config.js"></script>
-<script src="./js/login.js"></script>
 
 </html>

@@ -115,10 +115,10 @@ function requirePremium(){
     if(!puede('premium')){
 
         mostrarToast('Esta funcionalidad requiere unha cuenta Premium.', 'error');
-        window.location.href = '/suscripcion/planes.html';
-
+        setTimeout(() => {
+            window.location.href = '/suscripcion/planes.html';
+        }, 500);
     }
-
 }
 
 function requireAdmin(){

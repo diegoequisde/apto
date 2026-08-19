@@ -232,7 +232,7 @@ async function guardarCambios() {
     if(!response.ok){
         mostrarToast('Error al actualizar una opción.', 'error');
         return;
-}
+    }
 
     }
 

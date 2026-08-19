@@ -78,7 +78,6 @@ async function cargarTest() {
     if (!responseTest.ok) {
 
         mostrarToast('No se pudo cargar el test.', 'error');
-
         return;
 
     }
