@@ -160,8 +160,8 @@ function crearGraficoDistribucion(){
             ]
         },
 
-        options:{
-            responsive:true
+        options: {
+            responsive: true
         }
         }
     );

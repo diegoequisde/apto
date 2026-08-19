@@ -20,9 +20,7 @@ let abandonandoTest = false;
 function mostrarNavegacion() {
 
     const nav =
-        document.getElementById(
-            'preguntas-nav'
-        );
+        document.getElementById('preguntas-nav');
 
 
     nav.innerHTML = '';
@@ -50,11 +48,8 @@ function mostrarNavegacion() {
 
         });
 
-
     document
-        .querySelectorAll(
-            '.pregunta-numero'
-        )
+        .querySelectorAll('.pregunta-numero')
         .forEach(button => {
 
             button.addEventListener(
@@ -130,30 +125,28 @@ function mostrarPregunta() {
         ${preguntas.length}
         `;
 
-
     document
         .getElementById(
             'question-container'
         )
         .innerHTML = `
 
-<h2>${pregunta.enunciado}</h2>
+        <h2 class="enunciado-pregunta">
+            ${pregunta.enunciado}
+        </h2>
 
-${pregunta.opciones
-    .map(opcion => `
+        ${pregunta.opciones
+            .map(opcion => `
 
-        <label>
-
-        <input
-        type="radio"
-        name="respuesta"
-        value="${opcion.letra_opcion}"
-        ${pregunta.resposta_usuario === opcion.letra_opcion ? 'checked' : ''}
-        >
-        ${opcion.texto}
-        </label>
-        `)
-        .join('')}
+                <label class = "opcion">
+                <input type="radio" name="respuesta"
+                value="${opcion.letra_opcion}"
+                ${pregunta.resposta_usuario === opcion.letra_opcion ? 'checked' : ''}
+                >
+                ${opcion.texto}
+                </label>
+                `)
+                .join('')}
 
         `;
 
@@ -162,48 +155,47 @@ ${pregunta.opciones
         'input[name="respuesta"]'
     );
 
-let radioMarcado =
-    document.querySelector(
-        'input[name="respuesta"]:checked'
-    );
+    let radioMarcado =
+        document.querySelector(
+            'input[name="respuesta"]:checked'
+        );
 
-radios.forEach(input => {
+    radios.forEach(input => {
 
-    input.addEventListener('click', async () => {
+        input.addEventListener('click', async () => {
 
-        // Si vuelvo a pulsar el mismo radio button, se desmarca
-        if (radioMarcado === input) {
+            // Si vuelvo a pulsar el mismo radio button, se desmarca
+            if (radioMarcado === input) {
 
-            input.checked = false;
-            radioMarcado = null;
+                input.checked = false;
+                radioMarcado = null;
 
-            pregunta.resposta_usuario = null;
+                pregunta.resposta_usuario = null;
+
+                await guardarRespuesta(
+                    pregunta.id_pregunta,
+                    null
+                );
+
+                mostrarNavegacion();
+
+                return;
+            }
+
+            // Nueva selección
+            radioMarcado = input;
+
+            pregunta.resposta_usuario = input.value;
 
             await guardarRespuesta(
                 pregunta.id_pregunta,
-                null
+                input.value
             );
 
             mostrarNavegacion();
 
-            return;
-        }
-
-        // Nueva selección
-        radioMarcado = input;
-
-        pregunta.resposta_usuario = input.value;
-
-        await guardarRespuesta(
-            pregunta.id_pregunta,
-            input.value
-        );
-
-        mostrarNavegacion();
-
+        });
     });
-
-});
 }
 
 async function guardarRespuesta(
