@@ -132,6 +132,9 @@ function inicializarMenuMobile() {
 
 function inicializarTema() {
 
+    const themeSwitchText =
+    document.getElementById('themeSwitchText');
+
     const themeSwitch =
         document.getElementById('themeSwitch');
 
@@ -166,6 +169,7 @@ function inicializarTema() {
         themeToggle.setAttribute('aria-label', texto);
         themeToggle.setAttribute('title', texto);
         themeSwitch.setAttribute('title', texto);
+        themeSwitchText.textContent = texto;
 
     }
 

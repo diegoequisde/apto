@@ -4,13 +4,21 @@ const API = CONFIG.API;
 
 const usuario = getUsuarioActual();
 const idUsuario = usuario.id;
+const oposicionesCard = document.getElementById('oposicionesCard');
 const buscador = document.getElementById('buscarOposicion');
 const resultados = document.getElementById('resultadosBusqueda');
 
-buscador.addEventListener(
-    'input',
-    buscarOposiciones
-);
+if (esFree()) { 
+    oposicionesCard.style.display = 'none';
+} 
+else {
+
+    buscador.addEventListener(
+        'input',
+        buscarOposiciones
+    );
+
+}
 
 async function cargarUsuario() {
 
@@ -200,8 +208,13 @@ async function eliminarOposicion(
 }
 
 async function inicializar() {
+
     await cargarUsuario();
-    await cargarOposiciones();
+
+    if (!esFree()) {
+        await cargarOposiciones();
+    }
+
 }
 
 const planCard =

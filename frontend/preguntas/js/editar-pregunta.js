@@ -139,6 +139,7 @@ function pintarOpciones() {
                         type="text"
                         id="texto-${opcion.letra_opcion}"
                         value="${opcion.texto}"
+                        aria-label="Texto de la opción ${opcion.letra_opcion}"
                     >
 
                     <input
@@ -150,6 +151,7 @@ function pintarOpciones() {
                                 ? 'checked'
                                 : ''
                         }
+                        aria-label="Marcar opción ${opcion.letra_opcion} como correcta"
                     >
 
                     Correcta

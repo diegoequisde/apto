@@ -26,8 +26,14 @@ async function cargarHistorial() {
         tabla.innerHTML += `
             <tr>
                 <td>${formatearFecha(test.data_realizacion)}</td>
-                <td class="${test.resultado != null ? claseResultado(test.resultado) : ''}">
-                    ${test.resultado != null ? Math.round(test.resultado) + '%' : '-'}
+                <td>
+                    ${
+                        test.resultado != null
+                            ? `<span class="${claseResultado(test.resultado)}">
+                                ${Math.round(test.resultado)}%
+                            </span>`
+                            : '-'
+                    }
                 </td>
                 <td>
                     <a href="/generar-test/revision.html?idTest=${test.id_test}" role="button">Revisar</a>

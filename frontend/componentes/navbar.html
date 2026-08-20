@@ -63,8 +63,15 @@
 
         <!-- TOGGLE MODO OSCURO -->
         <li class="theme-switch-container">
-            <label class="theme-switch" id="themeSwitch" title="Cambiar a modo oscuro">
-                <input type="checkbox" id="themeToggle" aria-label="Cambiar a modo oscuro">
+            <label class="theme-switch" id="themeSwitch">
+                <span id="themeSwitchText" class="visually-hidden">Cambiar a modo oscuro</span>
+
+                <input
+                    type="checkbox"
+                    id="themeToggle"
+                    aria-label="Cambiar a modo oscuro"
+                >
+
                 <span class="theme-slider"></span>
             </label>
         </li>
