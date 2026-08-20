@@ -306,7 +306,7 @@ h3 {
             rgba(0, 0, 0, .25),
             rgba(0, 0, 0, .25)
         ),
-        url("../assets/img/fondo4.jpg");
+        url("../assets/img/fondo_desktop.jpg");
     background-size: cover;
     background-position: center;
 }
@@ -832,6 +832,10 @@ button.eliminar:focus-visible {
     color: var(--apto-muted);
 }
 
+.creditos-imagen {
+    font-size: .75rem;
+    margin: .5rem 0;
+}
 
 /* LOGIN */
 .login-card{
@@ -850,6 +854,11 @@ button.eliminar:focus-visible {
 }
 
 /* GENERAR TEST */
+
+#bloqueTemas{
+    margin-top: 1rem;
+}
+
 #listaTemas{
     min-height:4rem;
     max-height: 35vh;

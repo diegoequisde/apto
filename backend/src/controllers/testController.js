@@ -1,6 +1,5 @@
 const asyncHandler = require('../middlewares/asyncHandler');
 const pool = require('../config/db');
-const xerarDistribucionExame = require('../utils/generadorExamenOficial');
 const { crearExameOficial } = require('../services/examenOficialService');
 const { obterConfiguracionExame } = require('../config/examenesOficiais');
 
@@ -197,7 +196,7 @@ const createTest = asyncHandler(async (req, res) => {
 
 const createTestOficial = asyncHandler(async (req, res) => {
 
-    try {
+    // try {
 
         const {
             id_oposicion
@@ -234,13 +233,13 @@ const createTestOficial = asyncHandler(async (req, res) => {
             duracion: configuracion.duracion
         });
 
-    } catch (error) {
+   // } catch (error) {
 
         console.error(error);
 
         throw error;
 
-    }
+ //   }
 
 });
 

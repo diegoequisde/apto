@@ -36,11 +36,11 @@ const addTemaToOposicion = asyncHandler (async (req, res) => {
 
 const deleteTemaFromOposicion = asyncHandler (async (req, res) => {
 
-        const { id, idTema } = req.params;
+        const { id, id_tema } = req.params;
 
         const result = await deleteTemaFromOposicionById(
             id,
-            idTema
+            id_tema
         );
 
         if (result.affectedRows === 0) {

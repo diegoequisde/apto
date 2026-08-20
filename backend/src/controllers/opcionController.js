@@ -2,7 +2,6 @@ const asyncHandler = require('../middlewares/asyncHandler');
 
 const {
     findOpcionesByPregunta,
-    // insertOpcion,
     updateOpcionById,
     deleteOpcionById
 } = require('../services/opcionService');
