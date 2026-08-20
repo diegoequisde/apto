@@ -220,7 +220,7 @@ if (usuario.tipo === 'free') {
                 <li>Máximo de 40 preguntas personalizadas</li>
             </ul>
 
-            <a href="/suscripcion/planes.html" role="button" id ="btn-pro" class="contrast">
+            <a href="/suscripcion/planes.html" role="button" class="btn-pro contrast">
                 Actualizar a PRO
             </a>
         </article>

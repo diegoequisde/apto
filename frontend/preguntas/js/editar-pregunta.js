@@ -132,7 +132,7 @@ function pintarOpciones() {
                 <div>
 
                     <h3>
-                        ${opcion.letra_opcion}
+                       Opción ${opcion.letra_opcion}
                     </h3>
 
                     <input
@@ -156,7 +156,7 @@ function pintarOpciones() {
 
                 </div>
 
-                <hr>
+                <br>
             `;
 
         }

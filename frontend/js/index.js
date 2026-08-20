@@ -63,7 +63,6 @@ function pintarResultados(lista){
 
 }
 
-
 document
 .getElementById('resultadosBusqueda')
 .addEventListener('click',e=>{

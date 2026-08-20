@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
+<!DOCTYPE html>
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,92 +17,118 @@
 </head>
 <body>
 
-    <div id = "navbar"></div>
+    <!-- NAVBAR -->
+    <div id="navbar"></div>
 
-    <main class="container">
+    <main class="home-main">
 
-    <!-- HERO -->
+        <!-- HERO -->
+        <section class="home-hero">
 
-    <section class="hero">
-        <h1>Prepárate para tu oposición con tests personalizados</h1>
-        <p>Practica con preguntas adaptadas a tus temas y controla tu evolución.</p>
-       <a href="/generar-test/index.html" role="button">
-            Genera tu primer test
-        </a>
-    </section>
+            <div class="home-hero-content">
+                <h1>Prepárate para tu oposición</h1>
+                <p>Practica con preguntas personalizadas y controla tu evolución.</p>
 
-    <!-- BUSCADOR -->
-
-    <section class="section">
-    <h2>Busca tu oposición</h2>
-    <input
-        type="search"
-        id="buscarOposicion"
-        placeholder="Escribe el nombre de una oposición...">
-    <div id="resultadosBusqueda"></div>
-</section>
-
-    <!-- COMO FUNCIONA -->
-
-    <section class="section">
-        <h2>Cómo funciona</h2>
-        <div class="grid">
-            <article class="card">
-                <h3>1. Elige tus temas</h3>
-                <p>Selecciona la oposición y los temas que quieres practicar.</p>
-            </article>
-
-            <article class="card">
-                <h3> 2. Genera un test</h3>
-                <p>Crea simulacros personalizados según tus necesidades.</p>
-            </article>
-
-            <article class="card">
-                <h3>3. Analiza tus resultados</h3>
-                <p>Consulta tus aciertos y mejora progresivamente.</p>
-            </article>
-        </div>
+                <div class="home-search">
+                    <label for="buscarOposicion">
+                        Busca tu oposición
+                    </label>
+                    <input
+                        type="search"
+                        id="buscarOposicion"
+                        placeholder="Escribe el nombre de una oposición..."
+                        autocomplete="off">
+                    <div id="resultadosBusqueda"></div>
+                </div>
+            </div>
+        </section>
 
 
-    </section>
+        <!-- CTA PRINCIPAL -->
+        <section class="home-cta">
+            <div class="home-content">
+                <h2>Da el primer paso para ser APTO</h2>
+                <p>Empieza a practicar y prepara tu oposición a tu ritmo.</p>
+                <a href="/generar-test/index.html" role="button">Genera tu primer test</a>
+            </div>
+        </section>
 
-    <!-- PREMIUM -->
+        <!-- COMO FUNCIONA -->
+        <section class="home-how">
 
-    <section class="premium">
+            <div class="home-content">
+                <header class="home-section-header">
+                    <h2>Cómo funciona APTO</h2>
+                    <p>Una forma sencilla de organizar tu preparación, practicar y comprobar tu progreso.</p>
+                </header>
 
-        <h2>Mejora tu preparación con APTO PRO</h2>
+                <div class="home-steps">
+                    <article class="home-step-card">
+                        <span class="home-step-number">01</span>
+                        <h3>Elige tus temas</h3>
+                        <p>Selecciona la oposición y los temas que quieres practicar.</p>
+                    </article>
 
-        <div class="grid">
-            <article>
-                <h3>Más temas</h3>
-                <p>Accede a más contenido.</p>
-            </article>
+                    <article class="home-step-card">
+                        <span class="home-step-number">02</span>
+                        <h3>Genera un test</h3>
+                        <p>Crea simulacros personalizados según tus necesidades.</p>
+                    </article>
 
-            <article>
-                <h3>Más estadísticas</h3>
-                <p>Analiza tu evolución.</p>
-            </article>
+                    <article class="home-step-card">
+                        <span class="home-step-number">03</span>
+                        <h3>Analiza tus resultados</h3>
+                        <p>Consulta tus aciertos y mejora progresivamente.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
 
-            <article>
-                <h3>Más simulacros</h3>
-                <p>Practica sin límites.</p>
-            </article>
-        </div>
+        <!-- APTO PRO -->
+        <section class="home-pro">
+            <div class="home-content">
+                <header class="home-section-header">
+                    <!-- probablemente acabe quitando este badge - aqui y CSS -->
+                    <span class="home-pro-badge">APTO PRO</span>
+                    <h2>Mejora tu preparación</h2>
+                    <p>Amplía tus posibilidades de práctica y lleva un seguimiento más completo.</p>
+                </header>
 
-        <br>
 
-        <a id="btnPremium" href="/suscripcion/planes.html" role="button">
-            Hazte Premium</a>
-    </section>
+                <div class="home-pro-grid">
+                    <article class="home-pro-card">
+                        <h3>Más temas</h3>
+                        <p>Accede a más contenido para ampliar tu preparación.</p>
+                    </article>
 
-</main>
+                    <article class="home-pro-card">
+                        <h3>Más estadísticas</h3>
+                        <p>Analiza detalladamente la evolución de tu progreso.</p>
+                    </article>
 
-<div id="footer"></div>
+                    <article class="home-pro-card">
+                        <h3>Más simulacros</h3>
+                        <p>Practica con mayor libertad y sin límites de preguntas.</p>
+                    </article>
+                </div>
 
-<script src="/js/config.js"></script>
-<script src="/auth/js/auth.js"></script>
-<script src="/js/loader.js"></script>
-<script src="/js/index.js"></script>
+                <a class="contrast btn-pro"
+                    href="/suscripcion/planes.html"
+                    role="button">
+                    Hazte PRO
+                </a>
+            </div>
+        </section>
+    </main>
+
+
+    <!-- FOOTER -->
+    <div id="footer"></div>
+
+    <script src="/js/config.js"></script>
+    <script src="/auth/js/auth.js"></script>
+    <script src="/js/loader.js"></script>
+    <script src="/js/index.js"></script>
 
 </body>
 
