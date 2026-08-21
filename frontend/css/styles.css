@@ -80,21 +80,25 @@
     --pico-secondary-hover: #64748b;
     --pico-secondary-hover-background: #64748b;
     --pico-secondary-focus: none;
-    
-    /* Botones PRO */
-    #btn-pro,
-    #navPremium a {
-        color: var(--apto-pro);
-        border-color: var(--apto-pro);
-        background-color: transparent;
-    }
+}
 
-    #btn-pro:hover,
-    #navPremium a:hover {
-        color: var(--pico-contrast-hover-background);
-        background-color: var(--apto-pro);
-        border-color: var(--apto-pro);
-    }
+/* Botones PRO */
+[data-theme="dark"] .btn-pro,
+[data-theme="dark"] #navPremium a {
+    color: var(--apto-pro);
+    border-color: var(--apto-pro);
+    background-color: transparent;
+}
+
+[data-theme="dark"] .btn-pro:hover,
+[data-theme="dark"] #navPremium a:hover {
+    color: var(--apto-text);
+    background-color: var(--apto-pro);
+    border-color: var(--apto-pro);
+}
+
+[data-theme="dark"] .navbar{
+     border-bottom: 1px solid var(--apto-text);
 }
 
 /* TOGGLE  */
@@ -207,66 +211,7 @@ h3 {
     margin-inline: auto;
     color: var(--apto-muted);
 }
-/*
-.hero {
-    height: 45vh;
-    margin: 0 auto;
-    padding: 4rem 1rem 3rem;
-    text-align: center;
-    background-image: url("../assets/img/fondo3.jpg");
-    background-size: cover;
-    background-position: center;
-    align-content: center;
 
-    width: 100vw; 
-    margin-left: calc(-50vw + 50%); 
-    margin-right: calc(-50vw + 50%);
-}
-
-.hero h1 {
-    max-width: 90vh;
-    margin-inline: auto;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    color: white;
-}
-
-.hero p {
-    max-width: 90vh;
-    margin: 1rem auto 1.5rem;
-    color: white;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.section {
-    margin-top: 3rem;
-}
-
-.card {
-    padding: 1.5rem;
-}
-
-.card > hr {
-    margin-block: 1.5rem;
-}
-
-.premium {
-    margin-top: 3rem;
-    padding: 1.5rem;
-    text-align: center;
-    background: var(--apto-surface);
-    border: 1px solid var(--apto-primary);
-    border-radius: .75rem;
-}
-
-.premium > h2 {
-    margin-bottom: 3rem;
-}
-    
-.oposicion-card h3 a {
-    color: inherit;
-    text-decoration: none;
-}
-*/
 .visually-hidden {
     position: absolute;
     width: 1px;
@@ -274,7 +219,7 @@ h3 {
     padding: 0;
     margin: -1px;
     overflow: hidden;
-    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
     white-space: nowrap;
     border: 0;
 }
@@ -308,7 +253,7 @@ h3 {
         ),
         url("../assets/img/fondo_desktop.jpg");
     background-size: cover;
-    background-position: center;
+    background-position: center 25%;
 }
 
 .home-hero-content {
@@ -364,7 +309,6 @@ h3 {
 }
 
 
-/* RESULTADOS DEL BUSCADOR */
 /* RESULTADOS DEL BUSCADOR */
 
 #resultadosBusqueda {
@@ -545,7 +489,7 @@ h3 {
             ),
             url("../assets/img/fondo_tablet.jpg");
         background-size: cover;
-        background-position: center;
+        background-position: center 25%;
     }
 
     .home-hero h1 {
@@ -605,7 +549,7 @@ h3 {
             ),
             url("../assets/img/fondo_mobile.jpg");
         background-size: cover;
-        background-position: center;
+        background-position: center 60%;
     }
 }
 
@@ -622,6 +566,7 @@ button.editar {
 
 button.eliminar {
     background-color: var(--apto-danger);
+    border: none;
 }
 
 button.editar:hover,
@@ -988,13 +933,11 @@ button.eliminar:focus-visible {
     padding: 0;
     font-size: clamp(.65rem, 1vw, .9rem);
     font-weight: 600;
-    background: #e5e7eb;
-    color: #e5e7eb;
     border: none;
 }
 
 .pregunta-numero.sin-respuesta {
-    background: var(--apto-light);
+    background: var(--apto-border);
     color: var(--apto-text);
 }
 

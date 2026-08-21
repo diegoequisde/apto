@@ -162,7 +162,7 @@ function pintarListaTemas() {
                     · ${tema.cantidad} preguntas
                 </span>
 
-                <button type="button" onclick="eliminarTema(${index})">
+                <button type="button" class="eliminar" onclick="eliminarTema(${index})">
                     Eliminar
                 </button>
 
@@ -284,7 +284,7 @@ async function generarTestOficial(idOposicion){
 
         setTimeout(() => {
             window.location.href = '/suscripcion/planes.html';
-        }, 500);
+        }, 1500);
 
         return;
 
