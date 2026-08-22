@@ -12,13 +12,14 @@ const idPregunta =
 
 let opcionesActuales = [];
 
-
 async function inicializar() {
-
-    await cargarTemas();
 
     const pregunta =
         await cargarPregunta();
+
+    if (!pregunta) {
+        return;
+    }
 
     idTemaInicial =
         pregunta.id_tema;
@@ -32,6 +33,8 @@ async function inicializar() {
         'idTema'
     ).value =
         pregunta.id_tema;
+
+    await cargarTemas();
 
     await cargarOpciones();
 
@@ -47,6 +50,24 @@ async function cargarPregunta() {
             }
         }
     );
+
+    if (!response.ok) {
+
+        if (response.status === 403) {
+
+            mostrarToast('No tienes permiso para acceder a esta pregunta.','error');
+
+            setTimeout(() => {
+                window.location.href = './index.html';
+            }, 1500);
+
+            return null;
+        }
+
+        mostrarToast('No se ha podido cargar la pregunta.', 'warning');
+
+        return null;
+    }
 
     return await response.json();
 
@@ -243,7 +264,7 @@ async function guardarCambios() {
     setTimeout(() => {
         window.location.href =
         `./index.html?idTema=${idTemaInicial}`;
-    }, 500);
+    }, 1500);
 }
 
 document

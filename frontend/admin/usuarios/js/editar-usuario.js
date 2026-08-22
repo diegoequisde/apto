@@ -1,3 +1,5 @@
+requireAdmin();
+
 const API = CONFIG.API;
 
 const params =
@@ -55,7 +57,7 @@ async function guardarCambios() {
         
     setTimeout(() => {
         window.location.href = './index.html';
-    }, 500);
+    }, 1500);
 
 }
 

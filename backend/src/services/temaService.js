@@ -24,15 +24,26 @@ const findTemaById = async (id, usuario) => {
             id_tema,
             nome_tema,
             descripcion_tema,
-            estado_tema
+            estado_tema,
+            id_usuario
         FROM tema
         WHERE id_tema = ?
-        AND id_usuario = ?
         AND estado_tema = 'activo'
-    `, [id, usuario.id]);
+    `, [id]);
 
-    return rows[0];
+    if (rows.length === 0) {
+        return null;
+    }
 
+    const tema = rows[0];
+
+    if (tema.id_usuario !== usuario.id) {
+        const error = new Error('No tienes permiso para acceder a este tema.');
+        error.status = 403;
+        throw error;
+    }
+
+    return tema;
 };
 
 const insertTema = async (

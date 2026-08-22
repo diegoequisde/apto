@@ -194,7 +194,7 @@ function inicializarTema() {
 }
 
 
-function mostrarToast(mensaje, tipo = 'info', duracion = 1200) {
+function mostrarToast(mensaje, tipo = 'info', duracion = 1500) {
 
     let container =
         document.getElementById('toast-container');

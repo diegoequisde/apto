@@ -140,7 +140,7 @@ async function guardarPregunta() {
 
     setTimeout(() => {
         window.location.href = `./index.html?idTema=${idTema}`;
-    }, 500);
+    }, 1500);
 
 }
 

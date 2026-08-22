@@ -16,33 +16,38 @@ async function guardarTema() {
 
     const response =
         await fetch(
-        `${API}/temas`,
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${getToken()}`
-            },
-            body: JSON.stringify({
-                nome_tema,
-                descripcion_tema
-            })
-        }
-    );
-
-    mostrarToast('Tema creado correctamente', 'success');
+            `${API}/temas`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${getToken()}`
+                },
+                body: JSON.stringify({
+                    nome_tema,
+                    descripcion_tema
+                })
+            }
+        );
 
     const data =
         await response.json();
 
-        if(!response.ok){
-            mostrarToast(data.mensaje, 'error');
-            return;
-        }
-        
+    if (!response.ok) {
+
+        mostrarToast(
+            data.mensaje,
+            'error'
+        );
+
+        return;
+    }
+
+    mostrarToast('Tema creado correctamente', 'success');
+
     setTimeout(() => {
         window.location.href = './index.html';
-    }, 500);
+    }, 1500);
 
 }
 

@@ -1,3 +1,5 @@
+requireAdmin();
+
 const API = CONFIG.API;
 
 async function guardarOposicion() {

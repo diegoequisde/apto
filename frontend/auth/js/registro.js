@@ -63,6 +63,6 @@ async(e)=>{
     
     setTimeout(() => {
         window.location.href = '/auth/login.html';
-    }, 500);
+    }, 1500);
 
 });

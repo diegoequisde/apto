@@ -84,11 +84,9 @@ const findAllPreguntas = async (
 
 };
 
-const findPreguntaById = async (id,  idUsuario = null) => {
-    /*INNER JOIN tema Para obtener: nome_tema
-    LEFT JOIN usuario Porque: una pregunta oficial puede no tener usuario
-    o ser creada por admin y LEFT JOIN da más flexibilidad */
-    let sql = `
+const findPreguntaById = async (id, idUsuario = null) => {
+
+    const [rows] = await pool.query(`
         SELECT
             p.id_pregunta,
             p.enunciado,
@@ -102,27 +100,33 @@ const findPreguntaById = async (id,  idUsuario = null) => {
             ON p.id_tema = t.id_tema
         LEFT JOIN usuario u
             ON p.id_usuario = u.id_usuario
-        WHERE
-            p.id_pregunta = ?
-        AND p.estado_pregunta='activa'
-        `;
+        WHERE p.id_pregunta = ?
+        AND p.estado_pregunta = 'activa'
+    `, [id]);
 
-        const params = [id];
+    // La pregunta no existe
+    if (rows.length === 0) {
+        return null;
+    }
 
-        if(idUsuario){
+    const pregunta = rows[0];
 
-            sql += `
-                AND p.id_usuario = ?
-            `;
+    // La pregunta existe, pero pertenece a otro usuario
+    if (
+        idUsuario &&
+        pregunta.id_usuario !== idUsuario
+    ) {
 
-            params.push(idUsuario);
+        const error = new Error(
+            'No tienes permiso para acceder a esta pregunta.'
+        );
 
-        }
+        error.status = 403;
 
-        const [rows] =
-            await pool.query(sql, params);
+        throw error;
+    }
 
-        return rows[0];
+    return pregunta;
 
 };
 

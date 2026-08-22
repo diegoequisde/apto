@@ -1,3 +1,5 @@
+requireLogin();
+
 const API = CONFIG.API;
 
 async function cargarHistorial() {

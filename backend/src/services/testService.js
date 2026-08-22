@@ -99,6 +99,17 @@ const findTestById = async (
 
 };
 
+const findTestOwner = async (id) => {
+
+    const [rows] = await pool.query(`
+        SELECT id_usuario
+        FROM test
+        WHERE id_test = ?
+    `, [id]);
+
+    return rows[0] || null;
+};
+
 
 const insertTest = async (
     id_usuario,
@@ -190,11 +201,13 @@ const deleteTestById = async (
 
 };
 
+
 module.exports = {
     findAllTests,
     findTestsByUsuario,
     findResultadoTest,
     findTestById,
+    findTestOwner,
     insertTest,
     updateTestById,
     deleteTestById

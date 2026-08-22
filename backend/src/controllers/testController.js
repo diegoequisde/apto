@@ -8,6 +8,7 @@ const {
     findTestsByUsuario,
     findResultadoTest,
     findTestById,
+    findTestOwner,
     insertTest,
     updateTestById,
     deleteTestById
@@ -82,23 +83,34 @@ const getHistorial = asyncHandler(async(req,res)=>{
 
 const getTestById = asyncHandler(async (req, res) => {
 
-        const { id } = req.params;
+    const { id } = req.params;
 
-        const test = await findTestById(
-            id,
-            req.usuario.id
-        );
+    const propietario = await findTestOwner(id);
 
-        if (!test) {
+    if (!propietario) {
 
-            return res.status(404).json({
-                ok: false,
-                mensaje: 'Test no encontrado'
-            });
+        return res.status(404).json({
+            ok: false,
+            mensaje: 'Test no encontrado'
+        });
 
-        }
+    }
 
-        res.json(test);
+    if (propietario.id_usuario !== req.usuario.id) {
+
+        return res.status(403).json({
+            ok: false,
+            mensaje: 'No tienes permiso para acceder a este test'
+        });
+
+    }
+
+    const test = await findTestById(
+        id,
+        req.usuario.id
+    );
+
+    res.json(test);
 
 });
 
@@ -356,16 +368,45 @@ const deleteTest = asyncHandler(async (req, res) => {
 
 });
 
-const getRevisionTest = asyncHandler(async (req,res)=>{
+const getRevisionTest = asyncHandler(async (req, res) => {
 
-    const { id } =
-    req.params;
+    const { id } = req.params;
+
+    console.log('REVISION TEST');
+    console.log('ID TEST:', id);
+    console.log('USUARIO:', req.usuario.id);
+
+    const propietario = await findTestOwner(id);
+
+    console.log('PROPIETARIO:', propietario);
+
+    if (!propietario) {
+
+        return res.status(404).json({
+            ok: false,
+            mensaje: 'Test no encontrado'
+        });
+
+    }
+
+    if (propietario.id_usuario !== req.usuario.id) {
+
+        console.log('ACCESO DENEGADO');
+
+        return res.status(403).json({
+            ok: false,
+            mensaje: 'No tienes permiso para revisar este test'
+        });
+
+    }
 
     const revision =
-    await findRevisionByTest(id, req.usuario.id);
+        await findRevisionByTest(
+            id,
+            req.usuario.id
+        );
 
     res.json(revision);
-
 });
 
 module.exports = {

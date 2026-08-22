@@ -24,9 +24,26 @@ async function cargarTema() {
 
     if (!response.ok) {
 
-        mostrarToast('No se ha podido cargar el tema.', 'warning');
-        return;
+    if (response.status === 403) {
 
+            mostrarToast(
+                'No tienes permiso para acceder a este tema.',
+                'error'
+            );
+
+            setTimeout(() => {
+                window.location.href = './index.html';
+            }, 1500);
+
+            return;
+        }
+
+        mostrarToast(
+            'No se ha podido cargar el tema.',
+            'warning'
+        );
+
+        return;
     }
 
     const tema =
@@ -88,7 +105,7 @@ async function guardarCambios() {
 
     setTimeout(() => {
         window.location.href = './index.html';
-    }, 500);
+    }, 1500);
 
 }
 

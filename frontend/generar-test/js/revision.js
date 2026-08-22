@@ -23,11 +23,39 @@ async function cargarRevision() {
             }
         );
 
+    if (response.status === 403) {
+
+        mostrarToast(
+            'No tienes permiso para acceder a este test.',
+            'error'
+        );
+
+        setTimeout(() => {
+            window.location.href = '/historial/index.html';
+        }, 1500);
+
+        return;
+    }
+
+    if (response.status === 404) {
+        mostrarToast('El test no existe.', 'error');
+        return;
+    }
+
+    if (!response.ok) {
+
+        mostrarToast('No se ha podido cargar la revisión.', 'error');
+        return;
+    }
 
     preguntas = await response.json();
 
     mostrarNavegacion();
-    mostrarPregunta(0);
+
+    if (preguntas.length > 0) {
+        mostrarPregunta(0);
+    }
+
 }
 
 function mostrarNavegacion() {

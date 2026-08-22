@@ -22,7 +22,7 @@ const limite = 20;
 async function cargarTema() {
 
     if (!idTema) {
-        return;
+        return true;
     }
 
     const response = await fetch(
@@ -34,6 +34,24 @@ async function cargarTema() {
         }
     );
 
+    if (!response.ok) {
+
+        if (response.status === 403) {
+
+            mostrarToast('No tienes permiso para acceder a este tema.', 'error');
+
+            setTimeout(() => {
+                window.location.href = '../temas/index.html';
+            }, 1500);
+
+            return false;
+        }
+
+        mostrarToast('No se ha podido cargar el tema.', 'warning');
+
+        return false;
+    }
+
     const tema =
         await response.json();
 
@@ -42,7 +60,9 @@ async function cargarTema() {
     ).textContent =
         `Preguntas · ${tema.nome_tema}`;
 
+    return true;
 }
+
 async function cargarPreguntas() {
 
     let url =
@@ -144,14 +164,50 @@ document
 
 }
 
-function irCrearPregunta(){
+async function irCrearPregunta() {
 
-    if(!puede('usuario')){
+    if (!puede('usuario')) {
         return;
     }
 
-    window.location.href = './crear.html';
+    if (esFree()) {
 
+        const response =
+            await fetch(
+                `${API}/preguntas?page=1&limit=1`,
+                {
+                    headers: {
+                        Authorization:
+                            `Bearer ${getToken()}`
+                    }
+                }
+            );
+
+        if (!response.ok) {
+
+            mostrarToast(
+                'No se han podido comprobar tus preguntas.',
+                'warning'
+            );
+
+            return;
+        }
+
+        const data =
+            await response.json();
+
+        if (data.total >= 40) {
+
+            mostrarToast(
+                'La cuenta gratuita permite crear un máximo de 40 preguntas. Actualiza a Premium para crear más preguntas.',
+                'warning'
+            );
+
+            return;
+        }
+    }
+
+    window.location.href = './crear.html';
 }
 
 function editarPregunta(id) {
@@ -219,10 +275,14 @@ document
 
 async function inicializar() {
 
-    await cargarTema();
+    const temaValido =
+        await cargarTema();
+
+    if (!temaValido) {
+        return;
+    }
 
     await cargarPreguntas();
 
 }
-
 inicializar();
