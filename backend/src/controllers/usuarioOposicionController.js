@@ -38,6 +38,9 @@ const deleteOposicionFromUsuario = asyncHandler(async (req, res) => {
 
         const { id, idOposicion } = req.params;
 
+        console.log('id:', id);
+    console.log('idOposicion:', idOposicion);
+    
         const result = await deleteOposicionFromUsuarioById(
             id,
             idOposicion

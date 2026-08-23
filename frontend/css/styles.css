@@ -191,6 +191,7 @@ textarea {
 
 h2 {
     font-size: 1.5em;
+    margin-top: 1.5em;
 }
 
 h3 {
@@ -333,7 +334,7 @@ h3 {
 /*  CTA PRINCIPAL */
 
 .home-cta {
-    padding: 4.5rem 1rem;
+    padding: 3rem 1rem;
     text-align: center;
     background: var(--pico-background-color);
 }
@@ -351,7 +352,7 @@ h3 {
 
 /* CÓMO FUNCIONA */
 .home-how {
-    padding: 5rem 1rem;
+    padding: 3rem 1rem;
     background: var(--apto-primary);
     color: #ffffff;
 }
@@ -421,7 +422,7 @@ h3 {
 
 /*  APTO PRO  */
 .home-pro {
-    padding: 5rem 1rem 0;
+    padding: 3rem 1rem 0;
     text-align: center;
 }
 
@@ -1297,4 +1298,10 @@ p.opcion {
         transform: translateY(0);
     }
 
+}
+
+/* ADMIN PANEL */
+.oposicion-card h3 a {
+    color: inherit;
+    text-decoration: none;
 }

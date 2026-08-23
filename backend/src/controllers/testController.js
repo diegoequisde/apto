@@ -205,53 +205,42 @@ const createTest = asyncHandler(async (req, res) => {
     });
 
 });
-
 const createTestOficial = asyncHandler(async (req, res) => {
 
-    // try {
+    const {
+        id_oposicion
+    } = req.body;
 
-        const {
+    const configuracion =
+        obterConfiguracionExame(id_oposicion);
+
+    const id_test =
+        await insertTest(
+            req.usuario.id,
+            configuracion.duracion
+        );
+
+    const preguntas =
+        await crearExameOficial(
             id_oposicion
-        } = req.body;
+        );
 
-        const configuracion =
-            obterConfiguracionExame(id_oposicion);
+    for (let i = 0; i < preguntas.length; i++) {
 
-        const id_test =
-            await insertTest(
-                req.usuario.id,
-                configuracion.duracion
-            );
-
-        const preguntas =
-            await crearExameOficial(
-                id_oposicion
-            );
- 
-        for (let i = 0; i < preguntas.length; i++) {
-
-            await insertPreguntaToTest(
-                id_test,
-                preguntas[i].id_pregunta,
-                i + 1
-            );
-
-        }
-
-        res.status(201).json({
-            ok: true,
-            mensaje: 'Examen oficial creado correctamente',
+        await insertPreguntaToTest(
             id_test,
-            duracion: configuracion.duracion
-        });
+            preguntas[i].id_pregunta,
+            i + 1
+        );
 
-   // } catch (error) {
+    }
 
-        console.error(error);
-
-        throw error;
-
- //   }
+    res.status(201).json({
+        ok: true,
+        mensaje: 'Examen oficial creado correctamente',
+        id_test,
+        duracion: configuracion.duracion
+    });
 
 });
 
@@ -372,13 +361,7 @@ const getRevisionTest = asyncHandler(async (req, res) => {
 
     const { id } = req.params;
 
-    console.log('REVISION TEST');
-    console.log('ID TEST:', id);
-    console.log('USUARIO:', req.usuario.id);
-
     const propietario = await findTestOwner(id);
-
-    console.log('PROPIETARIO:', propietario);
 
     if (!propietario) {
 
@@ -390,8 +373,6 @@ const getRevisionTest = asyncHandler(async (req, res) => {
     }
 
     if (propietario.id_usuario !== req.usuario.id) {
-
-        console.log('ACCESO DENEGADO');
 
         return res.status(403).json({
             ok: false,

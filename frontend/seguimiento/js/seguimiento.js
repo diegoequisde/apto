@@ -34,10 +34,6 @@ async function cargarEstadisticas(periodo){
 
 function crearGraficos(){
 
-    console.log('RESUMEN:', datosEstadisticas.resumen);
-    console.log('EVOLUCION:', datosEstadisticas.evolucion);
-    console.log('TEMAS:', datosEstadisticas.temas);
-
     crearGraficoEvolucion();
     crearGraficoDistribucion();
     crearGraficoAcierto();

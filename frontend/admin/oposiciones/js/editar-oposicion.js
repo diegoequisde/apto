@@ -210,6 +210,14 @@ async function anadirTema() {
 
 async function eliminarTema(idTema) {
 
+    const confirmar = confirm(
+        '¿Estás seguro de que quieres eliminar este tema de la oposición?'
+    );
+
+    if (!confirmar) {
+        return;
+    }
+
     const response = await fetch(
         `${API}/oposiciones/${idOposicion}/temas/${idTema}`,
         {
