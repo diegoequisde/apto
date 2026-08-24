@@ -2,7 +2,7 @@
   "name": "apto",
   "private": true,
   "scripts": {
-    "build": "npm install --prefix backend",
-    "start": "npm start --prefix backend"
+    "build": "cd backend && npm install",
+    "start": "cd backend && npm start"
   }
 }
