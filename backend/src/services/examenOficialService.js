@@ -1,65 +1,47 @@
-const {
-    obterConfiguracionExame
-} = require('../config/examenesOficiais');
+const { obterConfiguracionExame } = require("../config/examenesOficiais");
 
-const {
-    generarDistribucionExame
-} = require('../utils/generadorExamenOficial');
+const { generarDistribucionExame } = require("../utils/generadorExamenOficial");
 
-const {
-    findPreguntasAleatorias
-} = require('./preguntaService');
+const { findPreguntasAleatorias } = require("./preguntaService");
 
 async function crearExameOficial(idOposicion) {
+  const configuracion = obterConfiguracionExame(idOposicion);
 
-    const configuracion =
-        obterConfiguracionExame(idOposicion);
-
-    if (!configuracion) {
-
-    const error = new Error(
-        'No se ha encontrado la configuración del examen.'
-    );
+  if (!configuracion) {
+    const error = new Error("No se ha encontrado la configuración del examen.");
 
     error.status = 404;
 
     throw error;
+  }
 
-}
+  const distribucion = generarDistribucionExame(configuracion);
 
-    const distribucion =
-        generarDistribucionExame(configuracion);
+  let preguntas = [];
 
-    let preguntas = [];
+  for (const tema of distribucion) {
+    const preguntasTema = await findPreguntasAleatorias(
+      tema.id_tema,
+      tema.cantidad,
+      true,
+    );
 
-    for (const tema of distribucion) {
+    if (preguntasTema.length < tema.cantidad) {
+      const error = new Error(
+        `El tema "${tema.nome}" solo tiene ${preguntasTema.length} preguntas disponibles y se necesitan ${tema.cantidad}.`,
+      );
 
-        const preguntasTema =
-            await findPreguntasAleatorias(
-                tema.id_tema,
-                tema.cantidad,
-                true
-            );
+      error.status = 409;
 
-        if (preguntasTema.length < tema.cantidad) {
-
-            const error = new Error(
-                `El tema "${tema.nome}" solo tiene ${preguntasTema.length} preguntas disponibles y se necesitan ${tema.cantidad}.`
-            );
-
-            error.status = 409;
-
-            throw error;
-
-        }
-
-        preguntas.push(...preguntasTema);
-
+      throw error;
     }
 
-    return preguntas;
+    preguntas.push(...preguntasTema);
+  }
+
+  return preguntas;
 }
 
 module.exports = {
-    crearExameOficial
+  crearExameOficial,
 };

@@ -1,9 +1,8 @@
-const pool = require('../config/db');
+const pool = require("../config/db");
 
 const findPreguntasByTest = async (id_test) => {
-
-
-    const [preguntas] = await pool.query(`
+  const [preguntas] = await pool.query(
+    `
 
         SELECT
             pt.id_pregunta,
@@ -16,14 +15,13 @@ const findPreguntasByTest = async (id_test) => {
         WHERE pt.id_test = ?
         ORDER BY pt.orde
 
-    `, [id_test]);
+    `,
+    [id_test],
+  );
 
-
-
-    for (const pregunta of preguntas) {
-
-        const [opciones] =
-            await pool.query(`
+  for (const pregunta of preguntas) {
+    const [opciones] = await pool.query(
+      `
 
             SELECT
                 letra_opcion,
@@ -31,23 +29,19 @@ const findPreguntasByTest = async (id_test) => {
             FROM opcion
             WHERE id_pregunta = ?
 
-        `, [pregunta.id_pregunta]);
+        `,
+      [pregunta.id_pregunta],
+    );
 
+    pregunta.opciones = opciones;
+  }
 
-        pregunta.opciones =
-            opciones;
-
-    }
-
-    return preguntas;
-
-
+  return preguntas;
 };
 
-
 const findRevisionByTest = async (id_test, id_usuario) => {
-
-    const [preguntas] = await pool.query(`
+  const [preguntas] = await pool.query(
+    `
 
         SELECT
             pt.id_pregunta,
@@ -65,13 +59,13 @@ const findRevisionByTest = async (id_test, id_usuario) => {
         AND t.id_usuario = ?
         ORDER BY pt.orde
 
-    `,[id_test, id_usuario]);
+    `,
+    [id_test, id_usuario],
+  );
 
-
-    for(const pregunta of preguntas){
-
-        const [opciones] =
-        await pool.query(`
+  for (const pregunta of preguntas) {
+    const [opciones] = await pool.query(
+      `
 
             SELECT
                 letra_opcion,
@@ -80,162 +74,115 @@ const findRevisionByTest = async (id_test, id_usuario) => {
             FROM opcion
             WHERE id_pregunta = ?
 
-        `,[pregunta.id_pregunta]);
+        `,
+      [pregunta.id_pregunta],
+    );
 
+    pregunta.opciones = opciones;
+  }
 
-        pregunta.opciones =
-        opciones;
-
-
-    }
-
-
-    return preguntas;
-
-
+  return preguntas;
 };
 
 // calcula resultado en %
-const calcularResultadoTest = async (
-    id_test
-) => {
-
-    const [rows] = await pool.query(`
+const calcularResultadoTest = async (id_test) => {
+  const [rows] = await pool.query(
+    `
         SELECT
             COUNT(*) AS total,
             SUM(e_correcta) AS aciertos
         FROM pregunta_test
         WHERE id_test = ?
 
-    `,[id_test]);
+    `,
+    [id_test],
+  );
 
+  const total = rows[0].total;
 
-    const total =
-    rows[0].total;
+  const aciertos = rows[0].aciertos || 0;
 
-    const aciertos =
-    rows[0].aciertos || 0;
+  const resultado = Math.round((aciertos / total) * 100);
 
-
-    const resultado =
-    Math.round(
-        (aciertos / total) * 100
-    );
-
-
-
-    return resultado;
-
+  return resultado;
 };
 
-
-const insertPreguntaToTest = async (
-    id_test,
-    id_pregunta,
-    orde
-) => {
-
-    try {
-
-        const [result] = await pool.query(`
+const insertPreguntaToTest = async (id_test, id_pregunta, orde) => {
+  try {
+    const [result] = await pool.query(
+      `
             INSERT INTO pregunta_test (
                 id_test,
                 id_pregunta,
                 orde
             )
             VALUES (?, ?, ?)
-        `, [
-            id_test,
-            id_pregunta,
-            orde
-        ]);
+        `,
+      [id_test, id_pregunta, orde],
+    );
 
-        return result;
+    return result;
+  } catch (error) {
+    if (error.code === "ER_DUP_ENTRY") {
+      const err = new Error("La pregunta ya está añadida a este test.");
 
-    } catch (error) {
+      err.status = 409;
 
-        if (error.code === 'ER_DUP_ENTRY') {
-
-            const err = new Error(
-                'La pregunta ya está añadida a este test.'
-            );
-
-            err.status = 409;
-
-            throw err;
-
-        }
-
-        throw error;
-
+      throw err;
     }
 
+    throw error;
+  }
 };
 
-const answerPregunta = async (
-    id_test,
-    id_pregunta,
-    resposta_usuario
-) => {
-
-    // Buscar respuesta correcta
-    const [correcta] = await pool.query(`
+const answerPregunta = async (id_test, id_pregunta, resposta_usuario) => {
+  // Buscar respuesta correcta
+  const [correcta] = await pool.query(
+    `
         SELECT
             e_correcta
         FROM opcion
         WHERE id_pregunta = ?
         AND letra_opcion = ?
-    `, [
-        id_pregunta,
-        resposta_usuario
-    ]);
+    `,
+    [id_pregunta, resposta_usuario],
+  );
 
-    const e_correcta =
-        correcta.length > 0
-            ? correcta[0].e_correcta
-            : false;
+  const e_correcta = correcta.length > 0 ? correcta[0].e_correcta : false;
 
-    const [result] = await pool.query(`
+  const [result] = await pool.query(
+    `
         UPDATE pregunta_test
         SET
             resposta_usuario = ?,
             e_correcta = ?
         WHERE id_test = ?
         AND id_pregunta = ?
-    `, [
-        resposta_usuario,
-        e_correcta,
-        id_test,
-        id_pregunta
-    ]);
+    `,
+    [resposta_usuario, e_correcta, id_test, id_pregunta],
+  );
 
-    return result;
-
+  return result;
 };
 
-const deletePreguntaTest = async (
-    id_test,
-    id_pregunta
-) => {
-
-    const [result] = await pool.query(`
+const deletePreguntaTest = async (id_test, id_pregunta) => {
+  const [result] = await pool.query(
+    `
         DELETE FROM pregunta_test
         WHERE id_test = ?
         AND id_pregunta = ?
-    `, [
-        id_test,
-        id_pregunta
-    ]);
+    `,
+    [id_test, id_pregunta],
+  );
 
-    return result;
-
+  return result;
 };
 
 module.exports = {
-    findPreguntasByTest,
-    findRevisionByTest,
-    calcularResultadoTest,
-    insertPreguntaToTest,
-    answerPregunta,
-    deletePreguntaTest
+  findPreguntasByTest,
+  findRevisionByTest,
+  calcularResultadoTest,
+  insertPreguntaToTest,
+  answerPregunta,
+  deletePreguntaTest,
 };

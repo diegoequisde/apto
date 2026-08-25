@@ -1,68 +1,47 @@
 const API = CONFIG.API;
 
 document
-.getElementById('registroForm')
-.addEventListener(
-'submit',
-async(e)=>{
-
+  .getElementById("registroForm")
+  .addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const nome =
-    document.getElementById('nombre').value.trim();
+    const nome = document.getElementById("nombre").value.trim();
 
-    const email =
-    document.getElementById('email').value.trim();
+    const email = document.getElementById("email").value.trim();
 
-    const password =
-    document.getElementById('password').value;
+    const password = document.getElementById("password").value;
 
-    const repetirPassword =
-    document.getElementById('repetirPassword').value;
+    const repetirPassword = document.getElementById("repetirPassword").value;
 
-    if(password !== repetirPassword){
-
-        mostrarToast('Las contraseñas no coinciden.', 'error');
-        return;
-
+    if (password !== repetirPassword) {
+      mostrarToast("Las contraseñas no coinciden.", "error");
+      return;
     }
 
-    const response =
-    await fetch(
-        `${API}/usuarios`,
-        {
+    const response = await fetch(`${API}/usuarios`, {
+      method: "POST",
 
-            method:'POST',
+      headers: {
+        "Content-Type": "application/json",
+      },
 
-            headers:{
-                'Content-Type':'application/json'
-            },
+      body: JSON.stringify({
+        nome,
+        email,
+        password,
+      }),
+    });
 
-            body:JSON.stringify({
+    const data = await response.json();
 
-                nome,
-                email,
-                password
-
-            })
-
-        }
-    );
-
-    const data =
-    await response.json();
-
-    if(!response.ok){
-
-        mostrarToast(data.mensaje, 'error');
-        return;
-
+    if (!response.ok) {
+      mostrarToast(data.mensaje, "error");
+      return;
     }
 
-    mostrarToast('Cuenta creada correctamente.', 'success');
-    
+    mostrarToast("Cuenta creada correctamente.", "success");
+
     setTimeout(() => {
-        window.location.href = '/auth/login.html';
+      window.location.href = "/auth/login.html";
     }, 1500);
-
-});
+  });

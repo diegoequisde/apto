@@ -2,32 +2,21 @@ requireAdmin();
 
 const API = CONFIG.API;
 
-const container =
-    document.getElementById(
-        'oposicionesContainer'
-    );
+const container = document.getElementById("oposicionesContainer");
 
 async function cargarOposiciones() {
+  const response = await fetch(`${API}/oposiciones`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 
-    const response =
-        await fetch(
-            `${API}/oposiciones`,
-        {
-            headers: {
-                Authorization: `Bearer ${getToken()}`
-            }
-        }
-        );
+  const oposiciones = await response.json();
 
-    const oposiciones =
-        await response.json();
+  container.innerHTML = "";
 
-    container.innerHTML = '';
-
-    oposiciones.forEach(
-        (oposicion) => {
-
-            container.innerHTML += `
+  oposiciones.forEach((oposicion) => {
+    container.innerHTML += `
                 <div class="oposicion-card">
 
                     <h3>
@@ -37,7 +26,7 @@ async function cargarOposiciones() {
                     </h3>
 
                     <p>
-                        ${oposicion.descripcion_oposicion  || ''}
+                        ${oposicion.descripcion_oposicion || ""}
                     </p>
 
                     <button class = "editar"
@@ -60,48 +49,30 @@ async function cargarOposiciones() {
 
                 </div>
             `;
-
-        }
-    );
-
+  });
 }
 
 function irCrearOposicion() {
-
-    window.location.href =
-        'crear.html';
-
+  window.location.href = "crear.html";
 }
 
 function editarOposicion(id) {
-
-    window.location.href =
-        `editar.html?id=${id}`;
-
+  window.location.href = `editar.html?id=${id}`;
 }
 
 async function eliminarOposicion(id) {
+  if (!confirm("¿Eliminar oposición?")) {
+    return;
+  }
 
-    if (
-        !confirm(
-            '¿Eliminar oposición?'
-        )
-    ) {
-        return;
-    }
+  await fetch(`${API}/oposiciones/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 
-    await fetch(
-        `${API}/oposiciones/${id}`,
-        {
-            method: 'DELETE',
-            headers: {
-                Authorization: `Bearer ${getToken()}`
-            }
-        }
-    );
-
-    cargarOposiciones();
-
+  cargarOposiciones();
 }
 
 cargarOposiciones();

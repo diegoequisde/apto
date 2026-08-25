@@ -4,79 +4,46 @@ const API = CONFIG.API;
 
 const usuario = getUsuarioActual();
 const idUsuario = usuario.id;
-const oposicionesCard = document.getElementById('oposicionesCard');
-const buscador = document.getElementById('buscarOposicion');
-const resultados = document.getElementById('resultadosBusqueda');
+const oposicionesCard = document.getElementById("oposicionesCard");
+const buscador = document.getElementById("buscarOposicion");
+const resultados = document.getElementById("resultadosBusqueda");
 
-if (esFree()) { 
-    oposicionesCard.style.display = 'none';
-} 
-else {
-
-    buscador.addEventListener(
-        'input',
-        buscarOposiciones
-    );
-
+if (esFree()) {
+  oposicionesCard.style.display = "none";
+} else {
+  buscador.addEventListener("input", buscarOposiciones);
 }
 
 async function cargarUsuario() {
+  const response = await fetch(`${API}/usuarios/${idUsuario}`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+  const usuario = await response.json();
 
-    const response =
-        await fetch(
-            `${API}/usuarios/${idUsuario}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${getToken()}`
-                }
-            }
-        );
-    const usuario =
-        await response.json();
+  document.getElementById("nombreUsuario").textContent = usuario.nome;
 
-    document.getElementById(
-        'nombreUsuario'
-    ).textContent =
-        usuario.nome;
+  document.getElementById("emailUsuario").textContent = usuario.email;
 
-    document.getElementById(
-        'emailUsuario'
-    ).textContent =
-        usuario.email;
-
-    document.getElementById(
-        'tipoUsuario'
-    ).textContent =
-        usuario.tipo;
-
+  document.getElementById("tipoUsuario").textContent = usuario.tipo;
 }
 
 async function cargarOposiciones() {
+  const response = await fetch(`${API}/usuarios/${idUsuario}/oposiciones`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 
-    const response =
-        await fetch(
-            `${API}/usuarios/${idUsuario}/oposiciones`,
-            {
-                headers: {
-                    Authorization: `Bearer ${getToken()}`
-                }
-            }
-        );
+  const oposiciones = await response.json();
 
-    const oposiciones =
-        await response.json();
+  const container = document.getElementById("oposicionesContainer");
 
-    const container =
-        document.getElementById(
-            'oposicionesContainer'
-        );
+  container.innerHTML = "";
 
-    container.innerHTML = '';
-
-    oposiciones.forEach(
-        (oposicion) => {
-
-            container.innerHTML += `
+  oposiciones.forEach((oposicion) => {
+    container.innerHTML += `
                 <div>
                     <p><strong>
                         ${oposicion.nome_oposicion}
@@ -89,36 +56,22 @@ async function cargarOposiciones() {
                 </div>
                 <hr>
             `;
-
-        }
-    );
-
+  });
 }
 
-resultados.addEventListener(
-    'click',
-    async(e)=>{
+resultados.addEventListener("click", async (e) => {
+  const tarjeta = e.target.closest(".resultadoBusqueda");
 
-        const tarjeta =
-        e.target.closest('.resultadoBusqueda');
+  if (!tarjeta) return;
 
-        if(!tarjeta)return;
+  await anadirOposicion(tarjeta.dataset.id);
+});
 
-        await anadirOposicion(
-            tarjeta.dataset.id
-        );
+function pintarResultados(oposiciones) {
+  resultados.innerHTML = "";
 
-    }
-);
-
-
-function pintarResultados(oposiciones){
-
-    resultados.innerHTML = '';
-
-    oposiciones.forEach(oposicion=>{
-
-        resultados.innerHTML += `
+  oposiciones.forEach((oposicion) => {
+    resultados.innerHTML += `
             <article
                 class="resultadoBusqueda"
                 data-id="${oposicion.id_oposicion}"
@@ -126,105 +79,83 @@ function pintarResultados(oposiciones){
                 ${oposicion.nome_oposicion}
             </article>
         `;
-
-    });
-
+  });
 }
 
-async function buscarOposiciones(){
+async function buscarOposiciones() {
+  const texto = buscador.value.trim();
 
-    const texto = buscador.value.trim();
+  if (texto.length < 2) {
+    resultados.innerHTML = "";
+    return;
+  }
 
-    if(texto.length < 2){
-        resultados.innerHTML = '';
-        return;
-    }
+  const response = await fetch(
+    `${API}/oposiciones?search=${encodeURIComponent(texto)}`,
+    {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    },
+  );
 
-    const response = await fetch(
-        `${API}/oposiciones?search=${encodeURIComponent(texto)}`,
-        {
-            headers: {
-                Authorization: `Bearer ${getToken()}`
-            }
-        }
+  const oposiciones = await response.json();
+
+  pintarResultados(oposiciones);
+}
+
+async function anadirOposicion(idOposicion) {
+  const response = await fetch(`${API}/usuarios/${idUsuario}/oposiciones`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify({
+      id_oposicion: idOposicion,
+    }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    mostrarToast(
+      data.mensaje || "No se ha podido guardar la oposición.",
+      "warning",
     );
+    return;
+  }
 
-    const oposiciones = await response.json();
+  buscador.value = "";
 
-    pintarResultados(oposiciones);
+  resultados.innerHTML = "";
+
+  cargarOposiciones();
 }
 
-async function anadirOposicion(idOposicion){
+async function eliminarOposicion(idOposicion) {
+  await fetch(`${API}/usuarios/${idUsuario}/oposiciones/${idOposicion}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 
-    const response =
-        await fetch(
-            `${API}/usuarios/${idUsuario}/oposiciones`,
-            {
-                method:'POST',
-                headers:{
-                    'Content-Type':'application/json',
-                    Authorization: `Bearer ${getToken()}`
-                },
-                body:JSON.stringify({
-                    id_oposicion:idOposicion
-                })
-            }
-        );
-
-    const data =
-        await response.json();
-
-    if (!response.ok) {
-
-        mostrarToast(data.mensaje || 'No se ha podido guardar la oposición.', 'warning');
-        return;
-
-    }
-
-    buscador.value = '';
-
-    resultados.innerHTML = '';
-
-    cargarOposiciones();
-
-}
-
-async function eliminarOposicion(
-    idOposicion
-) {
-
-   await fetch(
-        `${API}/usuarios/${idUsuario}/oposiciones/${idOposicion}`,
-        {
-            method:'DELETE',
-            headers:{
-                Authorization: `Bearer ${getToken()}`
-            }
-        }
-    );
-
-    cargarOposiciones();
-
+  cargarOposiciones();
 }
 
 async function inicializar() {
+  await cargarUsuario();
 
-    await cargarUsuario();
-
-    if (!esFree()) {
-        await cargarOposiciones();
-    }
-
+  if (!esFree()) {
+    await cargarOposiciones();
+  }
 }
 
-const planCard =
-    document.getElementById(
-        'planCard'
-    );
+const planCard = document.getElementById("planCard");
 
-if (usuario.tipo === 'free') {
-
-    planCard.innerHTML = `
+if (usuario.tipo === "free") {
+  planCard.innerHTML = `
         <article>
             <h3>Plan actual</h3>
             <p><strong>Free</strong></p>
@@ -238,17 +169,14 @@ if (usuario.tipo === 'free') {
             </a>
         </article>
     `;
-
 } else {
-
-    planCard.innerHTML = `
+  planCard.innerHTML = `
         <article>
             <h3>Plan actual</h3>
                 <p><strong>Premium</strong></p>
                 <p>Disfrutas de todas las funcionalidades.</p>
         </article>
     `;
-
 }
 
 inicializar();

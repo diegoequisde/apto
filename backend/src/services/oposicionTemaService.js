@@ -1,8 +1,8 @@
-const pool = require('../config/db');
+const pool = require("../config/db");
 
 const findTemasByOposicion = async (id_oposicion) => {
-
-    const [rows] = await pool.query(`
+  const [rows] = await pool.query(
+    `
         SELECT
             t.id_tema,
             t.nome_tema,
@@ -13,72 +13,55 @@ const findTemasByOposicion = async (id_oposicion) => {
         WHERE ot.id_oposicion = ?
         AND t.estado_tema = 'activo'
         ORDER BY t.nome_tema
-    `, [id_oposicion]);
+    `,
+    [id_oposicion],
+  );
 
-    return rows;
-
+  return rows;
 };
 
-const insertTemaToOposicion = async (
-    id_oposicion,
-    id_tema
-) => {
-
-    try {
-
-        const [result] = await pool.query(`
+const insertTemaToOposicion = async (id_oposicion, id_tema) => {
+  try {
+    const [result] = await pool.query(
+      `
             INSERT INTO oposicion_tema (
                 id_oposicion,
                 id_tema
             )
             VALUES (?, ?)
-        `, [
-            id_oposicion,
-            id_tema
-        ]);
+        `,
+      [id_oposicion, id_tema],
+    );
 
-        return result;
+    return result;
+  } catch (error) {
+    if (error.code === "ER_DUP_ENTRY") {
+      const err = new Error("El tema ya está asociado a esta oposición.");
 
-    } catch (error) {
+      err.status = 409;
 
-        if (error.code === 'ER_DUP_ENTRY') {
-
-            const err = new Error(
-                'El tema ya está asociado a esta oposición.'
-            );
-
-            err.status = 409;
-
-            throw err;
-
-        }
-
-        throw error;
-
+      throw err;
     }
 
+    throw error;
+  }
 };
 
-const deleteTemaFromOposicionById = async (
-    id_oposicion,
-    id_tema
-) => {
-
-    const [result] = await pool.query(`
+const deleteTemaFromOposicionById = async (id_oposicion, id_tema) => {
+  const [result] = await pool.query(
+    `
         DELETE FROM oposicion_tema
         WHERE id_oposicion = ?
         AND id_tema = ?
-    `, [
-        id_oposicion,
-        id_tema
-    ]);
+    `,
+    [id_oposicion, id_tema],
+  );
 
-    return result;
-
+  return result;
 };
 
 module.exports = {
-    findTemasByOposicion,
-    insertTemaToOposicion,
-    deleteTemaFromOposicionById
+  findTemasByOposicion,
+  insertTemaToOposicion,
+  deleteTemaFromOposicionById,
 };

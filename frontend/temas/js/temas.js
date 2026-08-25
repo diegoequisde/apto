@@ -2,29 +2,21 @@ requireLogin();
 
 const API = CONFIG.API;
 
-const temasList =
-    document.getElementById('temasList');
-
+const temasList = document.getElementById("temasList");
 
 async function cargarTemas() {
+  const response = await fetch(`${API}/temas`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 
-    const response = await fetch(
-        `${API}/temas`,
-        {
-            headers: {
-                Authorization: `Bearer ${getToken()}`
-            }
-        }
-    );
-    
-    const temas =
-        await response.json();
+  const temas = await response.json();
 
-    temasList.innerHTML = '';
+  temasList.innerHTML = "";
 
-    temas.forEach((tema) => {
-
-        temasList.innerHTML += `
+  temas.forEach((tema) => {
+    temasList.innerHTML += `
             <div>
 
                 <p>
@@ -60,89 +52,65 @@ async function cargarTemas() {
 
             </div>
         `;
-
-    });
-
+  });
 }
 
 function gestionarPreguntas(idTema) {
-
-    window.location.href =
-        `/preguntas/index.html?idTema=${idTema}`;
-
+  window.location.href = `/preguntas/index.html?idTema=${idTema}`;
 }
 
 function editarTema(idTema) {
-
-    window.location.href =
-        `./editar.html?id=${idTema}`;
-
+  window.location.href = `./editar.html?id=${idTema}`;
 }
 
 async function eliminarTema(id) {
+  if (!confirm("¿Eliminar tema?")) {
+    return;
+  }
 
-    if (
-        !confirm(
-            '¿Eliminar tema?'
-        )
-    ) {
-        return;
-    }
+  const response = await fetch(`${API}/temas/${id}`, {
+    method: "DELETE",
+  });
 
-    const response =
-        await fetch(
-            `${API}/temas/${id}`,
-            {
-                method: 'DELETE'
-            }
-        );
+  if (!response.ok) {
+    mostrarToast("No fue posible eliminar el tema.", "warning");
+    return;
+  }
 
-    if (!response.ok) {
-        mostrarToast('No fue posible eliminar el tema.', 'warning');
-        return;
-    }
-
-    cargarTemas();
-
+  cargarTemas();
 }
 
 async function irCrearTema() {
+  if (!puede("usuario")) {
+    return;
+  }
 
-    if (!puede('usuario')) {
-        return;
+  if (esFree()) {
+    const response = await fetch(`${API}/temas`, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
+
+    if (!response.ok) {
+      mostrarToast("No se han podido comprobar tus temas.", "warning");
+
+      return;
     }
 
-    if (esFree()) {
+    const temas = await response.json();
 
-        const response =
-            await fetch(
-                `${API}/temas`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${getToken()}`
-                    }
-                }
-            );
+    if (temas.length >= 1) {
+      mostrarToast(
+        "La cuenta gratuita permite crear un único tema. Actualiza a Premium para crear más temas.",
+        "warning",
+      );
 
-        if (!response.ok) {
-
-            mostrarToast('No se han podido comprobar tus temas.', 'warning');
-
-            return;
-        }
-
-        const temas =
-            await response.json();
-
-        if (temas.length >= 1) {
-
-            mostrarToast('La cuenta gratuita permite crear un único tema. Actualiza a Premium para crear más temas.', 'warning');
-
-            return;
-        }
+      return;
     }
+  }
 
-    window.location.href = 'crear.html';
+  window.location.href = "crear.html";
 }
 
 cargarTemas();

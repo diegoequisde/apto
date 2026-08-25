@@ -1,66 +1,52 @@
-const asyncHandler = require('../middlewares/asyncHandler');
+const asyncHandler = require("../middlewares/asyncHandler");
 
 const {
-    findTemasByOposicion,
-    insertTemaToOposicion,
-    deleteTemaFromOposicionById
-} = require('../services/oposicionTemaService');
+  findTemasByOposicion,
+  insertTemaToOposicion,
+  deleteTemaFromOposicionById,
+} = require("../services/oposicionTemaService");
 
-const getTemasByOposicion = asyncHandler (async (req, res) => {
+const getTemasByOposicion = asyncHandler(async (req, res) => {
+  const { id } = req.params;
 
-        const { id } = req.params;
+  const temas = await findTemasByOposicion(id);
 
-        const temas = await findTemasByOposicion(id);
-
-        res.json(temas);
-
+  res.json(temas);
 });
 
-const addTemaToOposicion = asyncHandler (async (req, res) => {
+const addTemaToOposicion = asyncHandler(async (req, res) => {
+  const { id } = req.params;
 
-        const { id } = req.params;
+  const { id_tema } = req.body;
 
-        const { id_tema } = req.body;
+  await insertTemaToOposicion(id, id_tema);
 
-        await insertTemaToOposicion(
-            id,
-            id_tema
-        );
-
-        res.status(201).json({
-            ok: true,
-            mensaje: 'Tema añadido a la oposición'
-        });
-
+  res.status(201).json({
+    ok: true,
+    mensaje: "Tema añadido a la oposición",
+  });
 });
 
-const deleteTemaFromOposicion = asyncHandler (async (req, res) => {
+const deleteTemaFromOposicion = asyncHandler(async (req, res) => {
+  const { id, idTema } = req.params;
 
-        const { id, idTema } = req.params;
+  const result = await deleteTemaFromOposicionById(id, idTema);
 
-        const result = await deleteTemaFromOposicionById(
-            id,
-            idTema
-        );
+  if (result.affectedRows === 0) {
+    return res.status(404).json({
+      ok: false,
+      mensaje: "Relación no encontrada",
+    });
+  }
 
-        if (result.affectedRows === 0) {
-
-            return res.status(404).json({
-                ok: false,
-                mensaje: 'Relación no encontrada'
-            });
-
-        }
-
-        res.json({
-            ok: true,
-            mensaje: 'Tema eliminado de la oposición'
-        });
-
+  res.json({
+    ok: true,
+    mensaje: "Tema eliminado de la oposición",
+  });
 });
 
 module.exports = {
-    getTemasByOposicion,
-    addTemaToOposicion,
-    deleteTemaFromOposicion
+  getTemasByOposicion,
+  addTemaToOposicion,
+  deleteTemaFromOposicion,
 };

@@ -1,8 +1,8 @@
-const pool = require('../config/db');
+const pool = require("../config/db");
 
 const findOpcionesByPregunta = async (id, usuario) => {
-
-    const [rows] = await pool.query(`
+  const [rows] = await pool.query(
+    `
        SELECT
             o.letra_opcion,
             o.texto,
@@ -13,21 +13,16 @@ const findOpcionesByPregunta = async (id, usuario) => {
         WHERE
             o.id_pregunta = ?
         AND p.id_usuario = ?
-    `, [id, usuario.id]);
+    `,
+    [id, usuario.id],
+  );
 
-    return rows;
-
+  return rows;
 };
- 
-const updateOpcionById = async (
-    id,
-    letra,
-    texto,
-    e_correcta,
-    usuario
-) => {
 
-    const [result] = await pool.query(`
+const updateOpcionById = async (id, letra, texto, e_correcta, usuario) => {
+  const [result] = await pool.query(
+    `
         UPDATE opcion o
         INNER JOIN pregunta p
             ON o.id_pregunta = p.id_pregunta
@@ -38,25 +33,16 @@ const updateOpcionById = async (
             o.id_pregunta = ?
         AND o.letra_opcion = ?
         AND p.id_usuario = ?
-    `, [
-        texto,
-        e_correcta,
-        id,
-        letra,
-        usuario.id
-    ]);
+    `,
+    [texto, e_correcta, id, letra, usuario.id],
+  );
 
-    return result;
-
+  return result;
 };
 
-const deleteOpcionById = async (
-    id,
-    letra,
-    usuario
-) => {
-
-    const [result] = await pool.query(`
+const deleteOpcionById = async (id, letra, usuario) => {
+  const [result] = await pool.query(
+    `
        DELETE o
         FROM opcion o
         INNER JOIN pregunta p
@@ -65,18 +51,15 @@ const deleteOpcionById = async (
             o.id_pregunta = ?
         AND o.letra_opcion = ?
         AND p.id_usuario = ?
-    `, [
-        id,
-        letra,
-        usuario.id
-    ]);
+    `,
+    [id, letra, usuario.id],
+  );
 
-    return result;
-
+  return result;
 };
 
 module.exports = {
-    findOpcionesByPregunta,
-    updateOpcionById,
-    deleteOpcionById
+  findOpcionesByPregunta,
+  updateOpcionById,
+  deleteOpcionById,
 };

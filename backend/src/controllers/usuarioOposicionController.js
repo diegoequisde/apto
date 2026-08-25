@@ -1,69 +1,55 @@
-const asyncHandler = require('../middlewares/asyncHandler');
+const asyncHandler = require("../middlewares/asyncHandler");
 
 const {
-    findOposicionesByUsuario,
-    insertOposicionToUsuario,
-    deleteOposicionFromUsuarioById
-} = require('../services/usuarioOposicionService');
+  findOposicionesByUsuario,
+  insertOposicionToUsuario,
+  deleteOposicionFromUsuarioById,
+} = require("../services/usuarioOposicionService");
 
 const getOposicionesByUsuario = asyncHandler(async (req, res) => {
+  const { id } = req.params;
 
-        const { id } = req.params;
+  const oposiciones = await findOposicionesByUsuario(id);
 
-        const oposiciones = await findOposicionesByUsuario(id);
-
-        res.json(oposiciones);
-
+  res.json(oposiciones);
 });
 
 const addOposicionToUsuario = asyncHandler(async (req, res) => {
+  const { id } = req.params;
 
-        const { id } = req.params;
+  const { id_oposicion } = req.body;
 
-        const { id_oposicion } = req.body;
+  await insertOposicionToUsuario(id, id_oposicion);
 
-        await insertOposicionToUsuario(
-            id,
-            id_oposicion
-        );
-
-        res.status(201).json({
-            ok: true,
-            mensaje: 'Oposición añadida al usuario'
-        });
-
+  res.status(201).json({
+    ok: true,
+    mensaje: "Oposición añadida al usuario",
+  });
 });
 
 const deleteOposicionFromUsuario = asyncHandler(async (req, res) => {
+  const { id, idOposicion } = req.params;
 
-        const { id, idOposicion } = req.params;
+  console.log("id:", id);
+  console.log("idOposicion:", idOposicion);
 
-        console.log('id:', id);
-    console.log('idOposicion:', idOposicion);
-    
-        const result = await deleteOposicionFromUsuarioById(
-            id,
-            idOposicion
-        );
+  const result = await deleteOposicionFromUsuarioById(id, idOposicion);
 
-        if (result.affectedRows === 0) {
+  if (result.affectedRows === 0) {
+    return res.status(404).json({
+      ok: false,
+      mensaje: "Relación no encontrada",
+    });
+  }
 
-            return res.status(404).json({
-                ok: false,
-                mensaje: 'Relación no encontrada'
-            });
-
-        }
-
-        res.json({
-            ok: true,
-            mensaje: 'Oposición eliminada del usuario'
-        });
-
+  res.json({
+    ok: true,
+    mensaje: "Oposición eliminada del usuario",
+  });
 });
 
 module.exports = {
-    getOposicionesByUsuario,
-    addOposicionToUsuario,
-    deleteOposicionFromUsuario
+  getOposicionesByUsuario,
+  addOposicionToUsuario,
+  deleteOposicionFromUsuario,
 };

@@ -1,78 +1,77 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>APTO | Perfil</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-<link rel="stylesheet" href="/css/styles.css">
+    <title>APTO | Perfil</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
 
-<!-- favicon--> 
-<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
+    <!-- favicon-->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
 
 </head>
 
 <body>
 
-<div id="navbar"></div>
+    <div id="navbar"></div>
 
-<main class="container">
+    <main class="container">
 
-    <section class="card">
+        <section class="card">
 
-        <h1>Mi perfil</h1>
+            <h1>Mi perfil</h1>
 
-        <h2>Datos personales</h2>
+            <h2>Datos personales</h2>
 
-        <p>
-            <strong>Alias:</strong>
-            <span id="nombreUsuario"></span>
-        </p>
+            <p>
+                <strong>Alias:</strong>
+                <span id="nombreUsuario"></span>
+            </p>
 
-        <p>
-            <strong>Email:</strong>
-            <span id="emailUsuario"></span>
-        </p>
+            <p>
+                <strong>Email:</strong>
+                <span id="emailUsuario"></span>
+            </p>
 
-        <p>
-            <strong>Tipo de cuenta:</strong>
-            <span id="tipoUsuario"></span>
-        </p>
+            <p>
+                <strong>Tipo de cuenta:</strong>
+                <span id="tipoUsuario"></span>
+            </p>
 
-    </section>
+        </section>
 
-    <br>
-    <section id="oposicionesCard" class="card" >
+        <br>
+        <section id="oposicionesCard" class="card">
 
-        <h2>Mis oposiciones</h2>
+            <h2>Mis oposiciones</h2>
 
-        <div id="oposicionesContainer"></div>
+            <div id="oposicionesContainer"></div>
 
-        <label>
-            Añadir oposición
-            <input
-                id="buscarOposicion"
-                type="search"
-                placeholder="Buscar oposición...">
-        </label>
-        
-        <div id="resultadosBusqueda"></div>
-    </section>
-    
-    <div id="planCard"></div>
+            <label>
+                Añadir oposición
+                <input id="buscarOposicion" type="search" placeholder="Buscar oposición...">
+            </label>
 
-</main>
+            <div id="resultadosBusqueda"></div>
+        </section>
 
-<div id="footer"></div>
+        <div id="planCard"></div>
 
-<script src="/js/config.js"></script>
-<script src="/auth/js/auth.js"></script>
-<script src="/js/loader.js"></script>
-<script src="./js/perfil.js"></script>
+    </main>
+
+    <div id="footer"></div>
+
+    <script src="/js/config.js"></script>
+    <script src="/auth/js/auth.js"></script>
+    <script src="/js/loader.js"></script>
+    <script src="./js/perfil.js"></script>
 
 </body>
+
 </html>

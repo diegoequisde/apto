@@ -1,68 +1,71 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>APTO | Editar oposición</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-<link rel="stylesheet" href="/css/styles.css">
+    <title>APTO | Editar oposición</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
 
-<!-- favicon--> 
-<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
+    <!-- favicon-->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
 
 </head>
+
 <body>
 
-<div id="navbar"></div>
+    <div id="navbar"></div>
 
-<main class="container">
+    <main class="container">
 
-    <section class = "page-header">
-        <h1>Editar oposición</h1>
-    </section>
-    
-    <section class="card">
+        <section class="page-header">
+            <h1>Editar oposición</h1>
+        </section>
 
-        <label>
-            Nombre
-            <input type="text" id="nombreOposicion">
-        </label>
+        <section class="card">
 
-        <label>
-            Descripción
-            <textarea id="descripcionOposicion" rows="5"></textarea>
-        </label>
+            <label>
+                Nombre
+                <input type="text" id="nombreOposicion">
+            </label>
 
-        <button id="guardarBtn">Guardar cambios</button>
+            <label>
+                Descripción
+                <textarea id="descripcionOposicion" rows="5"></textarea>
+            </label>
 
-    </section>
+            <button id="guardarBtn">Guardar cambios</button>
 
-    <section class="card">
+        </section>
 
-        <h2>Temas de la oposición</h2>
+        <section class="card">
 
-        <div id="temasOposicionContainer"></div>
+            <h2>Temas de la oposición</h2>
 
-        <label>Añadir tema
-            <select id="temaSelect"></select>
-        </label>
+            <div id="temasOposicionContainer"></div>
 
-        <button id="anadirTemaBtn">Añadir tema</button>
+            <label>Añadir tema
+                <select id="temaSelect"></select>
+            </label>
 
-    </section>
+            <button id="anadirTemaBtn">Añadir tema</button>
 
-</main>
+        </section>
 
-<div id="footer"></div>
+    </main>
 
-<script src="/js/config.js"></script>
-<script src="/auth/js/auth.js"></script>
-<script src="/js/loader.js"></script>
-<script src="./js/editar-oposicion.js"></script>
+    <div id="footer"></div>
+
+    <script src="/js/config.js"></script>
+    <script src="/auth/js/auth.js"></script>
+    <script src="/js/loader.js"></script>
+    <script src="./js/editar-oposicion.js"></script>
 
 </body>
+
 </html>

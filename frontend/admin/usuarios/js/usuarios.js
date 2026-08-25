@@ -2,31 +2,21 @@ requireAdmin();
 
 const API = CONFIG.API;
 
-const container =
-    document.getElementById(
-        'usuariosContainer'
-    );
+const container = document.getElementById("usuariosContainer");
 
 async function cargarUsuarios() {
+  const response = await fetch(`${API}/usuarios`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 
-    const response =
-        await fetch(
-            `${API}/usuarios`,
-            {
-                headers: {
-                    Authorization: `Bearer ${getToken()}`
-                }
-            }
-        );
+  const usuarios = await response.json();
 
-    const usuarios =
-        await response.json();
+  container.innerHTML = "";
 
-    container.innerHTML = '';
-
-    usuarios.forEach((usuario) => {
-
-        container.innerHTML += `
+  usuarios.forEach((usuario) => {
+    container.innerHTML += `
             <div>
                 <p>
                     <strong>Nombre:</strong>
@@ -63,38 +53,26 @@ async function cargarUsuarios() {
 
             </div>
         `;
-
-    });
-
+  });
 }
 
 function editarUsuario(id) {
-
-    window.location.href =
-        `editar.html?id=${id}`;
-
+  window.location.href = `editar.html?id=${id}`;
 }
 
 async function eliminarUsuario(id) {
+  if (!confirm("¿Eliminar usuario?")) {
+    return;
+  }
 
-    if (
-        !confirm('¿Eliminar usuario?')
-    ) {
-        return;
-    }
+  await fetch(`${API}/usuarios/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 
-    await fetch(
-        `${API}/usuarios/${id}`,
-        {
-            method: 'DELETE',
-            headers: {
-                Authorization: `Bearer ${getToken()}`
-            }
-        }
-    );
-
-    cargarUsuarios();
-
+  cargarUsuarios();
 }
 
 cargarUsuarios();

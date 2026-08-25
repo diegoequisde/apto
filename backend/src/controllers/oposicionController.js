@@ -1,120 +1,97 @@
-    const asyncHandler = require('../middlewares/asyncHandler');
-    
-    const {
-    findAllOposiciones,
-    findOposicionById,
-    insertOposicion,
-    updateOposicionById,
-    deleteOposicionById
-} = require('../services/oposicionService');
+const asyncHandler = require("../middlewares/asyncHandler");
 
-const getOposiciones = asyncHandler(async(req,res)=>{
+const {
+  findAllOposiciones,
+  findOposicionById,
+  insertOposicion,
+  updateOposicionById,
+  deleteOposicionById,
+} = require("../services/oposicionService");
 
-    const { search = '' } = req.query;
+const getOposiciones = asyncHandler(async (req, res) => {
+  const { search = "" } = req.query;
 
-    const oposiciones =
-    await findAllOposiciones(search);
+  const oposiciones = await findAllOposiciones(search);
 
-    res.json(oposiciones);
-
+  res.json(oposiciones);
 });
 
 const getOposicionById = asyncHandler(async (req, res) => {
+  const { id } = req.params;
 
-        const { id } = req.params;
+  const oposicion = await findOposicionById(id);
 
-        const oposicion = await findOposicionById(id);
+  if (!oposicion) {
+    return res.status(404).json({
+      ok: false,
+      mensaje: "Oposición no encontrada",
+    });
+  }
 
-        if (!oposicion) {
-
-            return res.status(404).json({
-                ok: false,
-                mensaje: 'Oposición no encontrada'
-            });
-
-        }
-
-        res.json(oposicion);
-
+  res.json(oposicion);
 });
 
 const createOposicion = asyncHandler(async (req, res) => {
+  const { nome_oposicion, descripcion_oposicion } = req.body;
 
-        const {
-            nome_oposicion,
-            descripcion_oposicion
-        } = req.body;
+  const id_oposicion = await insertOposicion(
+    nome_oposicion,
+    descripcion_oposicion,
+  );
 
-        const id_oposicion = await insertOposicion(
-            nome_oposicion,
-            descripcion_oposicion
-        );
-
-        res.status(201).json({
-            ok: true,
-            mensaje: 'Oposición creada correctamente',
-            id_oposicion
-        });
-
+  res.status(201).json({
+    ok: true,
+    mensaje: "Oposición creada correctamente",
+    id_oposicion,
+  });
 });
 
 const updateOposicion = asyncHandler(async (req, res) => {
+  const { id } = req.params;
 
-        const { id } = req.params;
+  const { nome_oposicion, descripcion_oposicion } = req.body;
 
-        const {
-            nome_oposicion,
-            descripcion_oposicion
-        } = req.body;
+  const result = await updateOposicionById(
+    id,
+    nome_oposicion,
+    descripcion_oposicion,
+  );
 
-        const result = await updateOposicionById(
-            id,
-            nome_oposicion,
-            descripcion_oposicion
-        );
+  if (result.affectedRows === 0) {
+    return res.status(404).json({
+      ok: false,
+      mensaje: "Oposición no encontrada",
+    });
+  }
 
-        if (result.affectedRows === 0) {
-
-            return res.status(404).json({
-                ok: false,
-                mensaje: 'Oposición no encontrada'
-            });
-
-        }
-
-        res.json({
-            ok: true,
-            mensaje: 'Oposición actualizada correctamente'
-        });
-
+  res.json({
+    ok: true,
+    mensaje: "Oposición actualizada correctamente",
+  });
 });
 
 const deleteOposicion = asyncHandler(async (req, res) => {
+  const { id } = req.params;
 
-        const { id } = req.params;
+  const result = await deleteOposicionById(id);
 
-        const result = await deleteOposicionById(id);
+  if (result.affectedRows === 0) {
+    return res.status(404).json({
+      ok: false,
+      mensaje: "Oposición no encontrada",
+    });
+  }
 
-        if (result.affectedRows === 0) {
-
-            return res.status(404).json({
-                ok: false,
-                mensaje: 'Oposición no encontrada'
-            });
-
-        }
-
-        res.json({
-            ok: true,
-            mensaje: 'Oposición eliminada correctamente'
-        });
-
+  res.json({
+    ok: true,
+    mensaje: "Oposición eliminada correctamente",
+  });
 });
 
 module.exports = {
-    getOposiciones,
-    getOposicionById,
-    createOposicion,
-    updateOposicion,
-    deleteOposicion
+  getOposiciones,
+  getOposicionById,
+  createOposicion,
+  updateOposicion,
+  deleteOposicion,
 };

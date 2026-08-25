@@ -1,35 +1,30 @@
-const express = require('express');
+const express = require("express");
 
-const validateRequiredFields = require('../middlewares/validateRequiredFields');
+const validateRequiredFields = require("../middlewares/validateRequiredFields");
 
 const router = express.Router({ mergeParams: true });
 
 const {
-    getPreguntasByTest,
-    addPreguntaToTest,
-    answerPreguntaTest,
-    deletePreguntaFromTest
-} = require('../controllers/preguntaTestController');
+  getPreguntasByTest,
+  addPreguntaToTest,
+  answerPreguntaTest,
+  deletePreguntaFromTest,
+} = require("../controllers/preguntaTestController");
 
-router.get('/', getPreguntasByTest);
+router.get("/", getPreguntasByTest);
 
 router.post(
-    '/',
-    validateRequiredFields([
-        'id_pregunta',
-        'orde'
-    ]),
-    addPreguntaToTest
+  "/",
+  validateRequiredFields(["id_pregunta", "orde"]),
+  addPreguntaToTest,
 );
 
 router.put(
-    '/:idPregunta/resposta',
-    validateRequiredFields([
-        'resposta_usuario'
-    ]),
-    answerPreguntaTest
+  "/:idPregunta/resposta",
+  validateRequiredFields(["resposta_usuario"]),
+  answerPreguntaTest,
 );
 
-router.delete('/:idPregunta', deletePreguntaFromTest);
+router.delete("/:idPregunta", deletePreguntaFromTest);
 
 module.exports = router;

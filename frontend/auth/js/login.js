@@ -1,58 +1,42 @@
 const API = CONFIG.API;
 
-document
-    .getElementById('loginForm')
-    .addEventListener(
-        'submit',
-        async (e) => {
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-            e.preventDefault();
+  const email = document.getElementById("email").value.trim();
 
-            const email = document.getElementById('email').value.trim();
+  const password = document.getElementById("password").value;
 
-            const password = document.getElementById('password').value;
+  const response = await fetch(`${API}/usuarios/login`, {
+    method: "POST",
 
-            const response =
-                await fetch(
-                    `${API}/usuarios/login`,
-                    {
+    headers: {
+      "Content-Type": "application/json",
+    },
 
-                        method: 'POST',
+    body: JSON.stringify({
+      email,
+      password,
+    }),
+  });
 
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
+  const data = await response.json();
 
-                        body: JSON.stringify({
-                            email,
-                            password
-                        })
+  if (!response.ok) {
+    mostrarToast(data.mensaje, "error");
+    return;
+  }
 
-                    }
-                );
+  guardarSesion(
+    {
+      id: data.usuario.id_usuario,
+      nome: data.usuario.nome,
+      email: data.usuario.email,
+      tipo: data.usuario.tipo,
+    },
 
-            const data =
-                await response.json();
+    data.token,
+  );
 
-            if (!response.ok) {
-
-                mostrarToast(data.mensaje, 'error');
-                return;
-
-            }
-
-            guardarSesion(
-            {
-                id: data.usuario.id_usuario,
-                nome: data.usuario.nome,
-                email: data.usuario.email,
-                tipo: data.usuario.tipo
-            },
-
-            data.token
-
-        );
-
-        window.location.href = '/';
-
-        });
+  window.location.href = "/";
+});

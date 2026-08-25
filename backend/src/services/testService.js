@@ -1,8 +1,7 @@
-const pool = require('../config/db');
+const pool = require("../config/db");
 
 const findAllTests = async () => {
-
-    const [rows] = await pool.query(`
+  const [rows] = await pool.query(`
         SELECT
             id_test,
             id_usuario,
@@ -13,17 +12,13 @@ const findAllTests = async () => {
         FROM test
     `);
 
-    return rows;
-
+  return rows;
 };
 
-
 // historial de tests del usuario
-const findTestsByUsuario = async (
-    id_usuario
-) => {
-
-    const [rows] = await pool.query(`
+const findTestsByUsuario = async (id_usuario) => {
+  const [rows] = await pool.query(
+    `
         SELECT
             id_test,
             data_realizacion,
@@ -35,18 +30,16 @@ const findTestsByUsuario = async (
         AND finalizado = 1
         ORDER BY data_realizacion DESC
 
-    `,[id_usuario]);
+    `,
+    [id_usuario],
+  );
 
-
-    return rows;
-
+  return rows;
 };
 
-const findResultadoTest = async (
-    id_test, id_usuario
-) => {
-
-   const [rows] = await pool.query(`
+const findResultadoTest = async (id_test, id_usuario) => {
+  const [rows] = await pool.query(
+    `
         SELECT
             COUNT(*) AS total,
             SUM(pt.e_correcta) AS aciertos,
@@ -56,29 +49,26 @@ const findResultadoTest = async (
             ON pt.id_test = t.id_test
         WHERE pt.id_test = ?
         AND t.id_usuario = ?
-    `, [id_test, id_usuario]);
+    `,
+    [id_test, id_usuario],
+  );
 
-    const total = rows[0].total;
-    const aciertos = rows[0].aciertos || 0;
-    const duracion = rows[0].duracion || 0;
+  const total = rows[0].total;
+  const aciertos = rows[0].aciertos || 0;
+  const duracion = rows[0].duracion || 0;
 
-    return {
-        total,
-        aciertos,
-        errores: total - aciertos,
-        nota: Math.round((aciertos / total) * 100),
-        duracion
-    };
-
+  return {
+    total,
+    aciertos,
+    errores: total - aciertos,
+    nota: Math.round((aciertos / total) * 100),
+    duracion,
+  };
 };
 
-
-const findTestById = async (
-    id,
-    id_usuario
-) => {
-
-    const [rows] = await pool.query(`
+const findTestById = async (id, id_usuario) => {
+  const [rows] = await pool.query(
+    `
         SELECT
             id_test,
             id_usuario,
@@ -90,56 +80,50 @@ const findTestById = async (
         FROM test
         WHERE id_test = ?
         AND id_usuario = ?
-    `, [
-        id,
-        id_usuario
-    ]);
+    `,
+    [id, id_usuario],
+  );
 
-    return rows[0] || null;
-
+  return rows[0] || null;
 };
 
 const findTestOwner = async (id) => {
-
-    const [rows] = await pool.query(`
+  const [rows] = await pool.query(
+    `
         SELECT id_usuario
         FROM test
         WHERE id_test = ?
-    `, [id]);
+    `,
+    [id],
+  );
 
-    return rows[0] || null;
+  return rows[0] || null;
 };
 
-
-const insertTest = async (
-    id_usuario,
-    duracionLimite
-) => {
-
-    const [result] = await pool.query(`
+const insertTest = async (id_usuario, duracionLimite) => {
+  const [result] = await pool.query(
+    `
         INSERT INTO test (
             id_usuario,
             duracion_limite
         )
         VALUES (?, ?)
-    `, [
-        id_usuario,
-        duracionLimite
-    ]);
+    `,
+    [id_usuario, duracionLimite],
+  );
 
-    return result.insertId;
-
+  return result.insertId;
 };
 
 const updateTestById = async (
-    id,
-    id_usuario,
-    duracion,
-    resultado,
-    finalizado
+  id,
+  id_usuario,
+  duracion,
+  resultado,
+  finalizado,
 ) => {
-
-    const [result] = await pool.query(`
+  const [result] = await pool.query(
+    `
         UPDATE test
         SET
             duracion = ?,
@@ -147,68 +131,49 @@ const updateTestById = async (
             finalizado = ?
         WHERE id_test = ?
         AND id_usuario = ?
-    `, [
-        duracion,
-        resultado,
-        finalizado,
-        id,
-        id_usuario
-    ]);
+    `,
+    [duracion, resultado, finalizado, id, id_usuario],
+  );
 
-    if (result.affectedRows === 0) {
+  if (result.affectedRows === 0) {
+    const error = new Error("Test no encontrado.");
 
-        const error = new Error(
-            'Test no encontrado.'
-        );
+    error.status = 404;
 
-        error.status = 404;
+    throw error;
+  }
 
-        throw error;
-
-    }
-
-    return result;
-
+  return result;
 };
 
-const deleteTestById = async (
-    id,
-    id_usuario
-) => {
-
-    const [result] = await pool.query(`
+const deleteTestById = async (id, id_usuario) => {
+  const [result] = await pool.query(
+    `
         DELETE FROM test
         WHERE id_test = ?
         AND id_usuario = ?
-    `, [
-        id,
-        id_usuario
-    ]);
+    `,
+    [id, id_usuario],
+  );
 
-    if (result.affectedRows === 0) {
+  if (result.affectedRows === 0) {
+    const error = new Error("Test no encontrado.");
 
-        const error = new Error(
-            'Test no encontrado.'
-        );
+    error.status = 404;
 
-        error.status = 404;
+    throw error;
+  }
 
-        throw error;
-
-    }
-
-    return result;
-
+  return result;
 };
 
-
 module.exports = {
-    findAllTests,
-    findTestsByUsuario,
-    findResultadoTest,
-    findTestById,
-    findTestOwner,
-    insertTest,
-    updateTestById,
-    deleteTestById
+  findAllTests,
+  findTestsByUsuario,
+  findResultadoTest,
+  findTestById,
+  findTestOwner,
+  insertTest,
+  updateTestById,
+  deleteTestById,
 };

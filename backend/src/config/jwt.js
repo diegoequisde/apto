@@ -1,13 +1,11 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
-const JWT_SECRET =
-process.env.JWT_SECRET ||
-'apto-secret-dev';
+const JWT_SECRET = process.env.JWT_SECRET || "apto-secret-dev";
 
-const JWT_EXPIRES = '7d';
+const JWT_EXPIRES = "7d";
 
 module.exports = {
-    jwt,
-    JWT_SECRET,
-    JWT_EXPIRES
+  jwt,
+  JWT_SECRET,
+  JWT_EXPIRES,
 };

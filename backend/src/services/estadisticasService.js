@@ -1,33 +1,24 @@
-const pool = require('../config/db');
+const pool = require("../config/db");
 
+const obtenerEstadisticas = async (id_usuario, periodo = "total") => {
+  let filtroFecha = "";
 
-const obtenerEstadisticas = async (
-id_usuario,
-periodo = 'total'
-)=>{
+  if (periodo === "1") {
+    filtroFecha = "AND DATE(t.data_realizacion) = CURDATE()";
+  }
 
-    let filtroFecha = '';
-
-if(periodo === '1'){
+  if (periodo === "7") {
     filtroFecha =
-    'AND DATE(t.data_realizacion) = CURDATE()';
-}
+      "AND t.data_realizacion >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)";
+  }
 
-
-if(periodo === '7'){
+  if (periodo === "30") {
     filtroFecha =
-    'AND t.data_realizacion >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)';
-}
+      "AND t.data_realizacion >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)";
+  }
 
-
-if(periodo === '30'){
-    filtroFecha =
-    'AND t.data_realizacion >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)';
-
-}
-
-const [[resumen]] =
-    await pool.query(`
+  const [[resumen]] = await pool.query(
+    `
 
     SELECT
 
@@ -47,11 +38,11 @@ const [[resumen]] =
     AND t.finalizado = 1
     ${filtroFecha} 
     `,
-    [id_usuario]);
+    [id_usuario],
+  );
 
-
-const [evolucion] =
-    await pool.query(`
+  const [evolucion] = await pool.query(
+    `
 
     SELECT
     DATE(data_realizacion) AS dia,
@@ -68,11 +59,11 @@ const [evolucion] =
 
 
 `,
-[id_usuario]);
+    [id_usuario],
+  );
 
-
-const [temas] =
-await pool.query(`
+  const [temas] = await pool.query(
+    `
 
 
 SELECT te.nome_tema,
@@ -90,10 +81,11 @@ AND t.finalizado = 1
 ${filtroFecha}
 GROUP BY te.id_tema
 `,
-[id_usuario]);
+    [id_usuario],
+  );
 
-const [diasEstudio] =
-await pool.query(`
+  const [diasEstudio] = await pool.query(
+    `
 
 SELECT DISTINCT DATE(data_realizacion) AS dia
 FROM test
@@ -101,69 +93,48 @@ WHERE id_usuario = ?
 AND finalizado = 1
 ORDER BY dia DESC
 `,
-[id_usuario]);
+    [id_usuario],
+  );
 
-
-function calcularRacha(dias){
-
-    if(dias.length === 0){
-        return 0;
+  function calcularRacha(dias) {
+    if (dias.length === 0) {
+      return 0;
     }
 
     let racha = 1;
 
-    for(
-        let i = 0;
-        i < dias.length - 1;
-        i++
-    ){
+    for (let i = 0; i < dias.length - 1; i++) {
+      const actual = new Date(dias[i].dia);
 
-        const actual =
-        new Date(dias[i].dia);
+      const anterior = new Date(dias[i + 1].dia);
 
-        const anterior =
-        new Date(dias[i+1].dia);
+      const diferencia = (actual - anterior) / (1000 * 60 * 60 * 24);
 
-        const diferencia =
-        (actual - anterior) /
-        (1000 * 60 * 60 * 24);
-
-        if(diferencia === 1){
-            racha++;
-        }
-        else{
-            break;
-        }
-
+      if (diferencia === 1) {
+        racha++;
+      } else {
+        break;
+      }
     }
 
     return racha;
+  }
 
-}
+  const racha = calcularRacha(diasEstudio);
 
-
-const racha =
-calcularRacha(
-    diasEstudio
-);
-
-
-return {
-    resumen:{
-        tests: resumen.tests,
-        preguntas: resumen.preguntas,
-        acierto: resumen.acierto,
-        tiempo: resumen.tiempo ?? 0,
-        racha
+  return {
+    resumen: {
+      tests: resumen.tests,
+      preguntas: resumen.preguntas,
+      acierto: resumen.acierto,
+      tiempo: resumen.tiempo ?? 0,
+      racha,
     },
     evolucion,
-    temas
+    temas,
+  };
 };
-
-};
-
-
 
 module.exports = {
-    obtenerEstadisticas
+  obtenerEstadisticas,
 };

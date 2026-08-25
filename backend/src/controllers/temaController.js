@@ -1,135 +1,104 @@
-const asyncHandler = require('../middlewares/asyncHandler');
+const asyncHandler = require("../middlewares/asyncHandler");
 
 const {
-    findAllTemas,
-    findTemaById,
-    insertTema,
-    updateTemaById,
-    deleteTemaById,
-    contarTemasUsuario
-} = require('../services/temaService');
+  findAllTemas,
+  findTemaById,
+  insertTema,
+  updateTemaById,
+  deleteTemaById,
+  contarTemasUsuario,
+} = require("../services/temaService");
 
 const getTemas = asyncHandler(async (req, res) => {
+  const temas = await findAllTemas(req.usuario);
 
-    const temas = await findAllTemas(req.usuario);
-
-    res.json(temas);
-
+  res.json(temas);
 });
 
 const getTemaById = asyncHandler(async (req, res) => {
+  const { id } = req.params;
 
-    const { id } = req.params;
+  const tema = await findTemaById(id, req.usuario);
 
-    const tema = await findTemaById(id, req.usuario);
+  if (!tema) {
+    return res.status(404).json({
+      ok: false,
+      mensaje: "Tema no encontrado",
+    });
+  }
 
-    if (!tema) {
+  res.json(tema);
+});
 
-        return res.status(404).json({
-            ok: false,
-            mensaje: 'Tema no encontrado'
-        });
+const createTema = asyncHandler(async (req, res) => {
+  const { nome_tema, descripcion_tema } = req.body;
 
+  if (req.usuario.tipo === "free") {
+    const total = await contarTemasUsuario(req.usuario.id);
+
+    if (total >= 1) {
+      return res.status(403).json({
+        mensaje:
+          "La cuenta gratuíta permite crear un único tema. Actualiza a Premium para crear más temas.",
+      });
     }
+  }
+  const id_tema = await insertTema(nome_tema, descripcion_tema, req.usuario.id);
 
-    res.json(tema);
-
+  res.status(201).json({
+    ok: true,
+    mensaje: "Tema creado correctamente",
+    id_tema,
+  });
 });
 
-const createTema = asyncHandler (async (req, res) => {
+const updateTema = asyncHandler(async (req, res) => {
+  const { id } = req.params;
 
-        const {
-            nome_tema,
-            descripcion_tema
-        } = req.body;
+  const { nome_tema, descripcion_tema } = req.body;
 
-        if(req.usuario.tipo === 'free'){
+  const result = await updateTemaById(
+    id,
+    nome_tema,
+    descripcion_tema,
+    req.usuario,
+  );
 
-        const total = await contarTemasUsuario(req.usuario.id);
+  if (result.affectedRows === 0) {
+    return res.status(404).json({
+      ok: false,
+      mensaje: "Tema no encontrado",
+    });
+  }
 
-        if(total >= 1){
-            return res.status(403).json({
-                mensaje: 'La cuenta gratuíta permite crear un único tema. Actualiza a Premium para crear más temas.'
-            });
-        }
-
-        }
-        const id_tema = await insertTema(
-            nome_tema,
-            descripcion_tema,
-            req.usuario.id
-        );
-
-        res.status(201).json({
-            ok: true,
-            mensaje: 'Tema creado correctamente',
-            id_tema
-        });
-
-});
-
-const updateTema = asyncHandler (async(req, res) => {
-
-        const { id } = req.params;
-
-        const {
-            nome_tema,
-            descripcion_tema
-        } = req.body;
-
-        const result =
-            await updateTemaById(
-                id,
-                nome_tema,
-                descripcion_tema,
-                req.usuario
-            );
-
-        if (result.affectedRows === 0) {
-
-            return res.status(404).json({
-                ok: false,
-                mensaje: 'Tema no encontrado'
-            });
-
-        }
-
-        res.json({
-            ok: true,
-            mensaje: 'Tema actualizado correctamente'
-        });
-
+  res.json({
+    ok: true,
+    mensaje: "Tema actualizado correctamente",
+  });
 });
 
 const deleteTema = asyncHandler(async (req, res) => {
+  const { id } = req.params;
 
-    const { id } = req.params;
+  const result = await deleteTemaById(id, req.usuario);
 
-    const result = await deleteTemaById(
-            id,
-            req.usuario
-        );
-
-    if (result.affectedRows === 0) {
-
-        return res.status(404).json({
-            ok: false,
-            mensaje: 'Tema no encontrado'
-        });
-
-    }
-
-    res.json({
-        ok: true,
-        mensaje: 'Tema eliminado correctamente'
+  if (result.affectedRows === 0) {
+    return res.status(404).json({
+      ok: false,
+      mensaje: "Tema no encontrado",
     });
+  }
 
+  res.json({
+    ok: true,
+    mensaje: "Tema eliminado correctamente",
+  });
 });
 
 module.exports = {
-    getTemas,
-    getTemaById,
-    createTema,
-    updateTema,
-    deleteTema
+  getTemas,
+  getTemaById,
+  createTema,
+  updateTema,
+  deleteTema,
 };

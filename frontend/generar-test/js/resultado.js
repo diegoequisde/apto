@@ -2,98 +2,50 @@ requireLogin();
 
 const API = CONFIG.API;
 
-const params =
-new URLSearchParams(
-window.location.search
-);
+const params = new URLSearchParams(window.location.search);
 
-const idTest =
-params.get('idTest');
+const idTest = params.get("idTest");
 
+async function cargarResultado() {
+  const response = await fetch(`${API}/tests/${idTest}/resultado`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 
-async function cargarResultado(){
+  const resultado = await response.json();
 
-const response =
-    await fetch(
-    `${API}/tests/${idTest}/resultado`,
-    {
-        headers:{
-            Authorization:`Bearer ${getToken()}`
-        }
-    }
-    );
+  document.getElementById("aciertos").textContent = resultado.aciertos;
 
-const resultado =
-await response.json();
+  document.getElementById("errores").textContent = resultado.errores;
 
-document
-.getElementById(
-'aciertos'
-)
-.textContent =
-resultado.aciertos;
+  document.getElementById("nota").textContent = `${resultado.nota}%`;
 
-document
-.getElementById(
-'errores'
-)
-.textContent =
-resultado.errores;
+  document.getElementById("totalPreguntas").textContent = resultado.total;
 
-
-document
-.getElementById(
-'nota'
-)
-.textContent =
-`${resultado.nota}%`;
-
-
-
-document
-.getElementById(
-'totalPreguntas'
-)
-.textContent =
-resultado.total;
-
-document
-.getElementById('tiempo')
-.textContent =
-formatearTiempo(resultado.duracion);
+  document.getElementById("tiempo").textContent = formatearTiempo(
+    resultado.duracion,
+  );
 }
 
-document
-.getElementById(
-'revisionBtn'
-)
-.href =`revision.html?idTest=${idTest}`;
+document.getElementById("revisionBtn").href = `revision.html?idTest=${idTest}`;
 
+function formatearTiempo(segundos) {
+  if (!segundos) {
+    return "0 min";
+  }
 
-function formatearTiempo(segundos){
+  const horas = Math.floor(segundos / 3600);
 
-    if(!segundos){
-        return '0 min';
-    }
+  const minutos = Math.floor((segundos % 3600) / 60);
 
-    const horas =
-    Math.floor(segundos / 3600);
+  const segundosRestantes = segundos % 60;
 
-    const minutos =
-    Math.floor((segundos % 3600) / 60);
+  if (horas > 0) {
+    return `${horas} h ${minutos} min ${segundosRestantes} s`;
+  }
 
-    const segundosRestantes =
-    segundos % 60;
-
-    if(horas > 0){
-
-        return `${horas} h ${minutos} min ${segundosRestantes} s`;
-
-    }
-
-    return `${minutos} min ${segundosRestantes} s`;
-
+  return `${minutos} min ${segundosRestantes} s`;
 }
-
 
 cargarResultado();

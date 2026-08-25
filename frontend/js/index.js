@@ -1,56 +1,40 @@
 const API = CONFIG.API;
 
-const buscador = document.getElementById('buscarOposicion');
+const buscador = document.getElementById("buscarOposicion");
 
-const resultados = document.getElementById('resultadosBusqueda');
+const resultados = document.getElementById("resultadosBusqueda");
 
-buscador.addEventListener(
-    'input',
-    buscarOposiciones
-);
+buscador.addEventListener("input", buscarOposiciones);
 
-const btnPremium = document.getElementById('btnPremium');
+const btnPremium = document.getElementById("btnPremium");
 
-if (
-    btnPremium &&
-    estaLogueado() &&
-    !esFree()
-) {
-    btnPremium.remove();
+if (btnPremium && estaLogueado() && !esFree()) {
+  btnPremium.remove();
 }
 
-async function buscarOposiciones(){
+async function buscarOposiciones() {
+  const texto = buscador.value.trim();
 
-    const texto =
-    buscador.value.trim();
+  if (texto.length < 2) {
+    resultados.innerHTML = "";
 
-    if(texto.length < 2){
+    return;
+  }
 
-        resultados.innerHTML='';
+  const response = await fetch(
+    `${API}/oposiciones?search=${encodeURIComponent(texto)}`,
+  );
 
-        return;
+  const oposiciones = await response.json();
 
-    }
-
-    const response =
-    await fetch(
-        `${API}/oposiciones?search=${encodeURIComponent(texto)}`
-    );
-
-    const oposiciones =
-    await response.json();
-
-    pintarResultados(oposiciones);
-
+  pintarResultados(oposiciones);
 }
 
-function pintarResultados(lista){
+function pintarResultados(lista) {
+  resultados.innerHTML = "";
 
-    resultados.innerHTML='';
-
-    lista.forEach(oposicion=>{
-
-        resultados.innerHTML += `
+  lista.forEach((oposicion) => {
+    resultados.innerHTML += `
             <article
                 class="resultado-oposicion"
                 data-id="${oposicion.id_oposicion}"
@@ -58,22 +42,16 @@ function pintarResultados(lista){
                 ${oposicion.nome_oposicion}
             </article>
         `;
-
-    });
-
+  });
 }
 
-document
-.getElementById('resultadosBusqueda')
-.addEventListener('click',e=>{
+document.getElementById("resultadosBusqueda").addEventListener("click", (e) => {
+  const tarjeta = e.target.closest(".resultado-oposicion");
 
-    const tarjeta =
-    e.target.closest('.resultado-oposicion');
+  if (!tarjeta) return;
 
-    if(!tarjeta)return;
+  buscador.value = "";
+  resultados.innerHTML = "";
 
-    buscador.value = '';
-    resultados.innerHTML = '';
-
-    window.location.href =`/oposiciones/detalle.html?id=${tarjeta.dataset.id}`;
+  window.location.href = `/oposiciones/detalle.html?id=${tarjeta.dataset.id}`;
 });

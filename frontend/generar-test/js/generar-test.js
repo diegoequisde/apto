@@ -2,159 +2,114 @@ requireLogin();
 
 const API = CONFIG.API;
 
-const oposicionSelect = document.getElementById('oposicion');
-const temaSelect = document.getElementById('tema');
-const bloqueTemas = document.getElementById('bloqueTemas');
-const listaTemas = document.getElementById('listaTemas');
+const oposicionSelect = document.getElementById("oposicion");
+const temaSelect = document.getElementById("tema");
+const bloqueTemas = document.getElementById("bloqueTemas");
+const listaTemas = document.getElementById("listaTemas");
 const usuarioActual = getUsuarioActual();
 let temasSeleccionados = [];
 
 // evitar que se escriba algo que no sean numeros
-const cantidadTema = document.getElementById('cantidadTema');
+const cantidadTema = document.getElementById("cantidadTema");
 
-cantidadTema.addEventListener('input', () => {
-
-    cantidadTema.value =
-        cantidadTema.value.replace(/\D/g, '');
-
+cantidadTema.addEventListener("input", () => {
+  cantidadTema.value = cantidadTema.value.replace(/\D/g, "");
 });
 
 //evitar que quede el campo vacío
-cantidadTema.addEventListener('blur', () => {
-
-    if (
-        cantidadTema.value === '' ||
-        Number(cantidadTema.value) < 1
-    ) {
-        cantidadTema.value = 1;
-    }
+cantidadTema.addEventListener("blur", () => {
+  if (cantidadTema.value === "" || Number(cantidadTema.value) < 1) {
+    cantidadTema.value = 1;
+  }
 });
 
-async function cargarOposiciones(){
+async function cargarOposiciones() {
+  const response = await fetch(`${API}/oposiciones`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 
-const response =
-    await fetch(
-        `${API}/oposiciones`,
-        {
-            headers:{
-                Authorization:`Bearer ${getToken()}`
-            }
-        }
-    );
+  const oposiciones = await response.json();
 
-const oposiciones =
-await response.json();
+  oposicionSelect.innerHTML = `<option value="">Selecciona oposición</option>`;
 
-
-oposicionSelect.innerHTML =
-`<option value="">Selecciona oposición</option>`;
-
-oposiciones.forEach(
-oposicion=>{
-
-oposicionSelect.innerHTML += `
+  oposiciones.forEach((oposicion) => {
+    oposicionSelect.innerHTML += `
 <option value="${oposicion.id_oposicion}">${oposicion.nome_oposicion}
 </option>
 `;
-
-});
-
+  });
 }
 
-async function cargarTemas(idOposicion){
+async function cargarTemas(idOposicion) {
+  const response = await fetch(`${API}/oposiciones/${idOposicion}/temas`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 
-    const response =
-        await fetch(
-            `${API}/oposiciones/${idOposicion}/temas`,
-            {
-                headers:{
-                    Authorization:`Bearer ${getToken()}`
-                }
-            }
-        );
+  const temas = await response.json();
 
-    const temas =
-    await response.json();
+  temaSelect.innerHTML = "";
 
-    temaSelect.innerHTML='';
-
-    temas.forEach(tema=>{
-
-        temaSelect.innerHTML += `
+  temas.forEach((tema) => {
+    temaSelect.innerHTML += `
             <option value="${tema.id_tema}">
                 ${tema.nome_tema}
             </option>
         `;
-
-    });
-
+  });
 }
 
-function anadirTema(){
+function anadirTema() {
+  const idTema = temaSelect.value;
 
-    const idTema =
-    temaSelect.value;
+  if (!idTema) return;
 
-    if(!idTema)return;
+  const nombreTema = temaSelect.options[temaSelect.selectedIndex].text;
 
-    const nombreTema =
-    temaSelect.options[
-        temaSelect.selectedIndex
-    ].text;
+  const cantidad = Number(document.getElementById("cantidadTema").value);
 
-    const cantidad =
-    Number(
-        document.getElementById(
-            'cantidadTema'
-        ).value
-    );
+  const existente = temasSeleccionados.find((tema) => tema.id_tema == idTema);
 
-    const existente =
-    temasSeleccionados.find(
-        tema=>tema.id_tema==idTema
-    );
+  if (existente) {
+    mostrarToast("Ese tema ya fue añadido.", "warning");
+    return;
+  }
 
-    if(existente){
-        mostrarToast('Ese tema ya fue añadido.', 'warning');
-        return;
-    }
+  temasSeleccionados.push({
+    id_tema: idTema,
+    nome: nombreTema,
+    cantidad,
+  });
 
-    temasSeleccionados.push({
-        id_tema:idTema,
-        nome:nombreTema,
-        cantidad
-    });
-
-    pintarListaTemas();
-
+  pintarListaTemas();
 }
 
 function pintarListaTemas() {
+  if (temasSeleccionados.length === 0) {
+    bloqueTemas.style.display = "none";
+    return;
+  }
 
-    if (temasSeleccionados.length === 0) {
-        bloqueTemas.style.display = 'none';
-        return;
-    }
+  bloqueTemas.style.display = "";
 
-    bloqueTemas.style.display = '';
+  document.getElementById("tituloTemas").textContent =
+    `Temas seleccionados (${temasSeleccionados.length})`;
 
-    document.getElementById('tituloTemas').textContent =
-        `Temas seleccionados (${temasSeleccionados.length})`;
+  const total = temasSeleccionados.reduce(
+    (suma, tema) => suma + tema.cantidad,
+    0,
+  );
 
-    const total =
-        temasSeleccionados.reduce(
-            (suma, tema) => suma + tema.cantidad,
-            0
-        );
+  document.getElementById("totalPreguntas").textContent =
+    `Total de preguntas: ${total}`;
 
-    document.getElementById('totalPreguntas').textContent =
-        `Total de preguntas: ${total}`;
+  listaTemas.innerHTML = "";
 
-    listaTemas.innerHTML = '';
-
-    temasSeleccionados.forEach((tema, index) => {
-
-        listaTemas.innerHTML += `
+  temasSeleccionados.forEach((tema, index) => {
+    listaTemas.innerHTML += `
             <div class="tema-seleccionado">
 
                 <span>
@@ -168,206 +123,143 @@ function pintarListaTemas() {
 
             </div>
         `;
-
-    });
-
+  });
 }
 
-window.eliminarTema = function(index){
-    temasSeleccionados.splice(index,1);
-    pintarListaTemas();
-}
+window.eliminarTema = function (index) {
+  temasSeleccionados.splice(index, 1);
+  pintarListaTemas();
+};
 
-document
-.getElementById('generarBtn')
-.addEventListener(
-    'click',
-    () => {
-
-        generarTest();
-
-    }
-);
-
-async function generarTest(){ 
-    let temas = [...temasSeleccionados];
-
-    // Si el usuario no ha añadido ningún tema,
-    // usar el que tiene seleccionado actualmente.
-    if (temas.length === 0) {
-
-        if (!temaSelect.value) {
-            mostrarToast('Selecciona un tema.', 'warning');
-            return;
-        }
-
-        temas.push({
-            id_tema: temaSelect.value,
-            nome: temaSelect.options[temaSelect.selectedIndex].text,
-            cantidad: Number(cantidadTema.value)
-        });
-
-    }
-
-    const duracionSeleccionada =
-    document.getElementById('duracion').value;
-
-    const duracion =
-        duracionSeleccionada === ''
-            ? null
-            : Number(duracionSeleccionada);
-
-    const response = await fetch(`${API}/tests`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${getToken()}`
-        },
-        body: JSON.stringify({
-            temas,
-            duracion: duracion === ''
-                ? null
-                : Number(duracion)
-        })
-    });
-
-    const data =
-    await response.json();
-
-    if(!response.ok){
-        mostrarToast(data.mensaje, 'error');
-        return;
-    }
-
-    window.location.href =`/generar-test/test.html?idTest=${data.id_test}`;
-
-}
-
-document
-.getElementById(
-    'anadirTemaBtn'
-)
-.addEventListener(
-    'click',
-    anadirTema
-);
-
-oposicionSelect.addEventListener(
-    'change',
-    () => {
-
-        cargarTemas(
-            oposicionSelect.value
-        );
-
-    }
-);
-
-document
-.querySelectorAll('.btnOficial')
-.forEach(boton => {
-
-    boton.addEventListener(
-        'click',
-        () => generarTestOficial(
-            boton.dataset.oposicion
-        )
-    );
-
+document.getElementById("generarBtn").addEventListener("click", () => {
+  generarTest();
 });
 
-async function generarTestOficial(idOposicion){
+async function generarTest() {
+  let temas = [...temasSeleccionados];
 
-    if (!puede('premium')) {
-
-        mostrarToast('Los simulacros oficiales están disponibles sólo para usuarios Premium.', 'error');
-
-        setTimeout(() => {
-            window.location.href = '/suscripcion/planes.html';
-        }, 1500);
-
-        return;
-
+  // Si el usuario no ha añadido ningún tema,
+  // usar el que tiene seleccionado actualmente.
+  if (temas.length === 0) {
+    if (!temaSelect.value) {
+      mostrarToast("Selecciona un tema.", "warning");
+      return;
     }
 
-    const response =
-    await fetch(
-        `${API}/tests/oficial`,
-        {
-            method:'POST',
-            headers:{
-                'Content-Type':'application/json',
-                Authorization:`Bearer ${getToken()}`
-            },
-            body:JSON.stringify({
-                id_oposicion:idOposicion
-            })
-        }
-    );
+    temas.push({
+      id_tema: temaSelect.value,
+      nome: temaSelect.options[temaSelect.selectedIndex].text,
+      cantidad: Number(cantidadTema.value),
+    });
+  }
 
-    const data =
-    await response.json();
+  const duracionSeleccionada = document.getElementById("duracion").value;
 
-    if(!response.ok){
-        mostrarToast(data.mensaje, 'error');
-        return;
-    }
+  const duracion =
+    duracionSeleccionada === "" ? null : Number(duracionSeleccionada);
 
-    window.location.href =`/generar-test/test.html?idTest=${data.id_test}`;
+  const response = await fetch(`${API}/tests`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify({
+      temas,
+      duracion: duracion === "" ? null : Number(duracion),
+    }),
+  });
 
+  const data = await response.json();
+
+  if (!response.ok) {
+    mostrarToast(data.mensaje, "error");
+    return;
+  }
+
+  window.location.href = `/generar-test/test.html?idTest=${data.id_test}`;
 }
 
-async function inicializar(){
+document.getElementById("anadirTemaBtn").addEventListener("click", anadirTema);
 
-    if (usuarioActual.tipo === 'free') {
+oposicionSelect.addEventListener("change", () => {
+  cargarTemas(oposicionSelect.value);
+});
 
-        await cargarTemaPersonalizado();
+document.querySelectorAll(".btnOficial").forEach((boton) => {
+  boton.addEventListener("click", () =>
+    generarTestOficial(boton.dataset.oposicion),
+  );
+});
 
-    } else {
+async function generarTestOficial(idOposicion) {
+  if (!puede("premium")) {
+    mostrarToast(
+      "Los simulacros oficiales están disponibles sólo para usuarios Premium.",
+      "error",
+    );
 
-        await cargarOposiciones();
+    setTimeout(() => {
+      window.location.href = "/suscripcion/planes.html";
+    }, 1500);
 
-    }
+    return;
+  }
 
+  const response = await fetch(`${API}/tests/oficial`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify({
+      id_oposicion: idOposicion,
+    }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    mostrarToast(data.mensaje, "error");
+    return;
+  }
+
+  window.location.href = `/generar-test/test.html?idTest=${data.id_test}`;
+}
+
+async function inicializar() {
+  if (usuarioActual.tipo === "free") {
+    await cargarTemaPersonalizado();
+  } else {
+    await cargarOposiciones();
+  }
 }
 
 async function cargarTemaPersonalizado() {
+  const response = await fetch(`${API}/temas`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 
-    const response =
-        await fetch(
-            `${API}/temas`,
-            {
-                headers: {
-                    Authorization:
-                        `Bearer ${getToken()}`
-                }
-            }
-        );
+  const temas = await response.json();
 
-    const temas =
-        await response.json();
+  if (!response.ok || temas.length === 0) {
+    mostrarToast("No tienes ningún tema personalizado disponible.", "error");
+    return;
+  }
 
-    if (!response.ok || temas.length === 0) {
+  const tema = temas[0];
 
-        mostrarToast('No tienes ningún tema personalizado disponible.', 'error');
-        return;
-
-    }
-
-    const tema = temas[0];
-
-    temaSelect.innerHTML = `
+  temaSelect.innerHTML = `
         <option value="${tema.id_tema}">
             ${tema.nome_tema}
         </option>
     `;
 
-    // No necesitamos seleccionar oposición ni permitir añadir varios temas.
-    oposicionSelect.parentElement.style.display = 'none';
-    document
-        .getElementById('anadirTemaBtn')
-        .style.display = 'none';
-
+  // No necesitamos seleccionar oposición ni permitir añadir varios temas.
+  oposicionSelect.parentElement.style.display = "none";
+  document.getElementById("anadirTemaBtn").style.display = "none";
 }
 
 inicializar();

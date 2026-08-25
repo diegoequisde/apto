@@ -1,42 +1,28 @@
 const validateTema = (req, res, next) => {
+  const { nome_tema, descripcion_tema } = req.body;
 
-    const {
-        nome_tema,
-        descripcion_tema
-    } = req.body;
+  if (!nome_tema || nome_tema.trim() === "") {
+    return res.status(400).json({
+      ok: false,
+      mensaje: "El nombre del tema es obligatorio",
+    });
+  }
 
-    if (!nome_tema || nome_tema.trim() === '') {
+  if (nome_tema.length > 150) {
+    return res.status(400).json({
+      ok: false,
+      mensaje: "El nombre del tema es demasiado largo",
+    });
+  }
 
-        return res.status(400).json({
-            ok: false,
-            mensaje: 'El nombre del tema es obligatorio'
-        });
+  if (descripcion_tema && descripcion_tema.length > 1000) {
+    return res.status(400).json({
+      ok: false,
+      mensaje: "La descripción es demasiado larga",
+    });
+  }
 
-    }
-
-    if (nome_tema.length > 150) {
-
-        return res.status(400).json({
-            ok: false,
-            mensaje: 'El nombre del tema es demasiado largo'
-        });
-
-    }
-
-    if (
-        descripcion_tema &&
-        descripcion_tema.length > 1000
-    ) {
-
-        return res.status(400).json({
-            ok: false,
-            mensaje: 'La descripción es demasiado larga'
-        });
-
-    }
-
-    next();
-
+  next();
 };
 
 module.exports = validateTema;

@@ -1,9 +1,8 @@
-const pool = require('../config/db');
-const bcrypt = require('bcryptjs');
+const pool = require("../config/db");
+const bcrypt = require("bcryptjs");
 
 const findAllUsuarios = async () => {
-
-    const [rows] = await pool.query(`
+  const [rows] = await pool.query(`
         SELECT
             id_usuario,
             nome,
@@ -14,13 +13,12 @@ const findAllUsuarios = async () => {
         WHERE estado_usuario = 'activo'
     `);
 
-    return rows;
-
+  return rows;
 };
 
 const findUsuarioById = async (id) => {
-
-    const [rows] = await pool.query(`
+  const [rows] = await pool.query(
+    `
         SELECT
             id_usuario,
             nome,
@@ -30,15 +28,16 @@ const findUsuarioById = async (id) => {
         FROM usuario
         WHERE id_usuario = ?
         AND estado_usuario = 'activo'
-    `, [id]);
+    `,
+    [id],
+  );
 
-    return rows[0] || null;
-
+  return rows[0] || null;
 };
 
 const findUsuarioByEmail = async (email) => {
-
-    const [rows] = await pool.query(`
+  const [rows] = await pool.query(
+    `
         SELECT
             id_usuario,
             nome,
@@ -48,20 +47,16 @@ const findUsuarioByEmail = async (email) => {
             estado_usuario
         FROM usuario
         WHERE email = ?
-    `, [email]);
+    `,
+    [email],
+  );
 
-    return rows[0] || null;
-
+  return rows[0] || null;
 };
 
-
-const loginUsuario = async (
-    email,
-    password
-) => {
-
-    const [rows] =
-    await pool.query(`
+const loginUsuario = async (email, password) => {
+  const [rows] = await pool.query(
+    `
         SELECT
             id_usuario,
             nome,
@@ -71,40 +66,34 @@ const loginUsuario = async (
             estado_usuario
         FROM usuario
         WHERE email = ?
-    `,[email]);
+    `,
+    [email],
+  );
 
-    if(rows.length === 0){
-        return null;
-    }
+  if (rows.length === 0) {
+    return null;
+  }
 
-    const usuario =
-    rows[0];
+  const usuario = rows[0];
 
-    const passwordCorrecta =
-    await bcrypt.compare(
-        password,
-        usuario.contrasinal_hash
-    );
+  const passwordCorrecta = await bcrypt.compare(
+    password,
+    usuario.contrasinal_hash,
+  );
 
-    if(!passwordCorrecta){
-        return false;
-    }
+  if (!passwordCorrecta) {
+    return false;
+  }
 
-    delete usuario.contrasinal_hash;
+  delete usuario.contrasinal_hash;
 
-    return usuario;
-
+  return usuario;
 };
 
-const insertUsuario = async (
-    nome,
-    email,
-    password
-) => {
-
-    try {
-
-        const [result] = await pool.query(`
+const insertUsuario = async (nome, email, password) => {
+  try {
+    const [result] = await pool.query(
+      `
             INSERT INTO usuario (
                 nome,
                 email,
@@ -113,44 +102,30 @@ const insertUsuario = async (
                 estado_usuario
             )
             VALUES (?, ?, ?, 'free', 'activo')
-        `, [
-            nome,
-            email,
-            password
-        ]);
+        `,
+      [nome, email, password],
+    );
 
-        return result.insertId;
+    return result.insertId;
+  } catch (error) {
+    if (error.code === "ER_DUP_ENTRY") {
+      const err = new Error(
+        "Ya existe un usuario registrado con ese correo electrónico.",
+      );
 
-    } catch (error) {
+      err.status = 409;
 
-        if (error.code === 'ER_DUP_ENTRY') {
-
-            const err = new Error(
-                'Ya existe un usuario registrado con ese correo electrónico.'
-            );
-
-            err.status = 409;
-
-            throw err;
-
-        }
-
-        throw error;
-
+      throw err;
     }
 
+    throw error;
+  }
 };
 
-const updateUsuarioById = async (
-    id,
-    nome,
-    email,
-    tipo
-) => {
-
-    try {
-
-        const [result] = await pool.query(`
+const updateUsuarioById = async (id, nome, email, tipo) => {
+  try {
+    const [result] = await pool.query(
+      `
             UPDATE usuario
             SET
                 nome = ?,
@@ -158,54 +133,45 @@ const updateUsuarioById = async (
                 tipo = ?
             WHERE id_usuario = ?
             AND estado_usuario = 'activo'
-        `, [
-            nome,
-            email,
-            tipo,
-            id
-        ]);
+        `,
+      [nome, email, tipo, id],
+    );
 
-        return result;
+    return result;
+  } catch (error) {
+    if (error.code === "ER_DUP_ENTRY") {
+      const err = new Error(
+        "Ya existe otro usuario registrado con ese correo electrónico.",
+      );
 
-    } catch (error) {
+      err.status = 409;
 
-        if (error.code === 'ER_DUP_ENTRY') {
-
-            const err = new Error(
-                'Ya existe otro usuario registrado con ese correo electrónico.'
-            );
-
-            err.status = 409;
-
-            throw err;
-
-        }
-
-        throw error;
-
+      throw err;
     }
 
+    throw error;
+  }
 };
 
 const deleteUsuarioById = async (id) => {
-
-    const [result] = await pool.query(`
+  const [result] = await pool.query(
+    `
         UPDATE usuario
         SET estado_usuario = 'eliminado'
         WHERE id_usuario = ?
-    `, [id]);
+    `,
+    [id],
+  );
 
-    return result;
-
+  return result;
 };
 
-
 module.exports = {
-    findAllUsuarios,
-    findUsuarioById,
-    findUsuarioByEmail,
-    loginUsuario,
-    insertUsuario,
-    updateUsuarioById,
-    deleteUsuarioById
+  findAllUsuarios,
+  findUsuarioById,
+  findUsuarioByEmail,
+  loginUsuario,
+  insertUsuario,
+  updateUsuarioById,
+  deleteUsuarioById,
 };

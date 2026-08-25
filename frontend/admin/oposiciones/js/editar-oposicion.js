@@ -2,114 +2,71 @@ requireAdmin();
 
 const API = CONFIG.API;
 
-const params =
-    new URLSearchParams(
-        window.location.search
-    );
+const params = new URLSearchParams(window.location.search);
 
-const idOposicion =
-    params.get('id');
+const idOposicion = params.get("id");
 
 async function inicializar() {
-
-    await cargarOposicion();
-    await cargarTemasOposicion();
-
+  await cargarOposicion();
+  await cargarTemasOposicion();
 }
 
 async function cargarOposicion() {
+  const response = await fetch(`${API}/oposiciones/${idOposicion}`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 
-    const response =
-        await fetch(
-            `${API}/oposiciones/${idOposicion}`,
-            {
-                headers:{
-                    Authorization: `Bearer ${getToken()}`
-                }
-            }
-        );
+  const oposicion = await response.json();
 
-    const oposicion =
-        await response.json();
+  document.getElementById("nombreOposicion").value = oposicion.nome_oposicion;
 
-    document.getElementById(
-        'nombreOposicion'
-    ).value =
-        oposicion.nome_oposicion;
-
-    document.getElementById(
-        'descripcionOposicion'
-    ).value =
-        oposicion.descripcion_oposicion || '';
-
+  document.getElementById("descripcionOposicion").value =
+    oposicion.descripcion_oposicion || "";
 }
 
 async function cargarTemas(temasAsignados = []) {
+  const response = await fetch(`${API}/temas`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 
-    const response =
-        await fetch(
-            `${API}/temas`,
-            {
-                headers:{
-                    Authorization: `Bearer ${getToken()}`
-                }
-            }
-        );
+  const temas = await response.json();
 
-    const temas =
-        await response.json();
+  const select = document.getElementById("temaSelect");
 
-    const select =
-        document.getElementById('temaSelect');
+  select.innerHTML = "";
 
-    select.innerHTML = '';
+  const idsAsignados = temasAsignados.map((tema) => tema.id_tema);
 
-    const idsAsignados =
-        temasAsignados.map(
-            tema => tema.id_tema
-        );
-
-    temas
-        .filter(
-            tema => !idsAsignados.includes(tema.id_tema)
-        )
-        .forEach(tema => {
-
-            select.innerHTML += `
+  temas
+    .filter((tema) => !idsAsignados.includes(tema.id_tema))
+    .forEach((tema) => {
+      select.innerHTML += `
                 <option value="${tema.id_tema}">
                     ${tema.nome_tema}
                 </option>
             `;
-
-        });
-
+    });
 }
 
 async function cargarTemasOposicion() {
+  const response = await fetch(`${API}/oposiciones/${idOposicion}/temas`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 
-    const response =
-        await fetch(
-            `${API}/oposiciones/${idOposicion}/temas`,
-            {
-                headers:{
-                    Authorization: `Bearer ${getToken()}`
-                }
-            }
-        );
+  const temas = await response.json();
 
-    const temas =
-        await response.json();
+  const container = document.getElementById("temasOposicionContainer");
 
-    const container =
-        document.getElementById(
-            'temasOposicionContainer'
-        );
+  container.innerHTML = "";
 
-    container.innerHTML = '';
-
-    temas.forEach((tema) => {
-
-        container.innerHTML += `
+  temas.forEach((tema) => {
+    container.innerHTML += `
             <div>
 
                 <p>
@@ -130,130 +87,92 @@ async function cargarTemasOposicion() {
             </div>
             
         `;
+  });
 
-    });
-
-    await cargarTemas(temas);
-
+  await cargarTemas(temas);
 }
 
 async function guardarCambios() {
+  const nombre = document.getElementById("nombreOposicion").value;
 
-    const nombre =
-        document.getElementById(
-            'nombreOposicion'
-        ).value;
+  const descripcion = document.getElementById("descripcionOposicion").value;
 
-    const descripcion =
-        document.getElementById(
-            'descripcionOposicion'
-        ).value;
+  const response = await fetch(`${API}/oposiciones/${idOposicion}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify({
+      nome_oposicion: nombre,
+      descripcion_oposicion: descripcion,
+    }),
+  });
 
-    const response =
-    await fetch(
-        `${API}/oposiciones/${idOposicion}`,
-        {
-            method:'PUT',
-            headers:{
-                'Content-Type':'application/json',
-                Authorization: `Bearer ${getToken()}`
-            },
-            body:JSON.stringify({
-                nome_oposicion:nombre,
-                descripcion_oposicion:descripcion
-            })
-        }
-);
+  const data = await response.json();
 
-const data =
-await response.json();
-
-if(!response.ok){
-    mostrarToast(data.mensaje, 'error');
+  if (!response.ok) {
+    mostrarToast(data.mensaje, "error");
     return;
-}
+  }
 
-window.location.href = '/admin/oposiciones/index.html';
+  window.location.href = "/admin/oposiciones/index.html";
 }
 
 // Añadir y eliminar temas
 async function anadirTema() {
+  const idTema = document.getElementById("temaSelect").value;
 
-    const idTema =
-        document.getElementById(
-            'temaSelect'
-        ).value;
+  const response = await fetch(`${API}/oposiciones/${idOposicion}/temas`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify({
+      id_tema: idTema,
+    }),
+  });
 
-    const response = await fetch(
-        `${API}/oposiciones/${idOposicion}/temas`,
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type':'application/json',
-                Authorization: `Bearer ${getToken()}`
-            },
-            body: JSON.stringify({
-                id_tema: idTema
-            })
-        }
-    );
-
-    if (!response.ok) {
-        const data = await response.json();
-        mostrarToast(data.mensaje, 'error');
+  if (!response.ok) {
+    const data = await response.json();
+    mostrarToast(data.mensaje, "error");
     return;
-}
+  }
 
-    cargarTemasOposicion();
-
+  cargarTemasOposicion();
 }
 
 async function eliminarTema(idTema) {
+  const confirmar = confirm(
+    "¿Estás seguro de que quieres eliminar este tema de la oposición?",
+  );
 
-    const confirmar = confirm(
-        '¿Estás seguro de que quieres eliminar este tema de la oposición?'
-    );
+  if (!confirmar) {
+    return;
+  }
 
-    if (!confirmar) {
-        return;
-    }
+  const response = await fetch(
+    `${API}/oposiciones/${idOposicion}/temas/${idTema}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    },
+  );
 
-    const response = await fetch(
-        `${API}/oposiciones/${idOposicion}/temas/${idTema}`,
-        {
-            method:'DELETE',
-            headers:{
-                Authorization: `Bearer ${getToken()}`
-            }
-        }
-    );
-    
-    if (!response.ok) {
-        const data = await response.json();
-        mostrarToast(data.mensaje, 'error');
-        return;
-    }
+  if (!response.ok) {
+    const data = await response.json();
+    mostrarToast(data.mensaje, "error");
+    return;
+  }
 
-    cargarTemasOposicion();
-
+  cargarTemasOposicion();
 }
 
-document
-    .getElementById(
-        'guardarBtn'
-    )
-    .addEventListener(
-        'click',
-        guardarCambios
-    );
+document.getElementById("guardarBtn").addEventListener("click", guardarCambios);
 
-document
-    .getElementById(
-        'anadirTemaBtn'
-    )
-    .addEventListener(
-        'click',
-        anadirTema
-    );
+document.getElementById("anadirTemaBtn").addEventListener("click", anadirTema);
 
 inicializar();

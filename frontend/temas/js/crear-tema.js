@@ -3,59 +3,35 @@ requireLogin();
 const API = CONFIG.API;
 
 async function guardarTema() {
+  const nome_tema = document.getElementById("nombreTema").value;
 
-    const nome_tema =
-        document.getElementById(
-            'nombreTema'
-        ).value;
+  const descripcion_tema = document.getElementById("descripcionTema").value;
 
-    const descripcion_tema =
-        document.getElementById(
-            'descripcionTema'
-        ).value;
+  const response = await fetch(`${API}/temas`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify({
+      nome_tema,
+      descripcion_tema,
+    }),
+  });
 
-    const response =
-        await fetch(
-            `${API}/temas`,
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${getToken()}`
-                },
-                body: JSON.stringify({
-                    nome_tema,
-                    descripcion_tema
-                })
-            }
-        );
+  const data = await response.json();
 
-    const data =
-        await response.json();
+  if (!response.ok) {
+    mostrarToast(data.mensaje, "error");
 
-    if (!response.ok) {
+    return;
+  }
 
-        mostrarToast(
-            data.mensaje,
-            'error'
-        );
+  mostrarToast("Tema creado correctamente", "success");
 
-        return;
-    }
-
-    mostrarToast('Tema creado correctamente', 'success');
-
-    setTimeout(() => {
-        window.location.href = './index.html';
-    }, 1500);
-
+  setTimeout(() => {
+    window.location.href = "./index.html";
+  }, 1500);
 }
 
-document
-    .getElementById(
-        'guardarBtn'
-    )
-    .addEventListener(
-        'click',
-        guardarTema
-    );
+document.getElementById("guardarBtn").addEventListener("click", guardarTema);

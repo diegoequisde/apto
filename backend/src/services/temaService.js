@@ -1,8 +1,8 @@
-const pool = require('../config/db');
+const pool = require("../config/db");
 
 const findAllTemas = async (usuario) => {
-
-    const [rows] = await pool.query(`
+  const [rows] = await pool.query(
+    `
         SELECT
             id_tema,
             nome_tema,
@@ -11,15 +11,16 @@ const findAllTemas = async (usuario) => {
         FROM tema
         WHERE estado_tema='activo'
         AND id_usuario = ?
-    `, [usuario.id]);
+    `,
+    [usuario.id],
+  );
 
-    return rows;
-
+  return rows;
 };
 
 const findTemaById = async (id, usuario) => {
-
-    const [rows] = await pool.query(`
+  const [rows] = await pool.query(
+    `
         SELECT
             id_tema,
             nome_tema,
@@ -29,54 +30,44 @@ const findTemaById = async (id, usuario) => {
         FROM tema
         WHERE id_tema = ?
         AND estado_tema = 'activo'
-    `, [id]);
+    `,
+    [id],
+  );
 
-    if (rows.length === 0) {
-        return null;
-    }
+  if (rows.length === 0) {
+    return null;
+  }
 
-    const tema = rows[0];
+  const tema = rows[0];
 
-    if (tema.id_usuario !== usuario.id) {
-        const error = new Error('No tienes permiso para acceder a este tema.');
-        error.status = 403;
-        throw error;
-    }
+  if (tema.id_usuario !== usuario.id) {
+    const error = new Error("No tienes permiso para acceder a este tema.");
+    error.status = 403;
+    throw error;
+  }
 
-    return tema;
+  return tema;
 };
 
-const insertTema = async (
-    nome_tema,
-    descripcion_tema,
-    id_usuario
-) => {
-
-    const [result] = await pool.query(`
+const insertTema = async (nome_tema, descripcion_tema, id_usuario) => {
+  const [result] = await pool.query(
+    `
         INSERT INTO tema (
             nome_tema,
             descripcion_tema,
             id_usuario
         )
         VALUES (?, ?, ?)
-    `, [
-        nome_tema,
-        descripcion_tema,
-        id_usuario
-    ]);
+    `,
+    [nome_tema, descripcion_tema, id_usuario],
+  );
 
-    return result.insertId;
-
+  return result.insertId;
 };
 
-const updateTemaById = async (
-    id,
-    nome_tema,
-    descripcion_tema,
-    usuario
-) => {
-
-    const [result] = await pool.query(`
+const updateTemaById = async (id, nome_tema, descripcion_tema, usuario) => {
+  const [result] = await pool.query(
+    `
         UPDATE tema
         SET
             nome_tema = ?,
@@ -84,49 +75,47 @@ const updateTemaById = async (
         WHERE id_tema = ?
         AND id_usuario = ?
         AND estado_tema = 'activo'
-    `, [
-        nome_tema,
-        descripcion_tema,
-        id,
-        usuario.id
-    ]);
+    `,
+    [nome_tema, descripcion_tema, id, usuario.id],
+  );
 
-    return result;
-
+  return result;
 };
 
 const deleteTemaById = async (id, usuario) => {
-
-    const [result] = await pool.query(`
+  const [result] = await pool.query(
+    `
         UPDATE tema
         SET estado_tema = 'eliminado'
         WHERE id_tema = ?
         AND id_usuario = ?
         AND estado_tema = 'activo'
-    `, [id, usuario.id]);
+    `,
+    [id, usuario.id],
+  );
 
-    return result;
-
+  return result;
 };
 
 const contarTemasUsuario = async (id_usuario) => {
-
-    const [[result]] = await pool.query(`
+  const [[result]] = await pool.query(
+    `
         SELECT COUNT(*) AS total
         FROM tema
         WHERE id_usuario = ?
         AND estado_tema = 'activo'
-    `, [id_usuario]);
+    `,
+    [id_usuario],
+  );
 
-    return result.total;
-
+  return result.total;
 };
 
 module.exports = {
-    findAllTemas,
-    findTemaById,
-    insertTema,
-    updateTemaById,
-    deleteTemaById,
-    contarTemasUsuario
+  findAllTemas,
+  findTemaById,
+  insertTema,
+  updateTemaById,
+  deleteTemaById,
+  contarTemasUsuario,
 };

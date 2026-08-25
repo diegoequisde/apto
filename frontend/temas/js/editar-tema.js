@@ -2,120 +2,75 @@ requireLogin();
 
 const API = CONFIG.API;
 
-const params =
-    new URLSearchParams(
-        window.location.search
-    );
+const params = new URLSearchParams(window.location.search);
 
-const idTema =
-    params.get('id');
+const idTema = params.get("id");
 
 async function cargarTema() {
+  const response = await fetch(`${API}/temas/${idTema}`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 
-    const response =
-        await fetch(
-            `${API}/temas/${idTema}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${getToken()}`
-                }
-            }
-        );
-
-    if (!response.ok) {
-
+  if (!response.ok) {
     if (response.status === 403) {
+      mostrarToast("No tienes permiso para acceder a este tema.", "error");
 
-            mostrarToast(
-                'No tienes permiso para acceder a este tema.',
-                'error'
-            );
+      setTimeout(() => {
+        window.location.href = "./index.html";
+      }, 1500);
 
-            setTimeout(() => {
-                window.location.href = './index.html';
-            }, 1500);
-
-            return;
-        }
-
-        mostrarToast(
-            'No se ha podido cargar el tema.',
-            'warning'
-        );
-
-        return;
+      return;
     }
 
-    const tema =
-        await response.json();
+    mostrarToast("No se ha podido cargar el tema.", "warning");
 
-    document.getElementById(
-        'nombreTema'
-    ).value =
-        tema.nome_tema;
+    return;
+  }
 
-    document.getElementById(
-        'descripcionTema'
-    ).value =
-        tema.descripcion_tema || '';
+  const tema = await response.json();
 
+  document.getElementById("nombreTema").value = tema.nome_tema;
+
+  document.getElementById("descripcionTema").value =
+    tema.descripcion_tema || "";
 }
 
 async function guardarCambios() {
+  const nome_tema = document.getElementById("nombreTema").value;
 
-    const nome_tema =
-        document.getElementById(
-            'nombreTema'
-        ).value;
+  const descripcion_tema = document.getElementById("descripcionTema").value;
 
-    const descripcion_tema =
-        document.getElementById(
-            'descripcionTema'
-        ).value;
+  const response = await fetch(`${API}/temas/${idTema}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify({
+      nome_tema,
+      descripcion_tema,
+    }),
+  });
 
-    const response =
-        await fetch(
-            `${API}/temas/${idTema}`,
-            {
-                method: 'PUT',
-                headers: {
-                    'Content-Type':
-                        'application/json',
-                    Authorization:
-                        `Bearer ${getToken()}`
-                },
-                body: JSON.stringify({
-                    nome_tema,
-                    descripcion_tema
-                })
-            }
-        );
+  if (!response.ok) {
+    const data = await response.json();
 
-    if (!response.ok) {
+    mostrarToast(
+      data.mensaje || "No se ha podido actualizar el tema.",
+      "error",
+    );
+    return;
+  }
 
-        const data =
-            await response.json();
+  mostrarToast("Tema actualizado correctamente", "success");
 
-        mostrarToast(data.mensaje || 'No se ha podido actualizar el tema.', 'error');
-        return;
-
-    }
-
-    mostrarToast('Tema actualizado correctamente', 'success');
-
-    setTimeout(() => {
-        window.location.href = './index.html';
-    }, 1500);
-
+  setTimeout(() => {
+    window.location.href = "./index.html";
+  }, 1500);
 }
 
-document
-    .getElementById(
-        'guardarBtn'
-    )
-    .addEventListener(
-        'click',
-        guardarCambios
-    );
+document.getElementById("guardarBtn").addEventListener("click", guardarCambios);
 
 cargarTema();
