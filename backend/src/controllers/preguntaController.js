@@ -46,7 +46,7 @@ const createPregunta = asyncHandler(async (req, res) => {
 
     if (total >= 40) {
       const error = new Error(
-        "La cuenta gratuita permite crear un máximo de 40 preguntas. Actualiza a Premium para eliminar este límite.",
+        "La cuenta gratuita permite crear un máximo de 40 preguntas. Actualiza a PRO para eliminar este límite.",
       );
       error.status = 403;
       throw error;

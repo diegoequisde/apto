@@ -29,7 +29,7 @@ async function cargarTema() {
 
       setTimeout(() => {
         window.location.href = "../temas/index.html";
-      }, 1500);
+      }, 1200);
 
       return false;
     }
@@ -139,7 +139,7 @@ async function irCrearPregunta() {
 
     if (data.total >= 40) {
       mostrarToast(
-        "La cuenta gratuita permite crear un máximo de 40 preguntas. Actualiza a Premium para crear más preguntas.",
+        "La cuenta gratuita permite crear un máximo de 40 preguntas. Actualiza a PRO para crear más preguntas.",
         "warning",
       );
 

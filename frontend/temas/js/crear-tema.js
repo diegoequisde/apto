@@ -31,7 +31,7 @@ async function guardarTema() {
 
   setTimeout(() => {
     window.location.href = "./index.html";
-  }, 1500);
+  }, 1200);
 }
 
 document.getElementById("guardarBtn").addEventListener("click", guardarTema);

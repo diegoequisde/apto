@@ -39,7 +39,7 @@ const createTema = asyncHandler(async (req, res) => {
     if (total >= 1) {
       return res.status(403).json({
         mensaje:
-          "La cuenta gratuíta permite crear un único tema. Actualiza a Premium para crear más temas.",
+          "La cuenta gratuíta permite crear un único tema. Actualiza a PRO para crear más temas.",
       });
     }
   }

@@ -30,9 +30,6 @@ const addOposicionToUsuario = asyncHandler(async (req, res) => {
 const deleteOposicionFromUsuario = asyncHandler(async (req, res) => {
   const { id, idOposicion } = req.params;
 
-  console.log("id:", id);
-  console.log("idOposicion:", idOposicion);
-
   const result = await deleteOposicionFromUsuarioById(id, idOposicion);
 
   if (result.affectedRows === 0) {

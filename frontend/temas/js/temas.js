@@ -102,7 +102,7 @@ async function irCrearTema() {
 
     if (temas.length >= 1) {
       mostrarToast(
-        "La cuenta gratuita permite crear un único tema. Actualiza a Premium para crear más temas.",
+        "La cuenta gratuita permite crear un único tema. Actualiza a PRO para crear más temas.",
         "warning",
       );
 

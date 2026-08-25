@@ -28,8 +28,8 @@ function cerrarSesion() {
 
   window.location.href = "/";
 }
-// Roles
 
+// Roles
 function tieneRol(rol) {
   const usuario = getUsuarioActual();
 
@@ -85,10 +85,10 @@ function requireLogin() {
 
 function requirePremium() {
   if (!puede("premium")) {
-    mostrarToast("Esta funcionalidad requiere unha cuenta Premium.", "error");
+    mostrarToast("Esta funcionalidad requiere unha cuenta PRO.", "error");
     setTimeout(() => {
       window.location.href = "/suscripcion/planes.html";
-    }, 1500);
+    }, 1200);
   }
 }
 

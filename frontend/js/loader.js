@@ -117,7 +117,7 @@ function inicializarTema() {
     themeToggle.checked = true;
   }
 
-  /* Actualizar accesibilidad */
+  // Actualizar accesibilidad
   function actualizarAccesibilidad() {
     const modoOscuro = html.getAttribute("data-theme") === "dark";
 
@@ -144,7 +144,7 @@ function inicializarTema() {
   actualizarAccesibilidad();
 }
 
-function mostrarToast(mensaje, tipo = "info", duracion = 1500) {
+function mostrarToast(mensaje, tipo = "info", duracion = 1200) {
   let container = document.getElementById("toast-container");
 
   if (!container) {

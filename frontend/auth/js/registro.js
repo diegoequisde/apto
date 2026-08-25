@@ -43,5 +43,5 @@ document
 
     setTimeout(() => {
       window.location.href = "/auth/login.html";
-    }, 1500);
+    }, 1200);
   });

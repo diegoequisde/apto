@@ -1,10 +1,3 @@
-/* * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-*/
-
 /* APTO - estilos globales */
 :root {
     font-size: 15px;
@@ -29,12 +22,8 @@
     --apto-secondary: #5474B6;
     --apto-secondary-hover: #4868A8;
     --apto-light: #cad6ee;
-
-    /* REVISAR estas variables: */
     --apto-surface: #f8fafc;
-    /* Solo se usa en .premium en el index*/
     --apto-border: #e5e7eb;
-    /* Solo se usa en .premium en el index */
     --apto-text: #1f2937;
     --apto-muted: #64748b;
     --apto-success: #198754;

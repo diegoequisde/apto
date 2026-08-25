@@ -173,7 +173,7 @@ if (usuario.tipo === "free") {
   planCard.innerHTML = `
         <article>
             <h3>Plan actual</h3>
-                <p><strong>Premium</strong></p>
+                <p><strong>PRO</strong></p>
                 <p>Disfrutas de todas las funcionalidades.</p>
         </article>
     `;

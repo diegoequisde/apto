@@ -96,7 +96,7 @@ async function guardarPregunta() {
 
   setTimeout(() => {
     window.location.href = `./index.html?idTema=${idTema}`;
-  }, 1500);
+  }, 1200);
 }
 
 document

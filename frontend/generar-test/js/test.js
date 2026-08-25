@@ -248,6 +248,8 @@ async function finalizarTest(automatico = false) {
 
     await actualizarTestFinalizado();
 
+    await new Promise((resolve) => setTimeout(resolve, 1200));
+
     window.location.href = `resultado.html?idTest=${idTest}`;
 
     return;

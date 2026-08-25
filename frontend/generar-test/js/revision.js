@@ -20,7 +20,7 @@ async function cargarRevision() {
 
     setTimeout(() => {
       window.location.href = "/historial/index.html";
-    }, 1500);
+    }, 1200);
 
     return;
   }

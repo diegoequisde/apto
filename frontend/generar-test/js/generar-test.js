@@ -16,7 +16,7 @@ cantidadTema.addEventListener("input", () => {
   cantidadTema.value = cantidadTema.value.replace(/\D/g, "");
 });
 
-//evitar que quede el campo vacío
+// evitar que quede el campo vacío
 cantidadTema.addEventListener("blur", () => {
   if (cantidadTema.value === "" || Number(cantidadTema.value) < 1) {
     cantidadTema.value = 1;
@@ -138,8 +138,7 @@ document.getElementById("generarBtn").addEventListener("click", () => {
 async function generarTest() {
   let temas = [...temasSeleccionados];
 
-  // Si el usuario no ha añadido ningún tema,
-  // usar el que tiene seleccionado actualmente.
+  // Si el usuario no ha añadido ningún tema usar el que tiene seleccionado actualmente.
   if (temas.length === 0) {
     if (!temaSelect.value) {
       mostrarToast("Selecciona un tema.", "warning");
@@ -195,13 +194,13 @@ document.querySelectorAll(".btnOficial").forEach((boton) => {
 async function generarTestOficial(idOposicion) {
   if (!puede("premium")) {
     mostrarToast(
-      "Los simulacros oficiales están disponibles sólo para usuarios Premium.",
+      "Los simulacros oficiales están disponibles sólo para usuarios PRO.",
       "error",
     );
 
     setTimeout(() => {
       window.location.href = "/suscripcion/planes.html";
-    }, 1500);
+    }, 1200);
 
     return;
   }

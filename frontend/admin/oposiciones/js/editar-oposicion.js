@@ -73,7 +73,7 @@ async function cargarTemasOposicion() {
                     <strong>${tema.nome_tema}</strong>
                 </p>
 
-                <button
+                 <button class= "eliminar"
                     onclick="
                         eliminarTema(
                             ${tema.id_tema}
@@ -119,7 +119,7 @@ async function guardarCambios() {
   window.location.href = "/admin/oposiciones/index.html";
 }
 
-// Añadir y eliminar temas
+// Añadir y eliminar temas a la oposición
 async function anadirTema() {
   const idTema = document.getElementById("temaSelect").value;
 
