@@ -23,6 +23,7 @@ cantidadTema.addEventListener("blur", () => {
   }
 });
 
+// select de oposiciones
 async function cargarOposiciones() {
   const response = await fetch(`${API}/oposiciones`, {
     headers: {
@@ -42,6 +43,7 @@ async function cargarOposiciones() {
   });
 }
 
+// select de temas de la oposicion escogida
 async function cargarTemas(idOposicion) {
   const response = await fetch(`${API}/oposiciones/${idOposicion}/temas`, {
     headers: {
@@ -87,6 +89,7 @@ function anadirTema() {
   pintarListaTemas();
 }
 
+// muestra los temas escogidos
 function pintarListaTemas() {
   if (temasSeleccionados.length === 0) {
     bloqueTemas.style.display = "none";
@@ -138,7 +141,7 @@ document.getElementById("generarBtn").addEventListener("click", () => {
 async function generarTest() {
   let temas = [...temasSeleccionados];
 
-  // Si el usuario no ha añadido ningún tema usar el que tiene seleccionado actualmente.
+  // Si el usuario no ha añadido ningún tema, usar el que tiene seleccionado actualmente.
   if (temas.length === 0) {
     if (!temaSelect.value) {
       mostrarToast("Selecciona un tema.", "warning");
@@ -179,6 +182,7 @@ async function generarTest() {
   window.location.href = `/generar-test/test.html?idTest=${data.id_test}`;
 }
 
+
 document.getElementById("anadirTemaBtn").addEventListener("click", anadirTema);
 
 oposicionSelect.addEventListener("change", () => {
@@ -196,12 +200,7 @@ async function generarTestOficial(idOposicion) {
     mostrarToast(
       "Los simulacros oficiales están disponibles sólo para usuarios PRO.",
       "error",
-    );
-
-    setTimeout(() => {
-      window.location.href = "/suscripcion/planes.html";
-    }, 1200);
-
+    ); 
     return;
   }
 

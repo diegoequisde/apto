@@ -26,6 +26,7 @@ async function cargarOposicion() {
     oposicion.descripcion_oposicion || "";
 }
 
+// el select obtiene los temas
 async function cargarTemas(temasAsignados = []) {
   const response = await fetch(`${API}/temas`, {
     headers: {
@@ -52,6 +53,7 @@ async function cargarTemas(temasAsignados = []) {
     });
 }
 
+// carga la lista de oposiciones del usuario
 async function cargarTemasOposicion() {
   const response = await fetch(`${API}/oposiciones/${idOposicion}/temas`, {
     headers: {

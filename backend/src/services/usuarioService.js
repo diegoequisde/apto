@@ -11,7 +11,7 @@ const findAllUsuarios = async () => {
             estado_usuario
         FROM usuario
         WHERE estado_usuario = 'activo'
-    `);
+      `);
 
   return rows;
 };
@@ -94,14 +94,14 @@ const insertUsuario = async (nome, email, password) => {
   try {
     const [result] = await pool.query(
       `
-            INSERT INTO usuario (
-                nome,
-                email,
-                contrasinal_hash,
-                tipo,
-                estado_usuario
-            )
-            VALUES (?, ?, ?, 'free', 'activo')
+        INSERT INTO usuario (
+            nome,
+            email,
+            contrasinal_hash,
+            tipo,
+            estado_usuario
+        )
+        VALUES (?, ?, ?, 'free', 'activo')
         `,
       [nome, email, password],
     );
@@ -126,13 +126,13 @@ const updateUsuarioById = async (id, nome, email, tipo) => {
   try {
     const [result] = await pool.query(
       `
-            UPDATE usuario
-            SET
-                nome = ?,
-                email = ?,
-                tipo = ?
-            WHERE id_usuario = ?
-            AND estado_usuario = 'activo'
+        UPDATE usuario
+        SET
+            nome = ?,
+            email = ?,
+            tipo = ?
+        WHERE id_usuario = ?
+        AND estado_usuario = 'activo'
         `,
       [nome, email, tipo, id],
     );
@@ -156,9 +156,9 @@ const updateUsuarioById = async (id, nome, email, tipo) => {
 const deleteUsuarioById = async (id) => {
   const [result] = await pool.query(
     `
-        UPDATE usuario
-        SET estado_usuario = 'eliminado'
-        WHERE id_usuario = ?
+    UPDATE usuario
+    SET estado_usuario = 'eliminado'
+    WHERE id_usuario = ?
     `,
     [id],
   );

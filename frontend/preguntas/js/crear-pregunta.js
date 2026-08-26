@@ -51,9 +51,7 @@ async function guardarPregunta() {
 
     opciones.push({
       letra_opcion: letra,
-
       texto,
-
       e_correcta: letra === correcta,
     });
   }

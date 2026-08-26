@@ -1,13 +1,9 @@
 const API = CONFIG.API;
 
 const params = new URLSearchParams(window.location.search);
-
 const idOposicion = params.get("id");
-
 const usuario = getUsuarioActual();
-
 const idUsuario = usuario?.id;
-
 const btn = document.getElementById("anadirOposicionBtn");
 
 if (!estaLogueado()) {
@@ -34,6 +30,14 @@ async function cargarOposicion() {
 async function anadirOposicion() {
   if (!estaLogueado()) {
     window.location.href = "/auth/login.html";
+    return;
+  }
+
+  if (!puede("premium")) {
+    mostrarToast(
+      "Añadir oposiciones está disponible sólo para usuarios PRO.",
+      "error",
+    );
     return;
   }
 

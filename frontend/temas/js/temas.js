@@ -55,6 +55,7 @@ async function cargarTemas() {
   });
 }
 
+// redirige a las preguntas de ese tema
 function gestionarPreguntas(idTema) {
   window.location.href = `/preguntas/index.html?idTema=${idTema}`;
 }

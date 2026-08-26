@@ -8,12 +8,14 @@ const oposicionesCard = document.getElementById("oposicionesCard");
 const buscador = document.getElementById("buscarOposicion");
 const resultados = document.getElementById("resultadosBusqueda");
 
+// si es premium muestra el buscador de oposiciones
 if (esFree()) {
   oposicionesCard.style.display = "none";
 } else {
   buscador.addEventListener("input", buscarOposiciones);
 }
 
+// datos del usuario
 async function cargarUsuario() {
   const response = await fetch(`${API}/usuarios/${idUsuario}`, {
     headers: {
@@ -29,6 +31,7 @@ async function cargarUsuario() {
   document.getElementById("tipoUsuario").textContent = usuario.tipo;
 }
 
+// oposiciones del usuario
 async function cargarOposiciones() {
   const response = await fetch(`${API}/usuarios/${idUsuario}/oposiciones`, {
     headers: {
@@ -82,6 +85,7 @@ function pintarResultados(oposiciones) {
   });
 }
 
+// buscador de oposiciones
 async function buscarOposiciones() {
   const texto = buscador.value.trim();
 
@@ -152,6 +156,7 @@ async function inicializar() {
   }
 }
 
+// datos de la suscripcion del usuario
 const planCard = document.getElementById("planCard");
 
 if (usuario.tipo === "free") {

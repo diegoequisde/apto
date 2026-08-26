@@ -12,6 +12,7 @@ if (btnPremium && estaLogueado() && !esFree()) {
   btnPremium.remove();
 }
 
+// buscador de oposiciones
 async function buscarOposiciones() {
   const texto = buscador.value.trim();
 
@@ -30,6 +31,7 @@ async function buscarOposiciones() {
   pintarResultados(oposiciones);
 }
 
+// muestra los resultados de la busqueda mientras se escribe
 function pintarResultados(lista) {
   resultados.innerHTML = "";
 
@@ -45,6 +47,7 @@ function pintarResultados(lista) {
   });
 }
 
+// dirige a la pagina de la oposicion seleccionada en el buscador
 document.getElementById("resultadosBusqueda").addEventListener("click", (e) => {
   const tarjeta = e.target.closest(".resultado-oposicion");
 

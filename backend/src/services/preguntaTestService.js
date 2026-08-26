@@ -3,18 +3,16 @@ const pool = require("../config/db");
 const findPreguntasByTest = async (id_test) => {
   const [preguntas] = await pool.query(
     `
-
-        SELECT
-            pt.id_pregunta,
-            pt.orde,
-            pt.resposta_usuario,
-            p.enunciado
-        FROM pregunta_test pt
-        INNER JOIN pregunta p
-            ON pt.id_pregunta = p.id_pregunta
-        WHERE pt.id_test = ?
-        ORDER BY pt.orde
-
+    SELECT
+        pt.id_pregunta,
+        pt.orde,
+        pt.resposta_usuario,
+        p.enunciado
+    FROM pregunta_test pt
+    INNER JOIN pregunta p
+        ON pt.id_pregunta = p.id_pregunta
+    WHERE pt.id_test = ?
+    ORDER BY pt.orde
     `,
     [id_test],
   );
@@ -22,13 +20,11 @@ const findPreguntasByTest = async (id_test) => {
   for (const pregunta of preguntas) {
     const [opciones] = await pool.query(
       `
-
-            SELECT
-                letra_opcion,
-                texto
-            FROM opcion
-            WHERE id_pregunta = ?
-
+      SELECT
+          letra_opcion,
+          texto
+      FROM opcion
+      WHERE id_pregunta = ?
         `,
       [pregunta.id_pregunta],
     );
@@ -42,23 +38,20 @@ const findPreguntasByTest = async (id_test) => {
 const findRevisionByTest = async (id_test, id_usuario) => {
   const [preguntas] = await pool.query(
     `
-
-        SELECT
-            pt.id_pregunta,
-            pt.orde,
-            pt.resposta_usuario,
-            pt.e_correcta,
-            p.enunciado
-        FROM pregunta_test pt
-
-        INNER JOIN pregunta p
-            ON pt.id_pregunta = p.id_pregunta
-        JOIN test t
-            ON pt.id_test = t.id_test
-        WHERE pt.id_test = ?
-        AND t.id_usuario = ?
-        ORDER BY pt.orde
-
+    SELECT
+        pt.id_pregunta,
+        pt.orde,
+        pt.resposta_usuario,
+        pt.e_correcta,
+        p.enunciado
+    FROM pregunta_test pt
+      INNER JOIN pregunta p
+        ON pt.id_pregunta = p.id_pregunta
+      JOIN test t
+        ON pt.id_test = t.id_test
+    WHERE pt.id_test = ?
+    AND t.id_usuario = ?
+    ORDER BY pt.orde
     `,
     [id_test, id_usuario],
   );
@@ -66,14 +59,12 @@ const findRevisionByTest = async (id_test, id_usuario) => {
   for (const pregunta of preguntas) {
     const [opciones] = await pool.query(
       `
-
-            SELECT
-                letra_opcion,
-                texto,
-                e_correcta
-            FROM opcion
-            WHERE id_pregunta = ?
-
+        SELECT
+            letra_opcion,
+            texto,
+            e_correcta
+        FROM opcion
+        WHERE id_pregunta = ?
         `,
       [pregunta.id_pregunta],
     );
@@ -88,11 +79,11 @@ const findRevisionByTest = async (id_test, id_usuario) => {
 const calcularResultadoTest = async (id_test) => {
   const [rows] = await pool.query(
     `
-        SELECT
-            COUNT(*) AS total,
-            SUM(e_correcta) AS aciertos
-        FROM pregunta_test
-        WHERE id_test = ?
+    SELECT
+        COUNT(*) AS total,
+        SUM(e_correcta) AS aciertos
+    FROM pregunta_test
+    WHERE id_test = ?
 
     `,
     [id_test],
@@ -111,12 +102,12 @@ const insertPreguntaToTest = async (id_test, id_pregunta, orde) => {
   try {
     const [result] = await pool.query(
       `
-            INSERT INTO pregunta_test (
-                id_test,
-                id_pregunta,
-                orde
-            )
-            VALUES (?, ?, ?)
+        INSERT INTO pregunta_test (
+            id_test,
+            id_pregunta,
+            orde
+        )
+        VALUES (?, ?, ?)
         `,
       [id_test, id_pregunta, orde],
     );
@@ -139,11 +130,11 @@ const answerPregunta = async (id_test, id_pregunta, resposta_usuario) => {
   // Buscar respuesta correcta
   const [correcta] = await pool.query(
     `
-        SELECT
-            e_correcta
-        FROM opcion
-        WHERE id_pregunta = ?
-        AND letra_opcion = ?
+    SELECT
+        e_correcta
+    FROM opcion
+    WHERE id_pregunta = ?
+    AND letra_opcion = ?
     `,
     [id_pregunta, resposta_usuario],
   );
@@ -152,12 +143,12 @@ const answerPregunta = async (id_test, id_pregunta, resposta_usuario) => {
 
   const [result] = await pool.query(
     `
-        UPDATE pregunta_test
-        SET
-            resposta_usuario = ?,
-            e_correcta = ?
-        WHERE id_test = ?
-        AND id_pregunta = ?
+    UPDATE pregunta_test
+    SET
+        resposta_usuario = ?,
+        e_correcta = ?
+    WHERE id_test = ?
+    AND id_pregunta = ?
     `,
     [resposta_usuario, e_correcta, id_test, id_pregunta],
   );
@@ -168,9 +159,9 @@ const answerPregunta = async (id_test, id_pregunta, resposta_usuario) => {
 const deletePreguntaTest = async (id_test, id_pregunta) => {
   const [result] = await pool.query(
     `
-        DELETE FROM pregunta_test
-        WHERE id_test = ?
-        AND id_pregunta = ?
+    DELETE FROM pregunta_test
+    WHERE id_test = ?
+    AND id_pregunta = ?
     `,
     [id_test, id_pregunta],
   );

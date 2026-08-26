@@ -71,21 +71,21 @@ const findAllPreguntas = async (
 const findPreguntaById = async (id, idUsuario = null) => {
   const [rows] = await pool.query(
     `
-        SELECT
-            p.id_pregunta,
-            p.enunciado,
-            p.estado_pregunta,
-            p.id_tema,
-            t.nome_tema,
-            p.id_usuario,
-            u.nome AS autor
-        FROM pregunta p
-        INNER JOIN tema t
-            ON p.id_tema = t.id_tema
-        LEFT JOIN usuario u
-            ON p.id_usuario = u.id_usuario
-        WHERE p.id_pregunta = ?
-        AND p.estado_pregunta = 'activa'
+    SELECT
+        p.id_pregunta,
+        p.enunciado,
+        p.estado_pregunta,
+        p.id_tema,
+        t.nome_tema,
+        p.id_usuario,
+        u.nome AS autor
+    FROM pregunta p
+    INNER JOIN tema t
+        ON p.id_tema = t.id_tema
+    LEFT JOIN usuario u
+        ON p.id_usuario = u.id_usuario
+    WHERE p.id_pregunta = ?
+    AND p.estado_pregunta = 'activa'
     `,
     [id],
   );
@@ -112,13 +112,13 @@ const findPreguntaById = async (id, idUsuario = null) => {
 // el testController mezcla las preguntas. Es redundante?
 const findPreguntasAleatorias = async (idTema, cantidad, soloAdmin = false) => {
   let sql = `
-        SELECT p.id_pregunta
-        FROM pregunta p
-        INNER JOIN usuario u
-        ON p.id_usuario = u.id_usuario
-        WHERE p.estado_pregunta = 'activa'
-        AND p.id_tema = ?
-    `;
+            SELECT p.id_pregunta
+            FROM pregunta p
+              INNER JOIN usuario u
+              ON p.id_usuario = u.id_usuario
+            WHERE p.estado_pregunta = 'activa'
+              AND p.id_tema = ?
+          `;
 
   if (soloAdmin) {
     sql += `
@@ -129,7 +129,7 @@ const findPreguntasAleatorias = async (idTema, cantidad, soloAdmin = false) => {
   sql += `
         ORDER BY RAND()
         LIMIT ?
-    `;
+        `;
 
   const [rows] = await pool.query(sql, [idTema, Number(cantidad)]);
 
@@ -138,14 +138,14 @@ const findPreguntasAleatorias = async (idTema, cantidad, soloAdmin = false) => {
 
 const updatePreguntaById = async (id, enunciado, id_tema, idUsuario = null) => {
   let sql = `
-        UPDATE pregunta
-        SET
-            enunciado=?,
-            id_tema=?
-        WHERE
-            id_pregunta=?
-        AND estado_pregunta='activa'
-        `;
+            UPDATE pregunta
+            SET
+                enunciado=?,
+                id_tema=?
+            WHERE
+                id_pregunta=?
+            AND estado_pregunta='activa'
+            `;
 
   const params = [enunciado, id_tema, id];
 
@@ -188,14 +188,14 @@ const crearPreguntaCompleta = async (
     await connection.beginTransaction();
 
     const [pregunta] = await connection.query(
-      `
-                INSERT INTO pregunta(
-                    enunciado,
-                    id_tema,
-                    id_usuario
-                )
-                VALUES(?,?,?)
-            `,
+          `
+          INSERT INTO pregunta(
+              enunciado,
+              id_tema,
+              id_usuario
+          )
+          VALUES(?,?,?)
+        `,
       [enunciado, id_tema, id_usuario],
     );
 
@@ -210,14 +210,14 @@ const crearPreguntaCompleta = async (
 
       await connection.query(
         `
-                INSERT INTO opcion(
-                    id_pregunta,
-                    letra_opcion,
-                    texto,
-                    e_correcta
-                )
-                VALUES(?,?,?,?)
-            `,
+        INSERT INTO opcion(
+            id_pregunta,
+            letra_opcion,
+            texto,
+            e_correcta
+        )
+        VALUES(?,?,?,?)
+        `,
         [id_pregunta, opcion.letra_opcion, opcion.texto, opcion.e_correcta],
       );
     }
@@ -240,7 +240,7 @@ const deletePreguntaById = async (id, idUsuario = null) => {
         SET estado_pregunta = 'eliminada'
         WHERE id_pregunta = ?
         AND estado_pregunta = 'activa'
-    `;
+        `;
 
   const params = [id];
 
@@ -260,10 +260,10 @@ const deletePreguntaById = async (id, idUsuario = null) => {
 const contarPreguntasUsuario = async (id_usuario) => {
   const [[result]] = await pool.query(
     `
-        SELECT COUNT(*) AS total
-        FROM pregunta
-        WHERE id_usuario = ?
-        AND estado_pregunta = 'activa'
+    SELECT COUNT(*) AS total
+    FROM pregunta
+    WHERE id_usuario = ?
+    AND estado_pregunta = 'activa'
     `,
     [id_usuario],
   );

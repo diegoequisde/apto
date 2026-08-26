@@ -17,7 +17,7 @@
         var(--pico-font-family-emoji);
 
     /* Colores APTO - tema claro */
-    --apto-primary: #114dd0;
+    --apto-primary: #0071EB;/*#114dd0;*/
     --apto-primary-hover: #0d3fae;
     --apto-secondary: #5474B6;
     --apto-secondary-hover: #4868A8;

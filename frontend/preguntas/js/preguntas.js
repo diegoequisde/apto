@@ -3,13 +3,10 @@ requireLogin();
 const API = CONFIG.API;
 
 const container = document.getElementById("preguntasContainer");
-
 const params = new URLSearchParams(window.location.search);
-
 const idTema = params.get("idTema");
 
 let paginaActual = 1;
-
 const limite = 20;
 
 async function cargarTema() {

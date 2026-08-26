@@ -53,7 +53,6 @@ function esFree() {
 }
 
 // Permisos
-
 function puede(permiso) {
   if (!estaLogueado()) {
     return false;
@@ -86,9 +85,6 @@ function requireLogin() {
 function requirePremium() {
   if (!puede("premium")) {
     mostrarToast("Esta funcionalidad requiere unha cuenta PRO.", "error");
-    setTimeout(() => {
-      window.location.href = "/suscripcion/planes.html";
-    }, 1200);
   }
 }
 

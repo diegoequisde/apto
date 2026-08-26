@@ -44,6 +44,7 @@ async function cargarRevision() {
   }
 }
 
+// panel de navegacion entre preguntas
 function mostrarNavegacion() {
   const nav = document.getElementById("preguntas-nav");
 

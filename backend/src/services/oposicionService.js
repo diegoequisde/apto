@@ -3,14 +3,14 @@ const pool = require("../config/db");
 const findAllOposiciones = async (busqueda = "") => {
   const [rows] = await pool.query(
     `
-        SELECT
-            id_oposicion,
-            nome_oposicion,
-            descripcion_oposicion
-        FROM oposicion
-        WHERE nome_oposicion LIKE ?
-        ORDER BY nome_oposicion
-        LIMIT 10
+    SELECT
+        id_oposicion,
+        nome_oposicion,
+        descripcion_oposicion
+    FROM oposicion
+    WHERE nome_oposicion LIKE ?
+    ORDER BY nome_oposicion
+    LIMIT 10
     `,
     [`%${busqueda}%`],
   );
@@ -21,12 +21,12 @@ const findAllOposiciones = async (busqueda = "") => {
 const findOposicionById = async (id) => {
   const [rows] = await pool.query(
     `
-        SELECT
-            id_oposicion,
-            nome_oposicion,
-            descripcion_oposicion
-        FROM oposicion
-        WHERE id_oposicion = ?
+    SELECT
+        id_oposicion,
+        nome_oposicion,
+        descripcion_oposicion
+    FROM oposicion
+    WHERE id_oposicion = ?
     `,
     [id],
   );
@@ -38,11 +38,11 @@ const insertOposicion = async (nome_oposicion, descripcion_oposicion) => {
   try {
     const [result] = await pool.query(
       `
-            INSERT INTO oposicion (
-                nome_oposicion,
-                descripcion_oposicion
-            )
-            VALUES (?, ?)
+        INSERT INTO oposicion (
+            nome_oposicion,
+            descripcion_oposicion
+        )
+        VALUES (?, ?)
         `,
       [nome_oposicion, descripcion_oposicion],
     );
@@ -92,8 +92,8 @@ const updateOposicionById = async (
 const deleteOposicionById = async (id) => {
   const [result] = await pool.query(
     `
-        DELETE FROM oposicion
-        WHERE id_oposicion = ?
+    DELETE FROM oposicion
+    WHERE id_oposicion = ?
     `,
     [id],
   );
