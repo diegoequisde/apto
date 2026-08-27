@@ -52,7 +52,7 @@
 /* tema oscuro */
 [data-theme="dark"] {
     --apto-primary: #7DA4F2;
-    --apto-primary-hover: #6694F0;
+    --apto-primary-hover: #6694F0; 
     --apto-muted: #cbd5e1;
     --apto-success: #21BA73;
     --apto-danger: #E34A59;
@@ -66,9 +66,9 @@
     --pico-primary-hover-border: var(--apto-primary-hover);
     --pico-primary-focus: rgba(91, 141, 239, 0.25);
 
-    --pico-secondary-background: #475569;
+    --pico-secondary-background: #6D829C;
     --pico-secondary-hover: #64748b;
-    --pico-secondary-hover-background: #64748b;
+    --pico-secondary-hover-background: #5474B6;
     --pico-secondary-focus: none;
 }
 

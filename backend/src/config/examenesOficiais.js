@@ -7,13 +7,7 @@ const examenes = {
     temas: [
       { orden: 1, id_tema: 1, nome: "Tema 1 - CE", min: 8, max: 12 },
       { orden: 2, id_tema: 8, nome: "Estatuto Autonomía", min: 6, max: 10 },
-      {
-        orden: 3,
-        id_tema: 9,
-        nome: "UE - Fontes do Dereito",
-        min: 15,
-        max: 24,
-      },
+      { orden: 3, id_tema: 9, nome: "UE - Fontes do Dereito", min: 15, max: 24},
       { orden: 4, id_tema: 10, nome: "Lei 31/1995", min: 4, max: 5 },
       { orden: 5, id_tema: 2, nome: "Lei 39/2015", min: 13, max: 18 },
       { orden: 6, id_tema: 3, nome: "Lei 40/2015", min: 8, max: 10 },
