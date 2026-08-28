@@ -130,7 +130,7 @@ const createTest = asyncHandler(async (req, res) => {
   }
 
   // Mestura as preguntas para crear unha orde aleatoria
-  preguntas.sort(() => Math.random() - 0.5);
+  // preguntas.sort(() => Math.random() - 0.5);
 
   // Asocia cada pregunta ao test mantendo a súa posición
   for (let i = 0; i < preguntas.length; i++) {

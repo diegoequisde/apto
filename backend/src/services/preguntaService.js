@@ -109,27 +109,28 @@ const findPreguntaById = async (id, idUsuario = null) => {
   return pregunta;
 };
 
-// el testController mezcla las preguntas. Es redundante?
+// selecciona aleatoriamente las preguntas de cada tema:
+//  RAND() asigna un valor aleatorio a cada fila y ordena las preguntas según ese valor
 const findPreguntasAleatorias = async (idTema, cantidad, soloAdmin = false) => {
   let sql = `
-            SELECT p.id_pregunta
-            FROM pregunta p
-              INNER JOIN usuario u
-              ON p.id_usuario = u.id_usuario
-            WHERE p.estado_pregunta = 'activa'
-              AND p.id_tema = ?
-          `;
+          SELECT p.id_pregunta
+          FROM pregunta p
+            INNER JOIN usuario u
+            ON p.id_usuario = u.id_usuario
+          WHERE p.estado_pregunta = 'activa'
+            AND p.id_tema = ?
+        `;
 
   if (soloAdmin) {
     sql += `
-            AND u.tipo = 'admin'
-        `;
+          AND u.tipo = 'admin'
+          `;
   }
 
   sql += `
-        ORDER BY RAND()
-        LIMIT ?
-        `;
+          ORDER BY RAND()
+          LIMIT ?
+          `;
 
   const [rows] = await pool.query(sql, [idTema, Number(cantidad)]);
 
